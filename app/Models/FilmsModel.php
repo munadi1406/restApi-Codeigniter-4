@@ -42,21 +42,23 @@ class FilmsModel extends Model
 
     public function films()
     {
-        return $this->select(['f.film_id', 'f.title', 'f.desc', 'f.date', 'f.image', 'g.name'])
-            ->join('genre g', 'g.id_films = f.film_id')
-            ->where('status', 'show')
-            ->orderBy('updated_at', 'DESC')
-            ->findAll();
+        // return $this->select(['f.film_id', 'f.title', 'f.desc', 'f.date', 'f.image', 'g.name as genre'])
+        //     ->join('genre g', 'g.id_films = f.film_id')
+        //     ->where('status', 'show')
+        //     ->orderBy('updated_at', 'DESC')
+        //     ->findAll();
+
+        return $this->findAll();
+
     }
 
     public function filmsById($id)
     {
-        // return $this->select(['f.film_id', 'f.title', 'f.desc', 'f.date', 'f.image', 'g.name'])
-        //     ->join('genre g', 'g.id_films = f.film_id')
-        //     ->where('status', 'show')
-        //     ->where('f.film_id', $id)
-        //     ->findAll();
-        return $this->where('film_id',$id)->find();
+        return $this->select(['f.film_id', 'f.title', 'f.desc', 'f.date', 'f.image', 'g.name'])
+            ->join('genre g', 'g.id_films = f.film_id')
+            ->where('status', 'show')
+            ->where('f.film_id', $id)
+            ->findAll();
     }
 
 

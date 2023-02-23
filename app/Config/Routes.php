@@ -41,6 +41,12 @@ $routes->get('/films/(:alpha)', 'Films::filmsByGenre/$1');
 
 
 
+$routes->get('images/(:segment)', 'Films::showImage/$1');
+
+
+
+
+
 
 
 /*

@@ -139,27 +139,30 @@ class Films extends BaseController
             return $this->failValidationErrors($this->validator->getErrors());
         }
 
+
         $image = $this->request->getFile('image');
         $imageName = $image->getRandomName();
-        $image->move(ROOTPATH . 'public/images', $imageName);
-
+        $image->move(ROOTPATH . 'writable/uploads', $imageName);
+        
+        $imageUrl = base_url('images/' . $imageName);
+        
         $filmData = [
             'id_users' => $this->request->getVar('id_users'),
             'title' => $this->request->getVar('title'),
             'desc' => $this->request->getVar('desc'),
             'date' => $this->request->getVar('date'),
-            'image' => $imageName,
+            'image' => $imageUrl,
             'tipe' => $this->request->getVar('tipe'),
             'status' => 'show'
         ];
-
+        
         $titleCheck = $this->filmsModel->where('title', $filmData['title'])->first();
         if (!empty($titleCheck)) {
             return $this->respond([
                 'status' => 400,
                 'error' => 400,
                 'messages' => [
-                    'title' => 'The title is already exists.'
+                    'title' => 'Nama Tidak Tersedia'
                 ]
             ], 400);
         }
@@ -202,4 +205,17 @@ class Films extends BaseController
             'data' => $film
         ]);
     }
+
+    public function showImage($imageName)
+    {
+        $path = WRITEPATH . 'uploads/' . $imageName;
+        if (file_exists($path)) {
+            $info = getimagesize($path);
+            header('Content-type: '.$info['mime']);
+            readfile($path);
+        } else {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('File tidak ditemukan: '.$imageName);
+        }
+    }
+
 }

@@ -7,6 +7,8 @@ use App\Controllers\BaseController;
 use App\Models\FilmsModel;
 use App\Models\LinkModel;
 use App\Models\GenreModel;
+use App\Models\EpisodeModel;
+use App\Models\ViewsModel;
 
 
 class Films extends BaseController
@@ -14,17 +16,23 @@ class Films extends BaseController
     protected $filmsModel;
     protected $linkModel;
     protected $genreModel;
+    protected $episodeModel;
+    protected $viewsModel;
+
+
     use ResponseTrait;
     public function __construct()
     {
         $this->filmsModel = new FilmsModel();
         $this->linkModel = new LinkModel();
         $this->genreModel = new GenreModel();
+        $this->episodeModel = new EpisodeModel();
+        $this->viewsModel = new ViewsModel();
     }
 
-    public function films()
+    public function films($startFrom, $record)
     {
-        $datas = $this->filmsModel->films();
+        $datas = $this->filmsModel->films($startFrom, $record);
         if ($datas) {
             return $this->respond([
                 'status' => 200,
@@ -39,6 +47,10 @@ class Films extends BaseController
         }
     }
 
+    public function countFilms()
+    {
+        return $this->respond($this->filmsModel->countFilms());
+    }
 
     public function filmsById($id)
     {
@@ -92,9 +104,30 @@ class Films extends BaseController
         }
     }
 
-    public function filmsByGenre($genre)
+    public function filmsByGenre($genre, $startFrom, $record)
     {
-        $datas = $this->genreModel->genreSeacrh($genre);
+        $datas = $this->genreModel->genreFilter($genre, $startFrom, $record);
+        if ($datas) {
+            return $this->respond([
+                'status' => 200,
+                'message' => 'success',
+                'data' => $datas
+            ])->setStatusCode(200);
+        } else {
+            return $this->respond([
+                'status' => 404,
+                'message' => 'Failed'
+            ])->setStatusCode(404);
+        }
+    }
+
+    public function countGenre($genre){
+        return $this->respond($this->genreModel->countGenre($genre));
+    }
+
+    public function filmsByType($type)
+    {
+        $datas =  $this->filmsModel->filmsByType($type);
         if ($datas) {
             return $this->respond([
                 'status' => 200,
@@ -121,6 +154,10 @@ class Films extends BaseController
             'date' => 'required|valid_date'
         ];
 
+
+        $genre  = $this->request->getVar('genre');
+
+
         $quality1080 = $this->request->getVar('quality1080');
         $gd1080 = $this->request->getVar('gd1080');
         $utb1080 = $this->request->getVar('utb1080');
@@ -142,10 +179,9 @@ class Films extends BaseController
 
         $image = $this->request->getFile('image');
         $imageName = $image->getRandomName();
-        $image->move(ROOTPATH . 'writable/uploads', $imageName);
-        
+
+
         $imageUrl = base_url('images/' . $imageName);
-        
         $filmData = [
             'id_users' => $this->request->getVar('id_users'),
             'title' => $this->request->getVar('title'),
@@ -155,7 +191,7 @@ class Films extends BaseController
             'tipe' => $this->request->getVar('tipe'),
             'status' => 'show'
         ];
-        
+
         $titleCheck = $this->filmsModel->where('title', $filmData['title'])->first();
         if (!empty($titleCheck)) {
             return $this->respond([
@@ -167,21 +203,35 @@ class Films extends BaseController
             ], 400);
         }
 
+        // film insert
         $film = $this->filmsModel->insertFilms($filmData);
+        $image->move(ROOTPATH . 'writable/uploads', $imageName);
+
+        $episode = null;
+        if ($filmData['tipe'] === 'Series') {
+            $episodeData = [
+                'film_id' => $film,
+                'episode' => 1
+            ];
+            $episode = $this->episodeModel->episodeInsert($episodeData);
+        }
 
         $linkData = [];
         if ($quality1080 === '1080') {
             $linkData[] = [
                 'film_id' => $film,
+                'episode_id' => $episode,
                 'GD' => $gd1080,
                 'UTB' => $utb1080,
                 'MG' => $mg1080,
                 'quality' => '1080'
+
             ];
         }
         if ($quality720 === '720') {
             $linkData[] = [
                 'film_id' => $film,
+                'episode_id' => $episode,
                 'GD' => $gd720,
                 'UTB' => $utb720,
                 'MG' => $mg720,
@@ -191,14 +241,33 @@ class Films extends BaseController
         if ($quality540 === '540') {
             $linkData[] = [
                 'film_id' => $film,
+                'episode_id' => $episode,
                 'GD' => $gd540,
                 'UTB' => $utb540,
                 'MG' => $mg540,
                 'quality' => '540'
             ];
         }
+
+        // insert link
         $this->linkModel->linkInsert($linkData);
- 
+
+
+
+        // insert genre
+        $genreData = [
+            'name' => $genre,
+            'id_films' => $film
+        ];
+        $this->genreModel->genreInsert($genreData);
+
+        $dataViews = [
+            'film_id' => $film,
+            'views' => 0
+        ];
+        $this->viewsModel->viewsInsert($dataViews);
+
+
         return $this->respondCreated([
             'status' => 201,
             'message' => 'Data film berhasil disimpan',
@@ -211,11 +280,28 @@ class Films extends BaseController
         $path = WRITEPATH . 'uploads/' . $imageName;
         if (file_exists($path)) {
             $info = getimagesize($path);
-            header('Content-type: '.$info['mime']);
+            header('Content-type: ' . $info['mime']);
             readfile($path);
-        } else {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('File tidak ditemukan: '.$imageName);
         }
     }
+    public function deleteFilms($filmsId)
+    {
+        $film = $this->filmsModel->find($filmsId);
+        if (!$film) {
+            return $this->failNotFound('Data film tidak ditemukan');
+        }
 
+        $imagePath = WRITEPATH . 'uploads/' . basename($film['image']);
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+
+        // hapus data film
+        $result = $this->filmsModel->deleteFilms($filmsId);
+        if ($result) {
+            return $this->respondDeleted(['message' => 'Success']);
+        } else {
+            return $this->fail('Gagal menghapus data film');
+        }
+    }
 }

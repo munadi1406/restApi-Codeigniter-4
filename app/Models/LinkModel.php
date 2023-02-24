@@ -14,7 +14,7 @@ class LinkModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_link', 'film_id','GD', 'UTB', 'MG', 'quality'];
+    protected $allowedFields    = ['id_link', 'film_id', 'GD', 'UTB', 'MG', 'quality', 'episode_id'];
 
     // Dates
     protected $useTimestamps = false;
@@ -43,11 +43,15 @@ class LinkModel extends Model
 
     public function link($id)
     {
-        return $this->select(['f.film_id', 'link.*'])->join('films f', 'f.film_id = link.film_id')->where('f.status', 'show')->where('link.film_id', $id)->findAll();
+        return $this->select(['f.film_id', 'link.*','e.episode'])
+            ->join('films f', 'f.film_id = link.film_id')
+            ->join('episode e', 'link.episode_id = e.id_episode')
+            ->where('f.status', 'show')
+            ->where('link.film_id', $id)
+            ->findAll();
     }
-    public function linkInsert($dataLink){
+    public function linkInsert($dataLink)
+    {
         $this->insertBatch($dataLink);
     }
-
-    
 }

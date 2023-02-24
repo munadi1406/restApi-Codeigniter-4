@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class GenreModel extends Model
+class LogModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'genre';
-    protected $primaryKey       = 'id_genre';
+    protected $table            = 'visitor_log';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_films','name'];
+    protected $allowedFields    = ['visit_time','ip_address','browser','operating_system','visited_page','arrival_time','referer','screen_resolution','device'];
 
     // Dates
     protected $useTimestamps = false;
@@ -39,22 +39,4 @@ class GenreModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function genreFilter($genre,$startFrom,$records){
-        return $this->select(['genre.name','f.film_id','f.title','f.image','f.date'])
-        ->join('films f','f.film_id = genre.id_films')
-        ->where('name like','%'.$genre.'%')
-        ->where('f.status','show')
-        ->orderBy('f.film_id','DESC')
-        ->limit($records,$startFrom)
-        ->find();
-    }
-
-    public function countGenre($genre){
-        return $this->where('name like','%'.$genre.'%')->countAllResults();
-    }
-
-    public function genreInsert($genreData){
-        $this->insert($genreData);
-    }
 }

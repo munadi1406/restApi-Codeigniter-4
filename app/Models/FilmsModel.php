@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class FilmsModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'films as f';
+    protected $table            = 'films';
     protected $primaryKey       = 'film_id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
@@ -40,39 +40,57 @@ class FilmsModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function films()
+    public function films($startFrom,$records)
     {
-        // return $this->select(['f.film_id', 'f.title', 'f.desc', 'f.date', 'f.image', 'g.name as genre'])
-        //     ->join('genre g', 'g.id_films = f.film_id')
-        //     ->where('status', 'show')
-        //     ->orderBy('updated_at', 'DESC')
-        //     ->findAll();
-
-        return $this->findAll();
-
+        return $this->select(['films.film_id', 'films.title','films.date', 'films.image'])
+            ->where('status', 'show')
+            ->orderBy('updated_at', 'DESC')
+            ->limit($records,$startFrom)
+            ->find();
     }
 
     public function filmsById($id)
     {
-        return $this->select(['f.film_id', 'f.title', 'f.desc', 'f.date', 'f.image', 'g.name'])
-            ->join('genre g', 'g.id_films = f.film_id')
+        return $this->select(['films.film_id', 'films.title', 'films.desc', 'films.date', 'films.image','films.tipe', 'g.name'])
+            ->join('genre g', 'g.id_films = films.film_id')
             ->where('status', 'show')
-            ->where('f.film_id', $id)
+            ->where('films.film_id', $id)
             ->findAll();
     }
 
 
     public function randomFilms()
     {
-        return $this->select(['film_id', 'image'])->where('status', 'show')->orderBy('RAND()')->limit(2)->find();
+        return $this->select(['film_id', 'image'])->where('status', 'show')->orderBy('RAND()')->limit(12)->find();
     }
 
 
     public function insertFilms($filmsData)
     {
-
         $film = $this->insert($filmsData);
-
         return $film;
     }
+
+
+    public function filmsByType($type)
+    {
+        return $this->select(['film_id', 'title', 'date','image'])
+            ->where('status', 'Show')
+            ->where('tipe', $type)
+            ->orderBy('updated_at', 'DESC')
+            ->findAll();
+    }
+
+
+    public function deleteFilms($filmsId){
+        $result = $this->delete($filmsId);
+        return $result;
+    }
+
+    public function countFilms(){
+        return $this->countAll();
+    }
+
+   
+
 }

@@ -125,9 +125,9 @@ class Films extends BaseController
         return $this->respond($this->genreModel->countGenre($genre));
     }
 
-    public function filmsByType($type)
+    public function filmsByType($type,$startFrom,$record)
     {
-        $datas =  $this->filmsModel->filmsByType($type);
+        $datas =  $this->filmsModel->filmsByType($type,$startFrom,$record);
         if ($datas) {
             return $this->respond([
                 'status' => 200,
@@ -142,6 +142,9 @@ class Films extends BaseController
         }
     }
 
+    public function countType($type){
+        return $this->respond($this->filmsModel->countType($type));
+    }
 
     public function filmsInsert()
     {
@@ -189,7 +192,9 @@ class Films extends BaseController
             'date' => $this->request->getVar('date'),
             'image' => $imageUrl,
             'tipe' => $this->request->getVar('tipe'),
-            'status' => 'show'
+            'status' => 'show',
+            'subtitle'=>$this->request->getVar('subtitle'),
+            'trailer'=>$this->request->getVar('trailer')
         ];
 
         $titleCheck = $this->filmsModel->where('title', $filmData['title'])->first();
@@ -202,6 +207,7 @@ class Films extends BaseController
                 ]
             ], 400);
         }
+
 
         // film insert
         $film = $this->filmsModel->insertFilms($filmData);

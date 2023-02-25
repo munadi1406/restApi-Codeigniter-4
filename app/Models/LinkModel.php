@@ -43,12 +43,26 @@ class LinkModel extends Model
 
     public function link($id)
     {
-        return $this->select(['f.film_id', 'link.*','e.episode'])
-            ->join('films f', 'f.film_id = link.film_id')
-            ->join('episode e', 'link.episode_id = e.id_episode')
-            ->where('f.status', 'show')
-            ->where('link.film_id', $id)
-            ->findAll();
+        $data = $this->select(['f.tipe'])
+            ->join('films f ', 'link.film_id = f.film_id')
+            ->where('f.film_id', $id)
+            ->first();
+        if ($data === null || $data['tipe'] === null) {
+            return $data; // jika tipe null, kembalikan false
+        } else if ($data['tipe'] === 'Series') {
+            return $this->select(['f.film_id', 'link.*', 'e.episode'])
+                ->join('films f', 'f.film_id = link.film_id')
+                ->join('episode e', 'link.episode_id = e.id_episode')
+                ->where('f.status', 'show')
+                ->where('link.film_id', $id)
+                ->find();
+        } else if ($data['tipe'] === 'Movie') {
+            return $this->select(['f.film_id', 'link.*'])
+                ->join('films f', 'f.film_id = link.film_id')
+                ->where('f.status', 'show')
+                ->where('link.film_id', $id)
+                ->find();
+        }
     }
     public function linkInsert($dataLink)
     {

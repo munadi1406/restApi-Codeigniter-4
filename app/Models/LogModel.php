@@ -39,4 +39,9 @@ class LogModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function logInsert($logData){
+        return $this->insert($logData);
+    }
+
 }

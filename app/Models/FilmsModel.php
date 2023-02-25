@@ -14,7 +14,7 @@ class FilmsModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['film_id', 'id_users', 'title', 'desc', 'date', 'image', 'created_at', 'status', 'tipe'];
+    protected $allowedFields    = ['film_id', 'id_users', 'title', 'desc', 'date', 'image', 'created_at', 'status', 'tipe','subtitle','trailer'];
 
     // Dates
     protected $useTimestamps = false;
@@ -51,11 +51,11 @@ class FilmsModel extends Model
 
     public function filmsById($id)
     {
-        return $this->select(['films.film_id', 'films.title', 'films.desc', 'films.date', 'films.image','films.tipe', 'g.name'])
+        return $this->select(['films.film_id', 'films.title', 'films.desc', 'films.date', 'films.image','films.tipe', 'films.subtitle','films.trailer','g.name'])
             ->join('genre g', 'g.id_films = films.film_id')
             ->where('status', 'show')
             ->where('films.film_id', $id)
-            ->findAll();
+            ->first();
     }
 
 
@@ -72,13 +72,18 @@ class FilmsModel extends Model
     }
 
 
-    public function filmsByType($type)
+    public function filmsByType($type,$startFrom,$records)
     {
         return $this->select(['film_id', 'title', 'date','image'])
             ->where('status', 'Show')
             ->where('tipe', $type)
             ->orderBy('updated_at', 'DESC')
-            ->findAll();
+            ->limit($records,$startFrom)
+            ->find();
+    }
+
+    public function countType($type){
+        return $this->where('tipe',$type)->countAllResults();
     }
 
 

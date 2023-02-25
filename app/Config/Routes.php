@@ -33,38 +33,22 @@ $routes->get('/', 'Home::index');
 
 
 
-// get all films 
-$routes->get('/filmsAll/(:num)/(:num)', 'Films::films/$1/$2');
+$routes->group('api', ['filter' => 'apiKey'], static function ($routes) {
+    $routes->get('filmsAll/(:num)/(:num)', 'Films::films/$1/$2');
+    $routes->get('filmscount', 'Films::countFilms');
+    $routes->get('genrecount/(:alpha)', 'Films::countgenre/$1');
+    $routes->get('films/(:num)', 'Films::filmsById/$1');
+    $routes->get('filmsrandom', 'Films::filmsRandom');
+    $routes->get('link/(:segment)', 'Films::filmsLink/$1');
+    $routes->get('films/(:alpha)/(:num)/(:num)', 'Films::filmsByGenre/$1/$2/$3');
+    $routes->get('films/type/(:alpha)/(:num)/(:num)','Films::filmsByType/$1/$2/$3');
+    $routes->get('counttipe/(:alpha)','Films::countType/$1');
+    $routes->post('films', 'Films::filmsInsert');
+    $routes->delete('films/delete/(:segment)','Films::deleteFilms/$1');
+});
 
 
-// count
-$routes->get('/filmscount', 'Films::countFilms');
-$routes->get('/genrecount/(:alpha)', 'Films::countgenre/$1');
-
-// films by id
-$routes->get('/films/(:num)', 'Films::filmsById/$1');
-// get random films 
-$routes->get('/filmsrandom', 'Films::filmsRandom');
-
-// link by id
-$routes->get('/link/(:num)', 'Films::filmsLink/$1');
-
-// films by genre
-$routes->get('/films/(:alpha)/(:num)/(:num)', 'Films::filmsByGenre/$1/$2/$3');
-
-// films by tipe 
-$routes->get('/films/type/(:alpha)','Films::filmsByType/$1');
-
-// show images
 $routes->get('images/(:segment)', 'Films::showImage/$1');
-
-// films insert 
-$routes->post('/films', 'Films::filmsInsert');
-
-// films delete
-$routes->delete('/films/delete/(:segment)','Films::deleteFilms/$1');
-
-
 
 
 

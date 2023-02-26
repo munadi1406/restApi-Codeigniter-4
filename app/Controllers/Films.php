@@ -121,13 +121,14 @@ class Films extends BaseController
         }
     }
 
-    public function countGenre($genre){
+    public function countGenre($genre)
+    {
         return $this->respond($this->genreModel->countGenre($genre));
     }
 
-    public function filmsByType($type,$startFrom,$record)
+    public function filmsByType($type, $startFrom, $record)
     {
-        $datas =  $this->filmsModel->filmsByType($type,$startFrom,$record);
+        $datas =  $this->filmsModel->filmsByType($type, $startFrom, $record);
         if ($datas) {
             return $this->respond([
                 'status' => 200,
@@ -142,7 +143,8 @@ class Films extends BaseController
         }
     }
 
-    public function countType($type){
+    public function countType($type)
+    {
         return $this->respond($this->filmsModel->countType($type));
     }
 
@@ -193,8 +195,8 @@ class Films extends BaseController
             'image' => $imageUrl,
             'tipe' => $this->request->getVar('tipe'),
             'status' => 'show',
-            'subtitle'=>$this->request->getVar('subtitle'),
-            'trailer'=>$this->request->getVar('trailer')
+            'subtitle' => $this->request->getVar('subtitle'),
+            'trailer' => $this->request->getVar('trailer')
         ];
 
         $titleCheck = $this->filmsModel->where('title', $filmData['title'])->first();
@@ -310,4 +312,78 @@ class Films extends BaseController
             return $this->fail('Gagal menghapus data film');
         }
     }
+
+
+    public function getImageCache()
+    {
+        $datas = $this->filmsModel->getImageCache();
+        if ($datas) {
+            return $this->respond([
+                'status' => 200,
+                'message' => 'success',
+                'data' => $datas
+            ])->setStatusCode(200);
+        } else {
+            return $this->respond([
+                'status' => 404,
+                'message' => 'Failed'
+            ])->setStatusCode(404);
+        }
+    }
+
+
+    public function updateViews($filmId){
+        $datas = $this->viewsModel->updateViews($filmId);
+        if ($datas) {
+            return $this->respond([
+                'status' => 200,
+                'message' => 'success',
+            ])->setStatusCode(200);
+
+        } else {
+            // return $this->respondUpdated($datas);
+            return $this->respond([
+                'status' => 404,
+                'message' => 'Failed'
+            ])->setStatusCode(404);
+        }
+    }
+
+
+
+    
+    public function getViews($filmId){
+        $datas = $this->viewsModel->getViews($filmId);
+        if ($datas) {
+            return $this->respond([
+                'status' => 200,
+                'message' => 'success',
+                'data' => $datas
+            ])->setStatusCode(200);
+        } else {
+            return $this->respond([
+                'status' => 404,
+                'message' => 'Failed'
+            ])->setStatusCode(404);
+        }
+    }
+
+
+    public function getAllViews(){
+        $datas = $this->viewsModel->getAllViews();
+        if ($datas) {
+            return $this->respond([
+                'status' => 200,
+                'message' => 'success',
+                'data' => $datas
+            ])->setStatusCode(200);
+        } else {
+            return $this->respond([
+                'status' => 404,
+                'message' => 'Failed'
+            ])->setStatusCode(404);
+        }
+    }
+
+
 }

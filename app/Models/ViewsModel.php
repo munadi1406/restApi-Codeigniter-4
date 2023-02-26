@@ -14,7 +14,7 @@ class ViewsModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['film_id','views'];
+    protected $allowedFields    = ['film_id', 'views'];
 
     // Dates
     protected $useTimestamps = false;
@@ -41,8 +41,28 @@ class ViewsModel extends Model
     protected $afterDelete    = [];
 
 
-    public function viewsInsert($dataViews){
+    public function viewsInsert($dataViews)
+    {
         $this->insert($dataViews);
+    }
 
+    public function getViews($filmId)
+    {
+        return $this->where('film_id', $filmId)->findAll();
+    }
+
+    public function getAllViews()
+    {
+        return $this->select(['f.title','viewers.views'])
+            ->join("films f", "f.film_id = viewers.film_id")
+            ->findAll();
+    }
+
+    public function updateViews($filmId)
+    {
+        $film = $this->where('film_id', $filmId)->first();
+        $currentViews = $film['views'];
+        $newViews = $currentViews + 1;
+        return $this->where('film_id', $filmId)->set('views', $newViews)->update();
     }
 }

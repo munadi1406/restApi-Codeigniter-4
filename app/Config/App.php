@@ -42,7 +42,7 @@ class App extends BaseConfig
      * something else. If you are using mod_rewrite to remove the page set this
      * variable so that it is blank.
      */
-    public string $indexPage = 'index.php';
+    public string $indexPage = '';
 
     /**
      * --------------------------------------------------------------------------
@@ -358,7 +358,7 @@ class App extends BaseConfig
      *
      * The header name.
      *
-     * @deprecated Use `Config\Security` $headerName property instead of using this property.
+     * @deprecated Use `Config\Security` $Access-ControlName property instead of using this property.
      */
     public string $CSRFHeaderName = 'X-CSRF-TOKEN';
 

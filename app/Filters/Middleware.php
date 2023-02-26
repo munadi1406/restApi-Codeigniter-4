@@ -5,6 +5,8 @@ namespace App\Filters;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\HTTP\Response;
+use CodeIgniter\Config\Services;
 use CodeIgniter\API\ResponseTrait;
 
 class Middleware implements FilterInterface
@@ -32,20 +34,25 @@ class Middleware implements FilterInterface
     {
         $this->response = service('Response');
         $this->request = service('request');
-
+        
     }
 
+    
     public function before(RequestInterface $request, $arguments = null)
     {
+        
+        
         $apiKey = getenv('API_KEY');
 
-        $allowedUrls = ['http://localhost', 'https://www.example.com'];
+        $allowedUrls = ['http://localhost', 'http://127.0.0.1:5500'];
         if (!in_array($request->uri->getScheme() . '://' . $request->uri->getHost(), $allowedUrls)) {
             return $this->respond([
                 'message' => 'Access Denied',
 
             ])->setStatusCode(401); 
         }
+
+       
         
         if (empty($apiKey) || $request->getHeaderLine('API-KEY') !== $apiKey) {
             return $this->respond([

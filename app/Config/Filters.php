@@ -33,8 +33,8 @@ class Filters extends BaseConfig
         'before' => [
             // 'honeypot',
             // 'csrf',
-            'invalidchars',
-            'secureheaders',
+            // 'invalidchars',
+            // 'secureheaders',
             // 'apiKey',
         ],
         'after' => [

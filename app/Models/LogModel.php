@@ -14,7 +14,7 @@ class LogModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['visit_time','ip_address','browser','operating_system','visited_page','arrival_time','referer','screen_resolution','device'];
+    protected $allowedFields    = ['visit_time','ip_address','browser','operating_system','visited_page','arrival_time','referrer','screen_resolution','device'];
 
     // Dates
     protected $useTimestamps = false;
@@ -43,5 +43,11 @@ class LogModel extends Model
     public function logInsert($logData){
         return $this->insert($logData);
     }
+
+    public function getLog(){
+        return $this->orderBy("id","DESC")->findAll();
+    }
+
+
 
 }

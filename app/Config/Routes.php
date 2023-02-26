@@ -33,6 +33,13 @@ $routes->get('/', 'Home::index');
 
 
 
+$routes->group('admin',static function ($routes){
+    $routes->get('','FilmsDb::films');
+    $routes->get('post-add','FilmsDb::postAdd');
+    $routes->get('post-data','FilmsDb::postView');
+    $routes->post('post-add','FilmsDb::filmsInsert');
+});
+
 $routes->group('api', ['filter' => 'apiKey'], static function ($routes) {
     $routes->get('filmsAll/(:num)/(:num)', 'Films::films/$1/$2');
     $routes->get('filmscount', 'Films::countFilms');
@@ -45,8 +52,17 @@ $routes->group('api', ['filter' => 'apiKey'], static function ($routes) {
     $routes->get('counttipe/(:alpha)','Films::countType/$1');
     $routes->post('films', 'Films::filmsInsert');
     $routes->delete('films/delete/(:segment)','Films::deleteFilms/$1');
+    
+    // image for cache
+    $routes->get('image-cache/','Films::getImageCache');
+    $routes->get('views/(:num)', 'Films::getViews/$1');
+    $routes->get('views-update/(:num)', 'Films::updateViews/$1');
+    $routes->get('views-all/', 'Films::getAllViews');
+    
+    // insert log
+    $routes->post('log', 'Log::logInsert');
+    $routes->get('getlog', 'Log::getlog');
 });
-
 
 $routes->get('images/(:segment)', 'Films::showImage/$1');
 

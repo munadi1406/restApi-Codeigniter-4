@@ -49,6 +49,12 @@ class FilmsModel extends Model
             ->find();
     }
 
+   
+
+    public function getImageCache(){
+        return $this->select(['films.image'])->findAll();
+    }
+    
     public function filmsById($id)
     {
         return $this->select(['films.film_id', 'films.title', 'films.desc', 'films.date', 'films.image','films.tipe', 'films.subtitle','films.trailer','g.name'])
@@ -61,7 +67,7 @@ class FilmsModel extends Model
 
     public function randomFilms()
     {
-        return $this->select(['film_id', 'image'])->where('status', 'show')->orderBy('RAND()')->limit(12)->find();
+        return $this->select(['film_id','title', 'image'])->where('status', 'show')->orderBy('RAND()')->limit(12)->find();
     }
 
 
@@ -95,7 +101,45 @@ class FilmsModel extends Model
     public function countFilms(){
         return $this->countAll();
     }
+    
+    
+    public function countFilmsShow(){
+        return $this->where('status','show')->countAllResults();
+    }
 
-   
+    public function countFilmsMovie(){
+        return $this->where('tipe','Movie')->countAllResults();
+    }
+
+    
+    public function countFilmsSeries(){
+        return $this->where('tipe','Series')->countAllResults();
+    }
+    
+    
+
+
+    // bukan untuk api
+    public function filmsAll(){
+        return $this->select(['films.film_id','films.title','films.desc','films.date','films.created_at','films.status','films.tipe','films.image','g.name','u.*'])
+        ->join('genre g','g.id_films = films.film_id')
+        ->join('users u','films.id_users = u.id_users')
+        ->orderBy('films.created_at','DESC')
+        ->find();
+    }
+
+    public function filmsLink(){
+        return $this->select(['films.film_id','link.*'])
+        ->join('link','films.film_id = link.film_id')
+        ->findAll();
+    }
+    public function filmsLinkSeries(){
+        return $this->select(['films.film_id','link.*','e.episode'])
+        ->join('link','films.film_id = link.film_id')
+        ->join('episode e','link.episode_id = e.id_episode')
+        ->find();
+    }
+
+
 
 }

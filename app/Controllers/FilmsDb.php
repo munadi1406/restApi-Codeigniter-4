@@ -36,7 +36,7 @@ class FilmsDb extends BaseController
 
     public function films()
     {
-       
+
         $countPost = $this->filmsModel->countFilms();
         $countPostShow = $this->filmsModel->countFilmsShow();
         $countPostMovie = $this->filmsModel->countFilmsMovie();
@@ -92,7 +92,7 @@ class FilmsDb extends BaseController
             session()->setFlashdata('error', $this->validator->getErrors());
             return redirect()->back()->withInput();
         }
-        
+
 
 
 
@@ -147,6 +147,16 @@ class FilmsDb extends BaseController
             return redirect()->back()->withInput();
         }
 
+        if (!$quality1080 && !$quality720 && !$quality540) {
+            session()->setFlashdata('error', 'Silahkan Pilih Quality Minimal 1');
+            return redirect()->back()->withInput();
+        }
+
+        if (!$gd1080 && !$utb1080 && !$mg1080 && !$gd720 && !$utb720 && !$mg720 && !$gd540 && !$utb540 && !$mg540) {
+            session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
+            return redirect()->back()->withInput();
+        }
+
 
         // film insert
         $film = $this->filmsModel->insertFilms($filmData);
@@ -160,9 +170,12 @@ class FilmsDb extends BaseController
             ];
             $episode = $this->episodeModel->episodeInsert($episodeData);
         }
-
         $linkData = [];
         if ($quality1080 === '1080') {
+            if (!$gd1080 && !$utb1080 && !$mg1080) {
+                session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
+                return redirect()->back()->withInput();
+            }
             $linkData[] = [
                 'film_id' => $film,
                 'episode_id' => $episode,
@@ -170,10 +183,13 @@ class FilmsDb extends BaseController
                 'UTB' => $utb1080,
                 'MG' => $mg1080,
                 'quality' => '1080'
-
             ];
         }
         if ($quality720 === '720') {
+            if (!$gd720 && !$utb720 && !$mg720) {
+                session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
+                return redirect()->back()->withInput();
+            }
             $linkData[] = [
                 'film_id' => $film,
                 'episode_id' => $episode,
@@ -184,6 +200,10 @@ class FilmsDb extends BaseController
             ];
         }
         if ($quality540 === '540') {
+            if (!$gd540 && !$utb540 && !$mg540) {
+                session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
+                return redirect()->back()->withInput();
+            }
             $linkData[] = [
                 'film_id' => $film,
                 'episode_id' => $episode,
@@ -193,7 +213,6 @@ class FilmsDb extends BaseController
                 'quality' => '540'
             ];
         }
-
         // insert link
         $this->linkModel->linkInsert($linkData);
 
@@ -217,6 +236,123 @@ class FilmsDb extends BaseController
 
         // Redirect to page
         return redirect()->route('admin/post-data');
+    }
 
+
+    public function filmsEdit()
+    {
+
+        $filmId = $this->request->getPost('film_id');
+
+        $data = $this->filmsModel->filmsEdit($filmId);
+
+
+        $link = $this->linkModel->linkEdit($filmId);
+
+        return view('post/edit-post', ['data' => $data, 'link' => $link]);
+    }
+
+
+
+    public function filmsDelete($filmId)
+    {
+        $data = $this->filmsModel->deleteFilmsPost($filmId);
+
+        if ($data) {
+            $this->session->setFlashdata('success_message', 'Postingan berhasil di Hapus.');
+        } else {
+            $this->session->setFlashdata('error', 'Postingan Gagal Di Hapus');
+        }
+        // Redirect to page
+        return redirect()->route('admin/post-data');
+    }
+    public function episode()
+    {
+        $filmId = $this->request->getPost('film_id');
+
+        $data = $this->episodeModel->episodeByFilmid($filmId);
+
+        return view('post/add-episode', ['data' => $data]);
+    }
+
+
+    public function addEpisode()
+    {
+        $filmId = $this->request->getPost('film_id');
+        $quality1080 = $this->request->getVar('quality1080');
+        $gd1080 = $this->request->getVar('gd1080');
+        $utb1080 = $this->request->getVar('utb1080');
+        $mg1080 = $this->request->getVar('mg1080');
+        $quality720 = $this->request->getVar('quality720');
+        $gd720 = $this->request->getVar('gd720');
+        $utb720 = $this->request->getVar('utb720');
+        $mg720 = $this->request->getVar('mg720');
+        $quality540 = $this->request->getVar('quality540');
+        $gd540 = $this->request->getVar('gd540');
+        $utb540 = $this->request->getVar('utb540');
+        $mg540 = $this->request->getVar('mg540');
+        $episode = $this->request->getVar('episode');
+
+        $episodeData = [
+            'film_id' => $filmId,
+            'episode' => $episode
+        ];
+
+        $episode = $this->episodeModel->episodeInsert($episodeData);
+        $linkData = [];
+        if ($quality1080 === '1080') {
+            if (!$gd1080 && !$utb1080 && !$mg1080) {
+                session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
+                return redirect()->back()->withInput();
+            }
+            $linkData[] = [
+                'film_id' => $filmId,
+                'episode_id' => $episode,
+                'GD' => $gd1080,
+                'UTB' => $utb1080,
+                'MG' => $mg1080,
+                'quality' => '1080'
+            ];
+        }
+        if ($quality720 === '720') {
+            if (!$gd720 && !$utb720 && !$mg720) {
+                session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
+                return redirect()->back()->withInput();
+            }
+            $linkData[] = [
+                'film_id' => $filmId,
+                'episode_id' => $episode,
+                'GD' => $gd720,
+                'UTB' => $utb720,
+                'MG' => $mg720,
+                'quality' => '720'
+            ];
+        }
+        if ($quality540 === '540') {
+            if (!$gd540 && !$utb540 && !$mg540) {
+                session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
+                return redirect()->back()->withInput();
+            }
+            $linkData[] = [
+                'film_id' => $filmId,
+                'episode_id' => $episode,
+                'GD' => $gd540,
+                'UTB' => $utb540,
+                'MG' => $mg540,
+                'quality' => '540'
+            ];
+        }
+        // insert
+
+        $data = $this->linkModel->linkInsert($linkData);
+
+
+        if ($data && $episode) {
+            $this->session->setFlashdata('success_message', 'Episode Berhasil Di Post.');
+            return redirect()->route('admin/post-data');
+        } else {
+            $this->session->setFlashdata('error', 'Episode Gagal Di Add');
+            return redirect()->route('admin/post-data');
+        }
     }
 }

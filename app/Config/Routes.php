@@ -38,7 +38,14 @@ $routes->group('admin',static function ($routes){
     $routes->get('post-add','FilmsDb::postAdd');
     $routes->get('post-data','FilmsDb::postView');
     $routes->post('post-add','FilmsDb::filmsInsert');
+    $routes->post('post-edit','FilmsDb::filmsEdit');
+    $routes->delete('post-delete/(:num)','FilmsDb::filmsDelete/$1');
+
+    // episode
+    $routes->post('episode','FilmsDb::episode');
+    $routes->post('episode-add','FilmsDb::addEpisode');
 });
+
 
 $routes->group('api', ['filter' => 'apiKey'], static function ($routes) {
     $routes->get('filmsAll/(:num)/(:num)', 'Films::films/$1/$2');

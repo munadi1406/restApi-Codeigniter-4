@@ -1,7 +1,6 @@
 <?= $this->extend('layout/main'); ?>
 <?= $this->section('content'); ?>
 <div class="right_col" role="main">
-  <?php var_dump($data);?>
           <!-- top tiles -->
           <div class="row" style="display: inline-block;" >
           <div class="tile_count">

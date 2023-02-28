@@ -19,7 +19,6 @@
         <div class="page-title">
             <div class="title_left">
                 <h3>Epsiode Add</h3>
-                <?php var_dump($data) ?>
             </div>
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 form-group pull-right top_search">

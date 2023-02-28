@@ -44,6 +44,11 @@ $routes->group('admin',static function ($routes){
     // episode
     $routes->post('episode','FilmsDb::episode');
     $routes->post('episode-add','FilmsDb::addEpisode');
+
+
+    // link
+    $routes->post('link','FilmsDb::link');
+    $routes->post('link-edit','FilmsDb::linkEdit');
 });
 
 

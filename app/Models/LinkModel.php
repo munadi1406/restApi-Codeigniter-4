@@ -80,18 +80,28 @@ class LinkModel extends Model
         if ($data === null || $data['tipe'] === null) {
             return $data; // jika tipe null, kembalikan false
         } else if ($data['tipe'] === 'Series') {
-            return $this->select(['f.film_id', 'link.*', 'e.episode'])
+            return $this->select(['f.film_id','f.title', 'f.tipe','link.*', 'e.episode'])
                 ->join('films f', 'f.film_id = link.film_id')
                 ->join('episode e', 'link.episode_id = e.id_episode')
                 ->where('f.status', 'show')
                 ->where('link.film_id', $id)
+                ->groupBy('link.id_link')
                 ->find();
         } else if ($data['tipe'] === 'Movie') {
-            return $this->select(['f.film_id', 'link.*'])
+            return $this->select(['f.film_id', 'f.tipe','f.title','link.*'])
                 ->join('films f', 'f.film_id = link.film_id')
                 ->where('f.status', 'show')
                 ->where('link.film_id', $id)
                 ->find();
         }
     }
+
+
+    // eksekusi edit link
+    public function editLink($linkId,$dataLink)
+    {
+        return $this->update($linkId,$dataLink);
+    }
+
+
 }

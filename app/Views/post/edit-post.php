@@ -54,11 +54,11 @@
                         </ul>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="x_content d-flex flex-row-reverse ">
-                        <div class="col-6 border h-50 d-flex justify-content-center ">
-                            <img src="<?php echo $data['image'] ?>" alt="<?= $data['title']?>" width="300px">
+                    <div class="x_content row flex-md-row-reverse flex-md-col">
+                        <div class="col-md-6 border h-50 d-flex justify-content-center ">
+                            <img src="<?php echo $data['image'] ?>" alt="<?= $data['title'] ?>" width="300px">
                         </div>
-                        <form class="col-6" action="<?php base_url('admin/post-add') ?>" method="post" enctype="multipart/form-data">
+                        <form class="col-md-6" action="<?php base_url('admin/post-add') ?>" method="post" enctype="multipart/form-data">
                             <span class="section">Films Info</span>
                             <div class="field item form-group">
                                 <label class="col-form-label  label-align  col-2">Name<span class="required">*</span></label>
@@ -175,51 +175,7 @@
                                     <input class="form-control" name="subtitle" placeholder="https://example.com" value="<?= $data['subtitle'] ?>" />
                                 </div>
                             </div>
-                            <?php
-                            $link1080 = array();
-                            $link720 = array();
-                            $link540 = array();
-
-                            // menglempokkan link berdasarkan quality
-
-                            foreach ($link as $links) {
-                                if ($links['quality'] === '1080') {
-                                    $link1080[] = $links;
-                                } elseif ($links['quality'] === '720') {
-                                    $link720[] = $links;
-                                } elseif ($links['quality'] === '540') {
-                                    $link540[] = $links;
-                                }
-                            }
-                            // LOOPING LINK
-                            foreach ($link as $dataLink) : ?>
-                                <div class="field item form-group ">
-                                    <?php
-                                    $linkk;
-                                    // MENENTUKAN ISI $LINKK YANG DI LOOPING BERDASARKAN QUALITY
-                                    if ($dataLink['quality'] === '1080') {
-                                        $linkk = $link1080;
-                                    } elseif ($dataLink['quality'] === '720') {
-                                        $linkk = $link720;
-                                    } elseif ($dataLink['quality'] === '540') {
-                                        $linkk = $link540;
-                                    }
-                                    // LOOPING LINK BERDASARKAN QUALITY NTA
-                                    foreach ($linkk as $linkdata) : ?>
-                                        <label class="col-form-label  label-align  col-2"><?= $dataLink['quality'] ?><span class="required">*</span></label>
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <input type="checkbox" aria-label="Checkbox for following text input" <?= $linkdata['quality'] ? 'checked' : '' ?> name="quality<?= $linkdata['quality'] ?>">
-                                            </div>
-                                        </div>
-                                        <div class="w-100 m-auto">
-                                            <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link GD" name="gd<?= $dataLink['quality'] ?>" value="<?= $linkdata['GD'] ?>">
-                                            <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link UTB" name="utb<?= $dataLink['quality'] ?>" value="<?= $linkdata['UTB'] ?>">
-                                            <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link MG" name="mg<?= $dataLink['quality'] ?>" value="<?= $linkdata['MG'] ?>">
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endforeach; ?>
+                            
                             <div class="field item form-group">
                                 <div class="w-100 m-auto">
                                     <div class="dropzone" id="dropzone">

@@ -29,8 +29,12 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
 
+
+$routes->get('login','Login::index');
+$routes->post('login-auth','Login::auth');
+
+$routes->post('register','Register::register');
 
 
 $routes->group('admin',static function ($routes){
@@ -38,13 +42,16 @@ $routes->group('admin',static function ($routes){
     $routes->get('post-add','FilmsDb::postAdd');
     $routes->get('post-data','FilmsDb::postView');
     $routes->post('post-add','FilmsDb::filmsInsert');
-    $routes->post('post-edit','FilmsDb::filmsEdit');
     $routes->delete('post-delete/(:num)','FilmsDb::filmsDelete/$1');
+    
+
+    // post edit
+    $routes->post('edit','FilmsDb::filmsEdit');
+    $routes->put('post-edit','FilmsDb::edit');
 
     // episode
     $routes->post('episode','FilmsDb::episode');
     $routes->post('episode-add','FilmsDb::addEpisode');
-
 
     // link
     $routes->post('link','FilmsDb::link');

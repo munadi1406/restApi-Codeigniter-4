@@ -136,7 +136,7 @@ class FilmsModel extends Model
             ->find();
     }
     
-    
+    // search film data for edit
     public function filmsEdit($filmId)
     {
         return $this->select(['films.*', 'g.name'])

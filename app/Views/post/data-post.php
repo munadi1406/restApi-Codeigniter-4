@@ -85,56 +85,63 @@
                                                 <tr>
                                                     <td><?= $no++ ?></td>
                                                     <td ><?= $datas['username'] ?></td>
-                                                    <td class=" text-truncate"><?= $datas['title'] ?></td>
-                                        <td class="overflow-auto" style="width:300px ; max-height:100px;display: block;"><?= $datas['desc'] ?></td>
-                                        <td>
-                                                <div><?= $datas['tipe'] ?></div>
-                                                <form action="<?= base_url('admin/episode') ?>" method="POST">
-                                                    <input type="hidden" name="film_id" value="<?= $datas['film_id'] ?>">
-                                                    <button type="submit" class="badge badge-primary border" style="display: <?= $datas['tipe']==='Series'?'':'none' ?>;">add</button>
-                                                </form>
-                                        </td>
-                                        <td class="text-truncate"><?= $datas['date'] ?></td>
-                                        <td class="text-truncate"><?= $datas['created_at'] ?></td>
-                                        <td class="text-truncate"><?= $datas['updated_at'] ?></td>
-                                        <td><a href=" <?= $datas['trailer'] ?>" class="badge badge-danger" style="display: <?php echo $datas['trailer'] ? '' : 'none' ?>;" target="_blank">Trailer</a></td>
-                                        <td><a href="<?= $datas['subtitle'] ?>" class="badge badge-info" style="display: <?= $datas['subtitle'] ? '' : 'none' ?>;" target="_blank">Subtitle</a></td>
-                                        <td>
-                                            <div class=" badge badge-primary"><?= $datas['status'] ?>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <?php
+                                                    <td><div style=" width: 100px; overflow:auto;"><?= $datas['title'] ?>
+                                </div>
+                                </td>
+                                <td>
+                                    <div style="height:100px; width: 300px; overflow-y:auto;"><?= $datas['desc'] ?></div>
+                                </td>
+                                <td>
+                                    <div><?= $datas['tipe'] ?></div>
+                                    <form action="<?= base_url('admin/episode') ?>" method="POST">
+                                        <input type="hidden" name="film_id" value="<?= $datas['film_id'] ?>">
+                                        <button type="submit" class="badge badge-primary border" style="display: <?= $datas['tipe'] === 'Series' ? '' : 'none' ?>;">add</button>
+                                    </form>
+                                </td>
+                                <td class="text-truncate"><?= $datas['date'] ?></td>
+                                <td class="text-truncate"><?= $datas['created_at'] ?></td>
+                                <td class="text-truncate"><?= $datas['updated_at'] ?></td>
+                                <td><a href=" <?= $datas['trailer'] ?>" class="badge badge-danger" style="display: <?php echo $datas['trailer'] ? '' : 'none' ?>;" target="_blank">Trailer</a></td>
+                                <td><a href="<?= $datas['subtitle'] ?>" class="badge badge-info" style="display: <?= $datas['subtitle'] ? '' : 'none' ?>;" target="_blank">Subtitle</a></td>
+                                <td>
+                                    <div class=" badge badge-primary"><?= $datas['status'] ?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <?php
                                                 $search_id = $datas['film_id'];
                                                 $links = $datas['tipe'] === 'Series' ? $linkseries : $link;
                                                 foreach ($links as $series) {
                                                     if ($series['film_id'] == $search_id) { ?>
-                                                    <div><?php echo $datas['tipe'] === 'Series' ? "Episode " . $series['episode'] . ' ' . $series['quality'] : $series['quality'] ?></div>
-                                                    <div class="wrapper-link-post" style="display: <?php echo $series['quality'] ? 'flex' :  '' ?>; overflow: auto !important; max-height:200px !important ;">
-                                                        <a href="<?php echo $series['GD'] ?>" style="margin-right:5px ; display:<?php echo $series['GD'] ? '' : 'none' ?>" class="badge badge-primary " target="_blank">GD</a>
-                                                        <a href="<?php echo $series['UTB'] ?>" style="margin-right:5px; display:<?php echo $series['UTB'] ? '' : 'none' ?>" class="badge badge-success" target="_blank">UTB</a>
-                                                        <a href="<?php echo $series['MG'] ?>" style=" display: <?php echo $series['MG'] ? '' : 'none' ?>" class="badge badge-danger " target="_blank">MG</a>
-                                                    </div>
-                                            <?php }
+                                            <div><?php echo $datas['tipe'] === 'Series' ? "Episode " . $series['episode'] . ' ' . $series['quality'] : $series['quality'] ?></div>
+                                            <div class="wrapper-link-post" style="display: <?php echo $series['quality'] ? 'flex' :  '' ?>; overflow: auto !important; max-height:200px !important ;">
+                                                <a href="<?php echo $series['GD'] ?>" style="margin-right:5px ; display:<?php echo $series['GD'] ? '' : 'none' ?>" class="badge badge-primary " target="_blank">GD</a>
+                                                <a href="<?php echo $series['UTB'] ?>" style="margin-right:5px; display:<?php echo $series['UTB'] ? '' : 'none' ?>" class="badge badge-success" target="_blank">UTB</a>
+                                                <a href="<?php echo $series['MG'] ?>" style=" display: <?php echo $series['MG'] ? '' : 'none' ?>" class="badge badge-danger " target="_blank">MG</a>
+                                            </div>
+                                    <?php }
                                                 }
-                                            ?>
-                                        </td>
-                                        <td><img src="<?php echo $datas['image'] ?>" alt="" width="50"></td>
-                                        <td>
-                                            <form action="<?= base_url('admin/post-edit') ?>" method="POST">
-                                                <input type="hidden" name="film_id" value="<?= $datas['film_id'] ?>">
-                                                <button type="submit" class="btn btn-success">Edit</button>
-                                            </form>
-                                            <form action="<?= base_url('admin/post-delete/' . $datas['film_id']) ?>" method="POST">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                            </form>
-                                        </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                    </tbody>
-                                    </table>
-                                </div>
+                                    ?>
+                                </td>
+                                <td><img src="<?php echo $datas['image'] ?>" alt="" width="50"></td>
+                                <td>
+                                    <form action="<?= base_url('admin/post-edit') ?>" method="POST">
+                                        <input type="hidden" name="film_id" value="<?= $datas['film_id'] ?>">
+                                        <button type="submit" class="btn btn-success">Edit Film</button>
+                                    </form>
+                                    <form action="<?= base_url('admin/link') ?>" method="POST">
+                                        <input type="hidden" name="film_id" value="<?= $datas['film_id'] ?>">
+                                        <button type="submit" class="btn btn-secondary">Edit Link</button>
+                                    </form>
+                                    <form action="<?= base_url('admin/post-delete/' . $datas['film_id']) ?>" method="POST">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                            </table>
                             </div>
                         </div>
                     </div>
@@ -142,6 +149,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 

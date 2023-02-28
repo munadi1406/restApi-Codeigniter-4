@@ -252,8 +252,6 @@ class FilmsDb extends BaseController
         return view('post/edit-post', ['data' => $data, 'link' => $link]);
     }
 
-
-
     public function filmsDelete($filmId)
     {
         $data = $this->filmsModel->deleteFilmsPost($filmId);
@@ -266,6 +264,9 @@ class FilmsDb extends BaseController
         // Redirect to page
         return redirect()->route('admin/post-data');
     }
+
+
+
     public function episode()
     {
         $filmId = $this->request->getPost('film_id');
@@ -353,6 +354,44 @@ class FilmsDb extends BaseController
         } else {
             $this->session->setFlashdata('error', 'Episode Gagal Di Add');
             return redirect()->route('admin/post-data');
+        }
+    }
+
+
+
+    // untuk menampilkan data link
+    public function link(){
+        $filmId = $this->request->getPost('film_id');
+        
+
+        $data = $this->filmsModel->filmsEdit($filmId);
+        $link = $this->linkModel->linkEdit($filmId);
+
+        
+        return view('link/edit-link', ['data' => $data, 'link' => $link]);
+    }
+
+
+    public function linkEdit(){
+        $id_link = $this->request->getPost('id_link');
+        $filmId = $this->request->getPost('film_id');
+        $title = $this->request->getPost('title');
+    
+        $linkData = [
+            "GD"=>$this->request->getPost('gd'),
+            "UTB"=>$this->request->getPost('utb'),
+            "MG"=>$this->request->getPost('mg')
+        ];
+
+
+
+       $data = $this->linkModel->editLink($id_link,$linkData);
+         if ($data) {
+            session()->setFlashdata('success', 'link Dengan title '.$title.' berhasil di edit');
+            return view('link/redirect-link',['film_id'=>$filmId]);
+        }else{
+            session()->setFlashdata('error', 'link Dengan title '.$title.' Gagal di edit');
+            return view('link/redirect-link',['film_id'=>$filmId]);
         }
     }
 }

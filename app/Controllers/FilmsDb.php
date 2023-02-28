@@ -127,8 +127,6 @@ class FilmsDb extends BaseController
             'status' => 'show',
             'subtitle' => $this->request->getVar('subtitle'),
             'trailer' => $this->request->getVar('trailer')
-
-
         ];
         $genre = $this->request->getPost('genre');
         if (is_array($genre)) {
@@ -238,7 +236,7 @@ class FilmsDb extends BaseController
         return redirect()->route('admin/post-data');
     }
 
-
+    //menadpatkan data films
     public function filmsEdit()
     {
 
@@ -252,6 +250,74 @@ class FilmsDb extends BaseController
         return view('post/edit-post', ['data' => $data, 'link' => $link]);
     }
 
+    // eksekusi edit film
+    public function edit()
+    {
+        $film_id = $this->request->getPost('film_id');
+        $imageBefore = $this->request->getPost('imageBefore');
+
+
+
+        $rules = [
+            'image' => 'uploaded[image]',
+        ];
+
+        $image = $this->request->getFile('image');
+        if (!$this->validate($rules)) {
+            $imageUrl = $imageBefore;
+        } else {
+            $rulesImage = [
+                'image' => 'uploaded[image]|max_size[image,1024]|is_image[image]',
+            ];
+            if ($this->validate($rulesImage)) {
+                $imageName = $image->getRandomName();
+                $imageUrl = base_url('images/' . $imageName);
+                if ($imageBefore) {
+                    $path = ROOTPATH . 'writable/uploads/' . basename($imageBefore);
+                    if (file_exists($path)) {
+                        unlink($path);
+                    }
+                } else {
+                    return false;
+                }
+                $image->move(ROOTPATH . 'writable/uploads', $imageName);
+            } else {
+                session()->setFlashdata('error', $this->validator->getErrors());
+                return redirect('admin/post-data');
+            }
+        }
+
+
+        $dataFilm = [
+            'title' => $this->request->getPost('title'),
+            'desc' => $this->request->getPost('desc'),
+            'date' => $this->request->getPost('date'),
+            'image' => $imageUrl,
+            'trailer' => $this->request->getPost('trailer'),
+            'subtitle' => $this->request->getPost('subtitle'),
+        ];
+
+        $genre = $this->request->getPost('genre');
+        if (is_array($genre)) {
+            $genre = implode(',', $genre);
+        } else {
+            $genre = '';
+        }
+
+        $data = $this->filmsModel->filmEdit($film_id, $dataFilm);
+
+        $dataGenre = [
+            'name'=>$genre,
+        ];
+        $dataGenre = $this->genreModel->genreUpdate($film_id,$dataGenre);
+
+        if (!$data && $dataGenre) {
+            session()->setFlashdata('error', 'Data Gagal Di Upadate');
+            return redirect()->route('admin/post-data');
+        } 
+        session()->setFlashdata('success_message', 'Data Berhasil Di Upadate');
+        return redirect()->route('admin/post-data');
+    }
     public function filmsDelete($filmId)
     {
         $data = $this->filmsModel->deleteFilmsPost($filmId);
@@ -360,38 +426,40 @@ class FilmsDb extends BaseController
 
 
     // untuk menampilkan data link
-    public function link(){
+    public function link()
+    {
         $filmId = $this->request->getPost('film_id');
-        
+
 
         $data = $this->filmsModel->filmsEdit($filmId);
         $link = $this->linkModel->linkEdit($filmId);
 
-        
+
         return view('link/edit-link', ['data' => $data, 'link' => $link]);
     }
 
 
-    public function linkEdit(){
+    public function linkEdit()
+    {
         $id_link = $this->request->getPost('id_link');
         $filmId = $this->request->getPost('film_id');
         $title = $this->request->getPost('title');
-    
+
         $linkData = [
-            "GD"=>$this->request->getPost('gd'),
-            "UTB"=>$this->request->getPost('utb'),
-            "MG"=>$this->request->getPost('mg')
+            "GD" => $this->request->getPost('gd'),
+            "UTB" => $this->request->getPost('utb'),
+            "MG" => $this->request->getPost('mg')
         ];
 
 
 
-       $data = $this->linkModel->editLink($id_link,$linkData);
-         if ($data) {
-            session()->setFlashdata('success', 'link Dengan title '.$title.' berhasil di edit');
-            return view('link/redirect-link',['film_id'=>$filmId]);
-        }else{
-            session()->setFlashdata('error', 'link Dengan title '.$title.' Gagal di edit');
-            return view('link/redirect-link',['film_id'=>$filmId]);
+        $data = $this->linkModel->editLink($id_link, $linkData);
+        if ($data) {
+            session()->setFlashdata('success', 'link Dengan title ' . $title . ' berhasil di edit');
+            return view('link/redirect-link', ['film_id' => $filmId]);
+        } else {
+            session()->setFlashdata('error', 'link Dengan title ' . $title . ' Gagal di edit');
+            return view('link/redirect-link', ['film_id' => $filmId]);
         }
     }
 }

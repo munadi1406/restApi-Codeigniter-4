@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class GenreModel extends Model
+class UsersModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'genre';
-    protected $primaryKey       = 'id_genre';
+    protected $table            = 'users';
+    protected $primaryKey       = 'id_users';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_films','name'];
+    protected $allowedFields    = ['id_users','username','email','password','role','token'];
 
     // Dates
     protected $useTimestamps = false;
@@ -40,29 +40,14 @@ class GenreModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function genreFilter($genre,$startFrom,$records){
-        return $this->select(['genre.name','f.film_id','f.title','f.image','f.date'])
-        ->join('films f','f.film_id = genre.id_films')
-        ->where('name like','%'.$genre.'%')
-        ->where('f.status','show')
-        ->orderBy('f.film_id','DESC')
-        ->limit($records,$startFrom)
-        ->find();
+    public function register($data){
+        return $this->insert($data);
     }
 
-    public function countGenre($genre){
-        return $this->where('name like','%'.$genre.'%')->countAllResults();
+
+
+    public function auth($username){
+        return $this->where('username',$username)->first();
     }
 
-    public function genreInsert($genreData){
-        $this->insert($genreData);
-    }
-
-    
-    public function genreUpdate($filmId, $genreData){
-        $idGenre = $this->select(['id_genre'])->where('id_films',$filmId)->first();
-
-        $id = $idGenre['id_genre'];
-        $this->update($id,$genreData);
-    }    
 }

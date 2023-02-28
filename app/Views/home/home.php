@@ -1,5 +1,11 @@
 <?= $this->extend('layout/main'); ?>
 <?= $this->section('content'); ?>
+
+<?php 
+
+$title     = "What's wrong with CSS?";
+$url_title = url_title($title);
+?>
 <div class="right_col" role="main">
           <!-- top tiles -->
           <div class="row" style="display: inline-block;" >

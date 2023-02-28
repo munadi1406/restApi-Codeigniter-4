@@ -52,8 +52,6 @@ class Middleware implements FilterInterface
             ])->setStatusCode(401); 
         }
 
-       
-        
         if (empty($apiKey) || $request->getHeaderLine('API-KEY') !== $apiKey) {
             return $this->respond([
                 'message' => 'Access Denied',

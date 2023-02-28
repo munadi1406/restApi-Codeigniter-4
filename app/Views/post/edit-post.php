@@ -58,10 +58,13 @@
                         <div class="col-md-6 border h-50 d-flex justify-content-center ">
                             <img src="<?php echo $data['image'] ?>" alt="<?= $data['title'] ?>" width="300px">
                         </div>
-                        <form class="col-md-6" action="<?php base_url('admin/post-add') ?>" method="post" enctype="multipart/form-data">
+                        <form class="col-md-6" action="<?= base_url('admin/post-edit') ?>" method="post" enctype="multipart/form-data" >
+                            <input type="hidden" name="_method" value="PUT">
+                            <input type="hidden" name="film_id" value="<?= $data['film_id'] ?>">
+                            <input type="hidden" name="imageBefore" value="<?= $data['image'] ?>">
                             <span class="section">Films Info</span>
                             <div class="field item form-group">
-                                <label class="col-form-label  label-align  col-2">Name<span class="required">*</span></label>
+                                <label class="col-form-label  label-align  col-2">Title<span class="required">*</span></label>
                                 <div class="w-100">
                                     <input class="form-control" name="title" placeholder="Game Of Thrones" required value="<?= $data['title'] ?>" />
                                 </div>
@@ -175,7 +178,6 @@
                                     <input class="form-control" name="subtitle" placeholder="https://example.com" value="<?= $data['subtitle'] ?>" />
                                 </div>
                             </div>
-                            
                             <div class="field item form-group">
                                 <div class="w-100 m-auto">
                                     <div class="dropzone" id="dropzone">

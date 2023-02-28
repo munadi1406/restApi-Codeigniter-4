@@ -144,6 +144,14 @@ class FilmsModel extends Model
             ->where('films.film_id',$filmId)
             ->first();
     }
+    
+    public function filmEdit($filmId,$filmData)
+    {
+        return $this->update($filmId,$filmData);
+    }
+    
+
+
 
     public function filmsLink()
     {

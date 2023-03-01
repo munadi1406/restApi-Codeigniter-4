@@ -13,11 +13,10 @@
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2><?= $data['username'] ?></h2>
             </div>
         </div>
         <!-- /menu profile quick info -->
-
         <br />
 
         <!-- sidebar menu -->
@@ -69,7 +68,7 @@
             <a data-toggle="tooltip" data-placement="top" title="Lock">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
             </a>
-            <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+            <a data-toggle="tooltip" data-placement="top" title="Logout" href="<?= base_url('log-out')?>">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
             </a>
         </div>

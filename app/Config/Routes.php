@@ -31,20 +31,22 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 
 
-$routes->get('login','Login::index');
+$routes->get('login','Login::index',['filter'=>'loginStatus']);
 $routes->post('login-auth','Login::auth');
 
+
+$routes->get('register','Register::index');
 $routes->post('register','Register::register');
 
+$routes->get('log-out','Logout::index');
 
-$routes->group('admin',static function ($routes){
+$routes->group('admin',['filter'=>'authCheck'],static function ($routes){
     $routes->get('','FilmsDb::films');
     $routes->get('post-add','FilmsDb::postAdd');
     $routes->get('post-data','FilmsDb::postView');
     $routes->post('post-add','FilmsDb::filmsInsert');
     $routes->delete('post-delete/(:num)','FilmsDb::filmsDelete/$1');
     
-
     // post edit
     $routes->post('edit','FilmsDb::filmsEdit');
     $routes->put('post-edit','FilmsDb::edit');

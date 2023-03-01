@@ -10,17 +10,21 @@ use App\Models\ViewsModel;
 use App\Models\GenreModel;
 use CodeIgniter\API\ResponseTrait;
 
+use Config\Services;
+
 
 
 class FilmsDb extends BaseController
 {
 
-    protected $episodeModel;
-    protected $filmsModel;
-    protected $linkModel;
-    protected $viewsModel;
-    protected $genreModel;
-    protected $session;
+    private $episodeModel;
+    private $filmsModel;
+    private $linkModel;
+    private $viewsModel;
+    private $genreModel;
+    private $session;
+
+    private $encrypter;
     use ResponseTrait;
     // load session library
 
@@ -32,6 +36,7 @@ class FilmsDb extends BaseController
         $this->viewsModel = new ViewsModel();
         $this->genreModel = new GenreModel();
         $this->session = \Config\Services::session();
+        $this->encrypter = Services::encrypter();
     }
 
     public function films()
@@ -42,13 +47,18 @@ class FilmsDb extends BaseController
         $countPostMovie = $this->filmsModel->countFilmsMovie();
         $countPostSeries = $this->filmsModel->countFilmsSeries();
 
+        
+        $session = session('uuid');
+        $key = getenv('KEY');
+        $username = $this->encrypter->decrypt($session,$key);
+        
         $data = [
             'countpost' => $countPost,
             'countpostshow' => $countPostShow,
             'countpostseries' => $countPostSeries,
             'countpostmovie' => $countPostMovie,
+            'username'=>$username
         ];
-
 
         return view('home/home', ['data' => $data]);
     }

@@ -10,8 +10,9 @@ $url_title = url_title($title);
           <!-- top tiles -->
           <div class="row" style="display: inline-block;" >
           <div class="tile_count">
+            
             <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Post</span>
+              <span class="count_top"><i class="fa fa-user"></i> Total Post </span>
               <div class="count"><?= $data['countpost'] ?></div>
               <span class="count_bottom"><i class="green">4% </i> From last Week</span>
             </div>

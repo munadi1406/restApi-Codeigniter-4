@@ -4,15 +4,19 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\LogModel;
+use App\Models\ViewsModel;
 use CodeIgniter\API\ResponseTrait;
 
 class Log extends BaseController
 {
     private $logModel;
+    private $logviews;
     use ResponseTrait;
     public function __construct()
     {
         $this->logModel = new LogModel();
+        $this->logviews = new ViewsModel();
+
     }
     public function logInsert()
     {
@@ -56,8 +60,8 @@ class Log extends BaseController
         }
     }
 
-
-    public function getLog(){
+    public function getLog()
+    {
         $datas = $this->logModel->getLog();
         if ($datas) {
             return $this->respond([
@@ -65,7 +69,6 @@ class Log extends BaseController
                 'message' => 'success',
                 'data' => $datas
             ])->setStatusCode(200);
-
         } else {
             // return $this->respondUpdated($datas);
             return $this->respond([
@@ -73,6 +76,24 @@ class Log extends BaseController
                 'message' => 'Failed'
             ])->setStatusCode(404);
         }
+    }
 
+
+
+    // bukan untuk api
+    public function getAllLog(){
+        $title ="Log Activity";
+        $datas = $this->logModel->getLog();
+
+        return view('log/log',['data'=>$datas,'title'=>$title]);
+    }
+
+
+    public function getAllLogView(){
+        $title = "Log-View";
+
+        $data = $this->logviews->getAllViews();
+
+        return view('log/log-views',['data'=>$data,'title'=>$title]);
     }
 }

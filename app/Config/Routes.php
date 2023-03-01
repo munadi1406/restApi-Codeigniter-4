@@ -30,15 +30,24 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
-
+// login
 $routes->get('login','Login::index',['filter'=>'loginStatus']);
 $routes->post('login-auth','Login::auth');
-
-
-$routes->get('register','Register::index');
+// $routes->get('register','Register::index',['filter'=>'loginStatus']);
 $routes->post('register','Register::register');
-
 $routes->get('log-out','Logout::index');
+
+
+
+// users
+$routes->get('users','Users::getUsers');
+$routes->post('users','Users::editUsers');
+
+
+// log
+$routes->get('log','Log::getAllLog');
+$routes->get('log-view','Log::getAllLogView');
+
 
 $routes->group('admin',['filter'=>'authCheck'],static function ($routes){
     $routes->get('','FilmsDb::films');

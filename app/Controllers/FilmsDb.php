@@ -10,9 +10,6 @@ use App\Models\ViewsModel;
 use App\Models\GenreModel;
 use CodeIgniter\API\ResponseTrait;
 
-use Config\Services;
-
-
 
 class FilmsDb extends BaseController
 {
@@ -26,7 +23,6 @@ class FilmsDb extends BaseController
 
     private $encrypter;
     use ResponseTrait;
-    // load session library
 
     public function __construct()
     {
@@ -36,46 +32,46 @@ class FilmsDb extends BaseController
         $this->viewsModel = new ViewsModel();
         $this->genreModel = new GenreModel();
         $this->session = \Config\Services::session();
-        $this->encrypter = Services::encrypter();
     }
 
     public function films()
     {
 
+        // title page
+        $title = 'Home';
+
         $countPost = $this->filmsModel->countFilms();
         $countPostShow = $this->filmsModel->countFilmsShow();
         $countPostMovie = $this->filmsModel->countFilmsMovie();
         $countPostSeries = $this->filmsModel->countFilmsSeries();
-
-        
-        $session = session('uuid');
-        $key = getenv('KEY');
-        $username = $this->encrypter->decrypt($session,$key);
         
         $data = [
             'countpost' => $countPost,
             'countpostshow' => $countPostShow,
             'countpostseries' => $countPostSeries,
             'countpostmovie' => $countPostMovie,
-            'username'=>$username
         ];
-
-        return view('home/home', ['data' => $data]);
+        return view('home/home', ['data' => $data,'title'=>$title]);
     }
 
 
 
     public function postAdd()
     {
-        // all films
-        $data = $this->filmsModel->filmsAll();
+        // title
+        $title = "Films Add";
 
-        return view('post/add-post', ['data' => $data]);
+
+        return view('post/add-post', ['title'=>$title]);
     }
 
 
     public function postView()
     {
+
+        // title
+        $title = "Films Data";
+
         // all films
         $filmsAll = $this->filmsModel->filmsAll();
 
@@ -83,7 +79,7 @@ class FilmsDb extends BaseController
         $filmsLink = $this->filmsModel->filmsLink();
         $LinkSeries = $this->filmsModel->filmsLinkSeries();
 
-        return view('post/data-post', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries]);
+        return view('post/data-post', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries,'title'=>$title]);
     }
 
     public function filmsInsert()
@@ -254,10 +250,11 @@ class FilmsDb extends BaseController
 
         $data = $this->filmsModel->filmsEdit($filmId);
 
+        $title = "Edit-".$data['title'];
 
         $link = $this->linkModel->linkEdit($filmId);
 
-        return view('post/edit-post', ['data' => $data, 'link' => $link]);
+        return view('post/edit-post', ['data' => $data, 'link' => $link,'title'=>$title]);
     }
 
     // eksekusi edit film
@@ -328,6 +325,7 @@ class FilmsDb extends BaseController
         session()->setFlashdata('success_message', 'Data Berhasil Di Upadate');
         return redirect()->route('admin/post-data');
     }
+
     public function filmsDelete($filmId)
     {
         $data = $this->filmsModel->deleteFilmsPost($filmId);
@@ -345,11 +343,14 @@ class FilmsDb extends BaseController
 
     public function episode()
     {
-        $filmId = $this->request->getPost('film_id');
 
+
+        $filmId = $this->request->getPost('film_id');
         $data = $this->episodeModel->episodeByFilmid($filmId);
 
-        return view('post/add-episode', ['data' => $data]);
+        $title = "Add-Eps-". $data['title'];
+
+        return view('post/add-episode', ['data' => $data,'title'=>$title]);
     }
 
 
@@ -438,14 +439,16 @@ class FilmsDb extends BaseController
     // untuk menampilkan data link
     public function link()
     {
+        
         $filmId = $this->request->getPost('film_id');
 
 
         $data = $this->filmsModel->filmsEdit($filmId);
         $link = $this->linkModel->linkEdit($filmId);
 
+        $title = "Edit-".$data['title'];
 
-        return view('link/edit-link', ['data' => $data, 'link' => $link]);
+        return view('link/edit-link', ['data' => $data, 'link' => $link,'title'=>$title]);
     }
 
 

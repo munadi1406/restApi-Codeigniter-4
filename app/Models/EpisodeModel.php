@@ -46,7 +46,7 @@ class EpisodeModel extends Model
         return $data;
     }
     public function episodeByFilmid($filmId){
-        $data  = $this->select(['f.film_id','f.title','episode'])->join('films f','f.film_id = episode.film_id')->where('f.film_id',$filmId)->first();
+        $data  = $this->select(['f.film_id','f.title','episode'])->join('films f','f.film_id = episode.film_id')->where('f.film_id',$filmId)->orderBy('id_episode','desc')->first();
         return $data;
     }
     

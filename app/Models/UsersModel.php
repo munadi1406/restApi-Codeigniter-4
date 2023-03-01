@@ -53,4 +53,15 @@ class UsersModel extends Model
     public function emailCheck($email){
         return $this->where('email',$email)->first();
     }
+
+
+    public function getAllUsers(){
+        return $this->findAll();
+    }
+
+
+    public function getUsersById($idusers){
+        return $this->where('id_users',$idusers)->first();
+    }
+
 }

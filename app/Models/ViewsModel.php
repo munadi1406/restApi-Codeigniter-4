@@ -55,6 +55,7 @@ class ViewsModel extends Model
     {
         return $this->select(['f.title','viewers.views'])
             ->join("films f", "f.film_id = viewers.film_id")
+            ->orderBy('f.created_at','desc')
             ->findAll();
     }
 

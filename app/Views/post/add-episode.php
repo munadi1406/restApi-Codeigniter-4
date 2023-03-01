@@ -66,7 +66,7 @@
                             <div class="field item form-group">
                                 <label class="col-form-label  label-align mr-2 col-1">Episode<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control disable" name="episode" value="<?= $data['episode'] + 1 ?>"  readonly/>
+                                    <input class="form-control disable" name="episode" value="<?= $data['episode']+1 ?>"  readonly/>
                                 </div>
                             </div>
                             <div class="field item form-group ">

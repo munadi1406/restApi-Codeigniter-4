@@ -12,24 +12,24 @@ $url_title = url_title($title);
           <div class="tile_count">
             
             <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Total Post </span>
+              <span class="count_top"><i class="fa fa-newspaper-o"></i> Total Post </span>
               <div class="count"><?= $data['countpost'] ?></div>
-              <span class="count_bottom"><i class="green">4% </i> From last Week</span>
+              <a href="<?= base_url('admin/post-data') ?>"  class="count_bottom"><i class="green">Show</i></a>
             </div>
             <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Post Show</span>
+              <span class="count_top"><i class="fa fa-eye"></i> Post Show</span>
               <div class="count"><?= $data['countpostshow'] ?></div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span>
+              <a href="<?= base_url('admin/post-data') ?>" class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>Show</i></a>
             </div>
             <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Movie</span>
+              <span class="count_top"><i class="fa fa-youtube-play"></i> Movie</span>
               <div class="count green"><?= $data['countpostmovie'] ?></div>
-              <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
+              <a href="<?= base_url('admin/post-data') ?>" class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>Show</i></a>
             </div>
             <div class="col-md-2 col-sm-4  tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Series</span>
+              <span class="count_top"><i class="fa fa-youtube-play"></i> Series</span>
               <div class="count"><?= $data['countpostseries'] ?></div>
-              <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
+              <a class="count_bottom"><i class="red"><i class="fa fa-sort-asc"></i>12% </i> From last Week</a>
             </div>
             <div class="col-md-2 col-sm-4  tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
@@ -108,7 +108,6 @@ $url_title = url_title($title);
                   </div>
 
                 </div>
-
                 <div class="clearfix"></div>
               </div>
             </div>

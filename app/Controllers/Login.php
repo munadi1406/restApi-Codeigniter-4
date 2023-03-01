@@ -47,10 +47,10 @@ class Login extends BaseController
                 $key = getenv('KEY');
                 $saltId = $salt . $auth['id_users'] . $salt;
                 $hashId =  $this->encrypter->encrypt($saltId, $key);
-                $usernameHash = $this->encrypter->encrypt($auth['username'],$key);
+                // $usernameHash = $this->encrypter->encrypt($auth['username'],$key);
                 $this->session->set('login', true);
                 $this->session->set('uid', $hashId);
-                $this->session->set('uuid', $usernameHash);
+                $this->session->set('uuid', $auth['username']);
                 return redirect()->route('admin');
             } else {
                 return  redirect()->back()->with('error', 'Password Yang Anda Masukkan Salah');

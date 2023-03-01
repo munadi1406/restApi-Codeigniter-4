@@ -11,6 +11,7 @@ use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\Middleware;
 use App\Filters\CookieCheck;
 use App\Filters\LoginRegisterStatus;
+use App\Filters\Throttle;
 
 class Filters extends BaseConfig
 {
@@ -27,6 +28,7 @@ class Filters extends BaseConfig
         'apiKey'=> Middleware::class,
         'authCheck'=>CookieCheck::class,
         'loginStatus'=>LoginRegisterStatus::class,
+        'rateLimiter'=>Throttle::class,
     ];
 
     /**
@@ -40,6 +42,7 @@ class Filters extends BaseConfig
             // 'invalidchars',
             // 'secureheaders',
             // 'apiKey',
+            'rateLimiter'
         ],
         'after' => [
             'toolbar',

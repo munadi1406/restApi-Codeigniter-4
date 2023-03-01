@@ -50,4 +50,7 @@ class UsersModel extends Model
         return $this->where('username',$username)->first();
     }
 
+    public function emailCheck($email){
+        return $this->where('email',$email)->first();
+    }
 }

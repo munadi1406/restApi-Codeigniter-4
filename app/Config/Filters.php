@@ -9,6 +9,8 @@ use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\Middleware;
+use App\Filters\CookieCheck;
+use App\Filters\LoginRegisterStatus;
 
 class Filters extends BaseConfig
 {
@@ -23,6 +25,8 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'apiKey'=> Middleware::class,
+        'authCheck'=>CookieCheck::class,
+        'loginStatus'=>LoginRegisterStatus::class,
     ];
 
     /**

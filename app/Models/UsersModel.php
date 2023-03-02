@@ -64,4 +64,8 @@ class UsersModel extends Model
         return $this->where('id_users',$idusers)->first();
     }
 
+    public function updateUsers($idUsers,$dataUsers){
+        return $this->update($idUsers,$dataUsers);
+    }
+
 }

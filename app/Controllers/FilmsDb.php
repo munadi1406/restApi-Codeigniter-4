@@ -9,6 +9,7 @@ use App\Models\LinkModel;
 use App\Models\ViewsModel;
 use App\Models\GenreModel;
 use CodeIgniter\API\ResponseTrait;
+use Config\Services;
 
 
 class FilmsDb extends BaseController
@@ -32,6 +33,7 @@ class FilmsDb extends BaseController
         $this->viewsModel = new ViewsModel();
         $this->genreModel = new GenreModel();
         $this->session = \Config\Services::session();
+        $this->encrypter = Services::encrypter();
     }
 
     public function films()
@@ -85,6 +87,13 @@ class FilmsDb extends BaseController
     public function filmsInsert()
     {
 
+        // deskirpsi id
+        $idEnkripsi = session('uid');
+        $key = getenv('KEY');
+        $salt = getenv('SALT');
+        $idDeskripsi = $this->encrypter->decrypt($idEnkripsi,$key);
+        $idUsers = substr($idDeskripsi, strlen($salt), 2);
+
 
         $rules = [
             'title' => 'required',
@@ -116,15 +125,13 @@ class FilmsDb extends BaseController
         $mg540 = $this->request->getVar('mg540');
 
 
-
         $image = $this->request->getFile('image');
         $imageName = $image->getRandomName();
 
 
-
         $imageUrl = base_url('images/' . $imageName);
         $filmData = [
-            'id_users' => 3,
+            'id_users' => $idUsers,
             'title' => $this->request->getVar('title'),
             'desc' => $this->request->getVar('desc'),
             'date' => $this->request->getVar('date'),
@@ -473,6 +480,56 @@ class FilmsDb extends BaseController
         } else {
             session()->setFlashdata('error', 'link Dengan title ' . $title . ' Gagal di edit');
             return view('link/redirect-link', ['film_id' => $filmId]);
+        }
+    }
+
+    public function filmsByMovie(){
+        // title
+        $title = "Movie Data";
+        // all films
+        $filmsAll = $this->filmsModel->filmsByTipe('Movie');
+    
+        $filmsLink = $this->filmsModel->filmsLink();
+        $LinkSeries = $this->filmsModel->filmsLinkSeries();
+    
+        return view('post/data-movie', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries,'title'=>$title]);
+    }
+
+
+    public function filmsBySeries(){
+        // title
+        $title = "Series Data";
+        // all films
+        $filmsAll = $this->filmsModel->filmsByTipe('Series');
+    
+        $filmsLink = $this->filmsModel->filmsLink();
+        $LinkSeries = $this->filmsModel->filmsLinkSeries();
+    
+        return view('post/data-series', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries,'title'=>$title]);
+    }
+
+
+    public function updateStatus(){
+        $filmId = $this->request->getVar('film_id');
+        $status = $this->request->getVar('status');
+
+
+        if($status ==='show'){
+            $statusChange = "deleted";
+        }elseif($status==='deleted'){
+            $statusChange = 'show';
+        }
+
+        $data = [
+            'status'=>$statusChange
+        ];
+
+        $updateStatus = $this->filmsModel->updateStatus($filmId,$data);
+
+        if($updateStatus){
+            return redirect()->back()->with('success_message','Status Berhasil Di Ubah Ke '.$statusChange);
+        }else{
+            return redirect()->back()->with('error','Status Gagal Di Ubah ke'.$statusChange);
         }
     }
 }

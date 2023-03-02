@@ -27,7 +27,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Data <small>Films</small></h3>
+                <h3>Data <small>Series</small></h3>
             </div>
 
             <div class="title_right">
@@ -41,13 +41,12 @@
                 </div>
             </div>
         </div>
-
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Detail<small>Films</small></h2>
+                        <h2>Detail<small>Series</small></h2>
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
@@ -124,6 +123,7 @@
                                                         <?php $i++;
                                                         endforeach; ?>
                                                     </td>
+
                                                     <td>
                                                         <?= $datas['date'] ?>
                                                     </td>
@@ -174,15 +174,14 @@
                                                             </form>
                                                             <form action="<?= base_url('admin/link') ?>" method="POST">
                                                                 <input type="hidden" name="film_id" value="<?= $datas['film_id'] ?>">
-                                                                <button type="submit" title="Edit Link <?= $datas['title'] ?>" class="btn btn-secondary"><i class="fa fa-pencil"></i></button>
+                                                                <button type="submit" title="Edit Link <?= $datas['title']?>" class="btn btn-secondary"><i class="fa fa-pencil"></i></button>
                                                             </form>
                                                             <form action="<?= base_url('admin/post-delete/' . $datas['film_id']) ?>" method="POST">
                                                                 <input type="hidden" name="_method" value="DELETE">
-                                                                <button type="submit" title="Hapus <?= $datas['title'] ?>" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                                <button type="submit" title="Hapus <?= $datas['title']?>" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                                             </form>
                                                         </div>
                                                     </td>
-
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -196,7 +195,5 @@
         </div>
     </div>
 </div>
-
-
 
 <?= $this->endSection() ?>

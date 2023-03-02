@@ -33,4 +33,33 @@ class Users extends BaseController
     }
 
 
+    public function updateUsers(){
+        $rules = [
+            'id_users'=>'required',
+            'username'=>'required',
+            'email'=>'required',
+            'role'=>'required'
+        ];
+
+        if(!$this->validate($rules)){
+            $errors = $this->validator->getErrors();
+            return redirect()->back()->with('error',$errors);
+        }
+
+        $usersId = $this->request->getVar('id_users');
+
+
+        $dataUsers= [
+            'username'=>$this->request->getVar('username'),
+            'email'=>$this->request->getVar('email'),
+            'role'=>$this->request->getVar('role')
+        ];
+        $data = $this->usersModel->updateUsers($usersId,$dataUsers);
+
+        if($data){
+            return redirect()->to('users')->with('success_message','Data Users Berhasil Di Update');
+        }else{
+            return redirect()->to('users')->with('error','Data Users Gagal Di Update');
+        }
+    }
 }

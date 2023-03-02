@@ -34,8 +34,8 @@
                     </li>
                     <li><a><i class="fa fa-youtube-play"></i> Tipe <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li><a href="<?= base_url('admin/post-add')?>">Movie</a></li>
-                            <li><a href="<?= base_url('admin/post-data')?>">Series</a></li>
+                            <li><a href="<?= base_url('admin/post-movie')?>">Movie</a></li>
+                            <li><a href="<?= base_url('admin/post-series')?>">Series</a></li>
                         </ul>
                     </li>
                     <li><a><i class="fa fa-history"></i> Log <span class="fa fa-chevron-down"></span></a>

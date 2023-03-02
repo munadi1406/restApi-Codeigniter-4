@@ -88,9 +88,8 @@
                                                     <td>
                                                         <form action="<?= base_url('users') ?>" method="post">
                                                             <input type="hidden" name="user_id" value="<?= $datas['id_users'] ?>">
-                                                            <button type="submit" class="btn btn-info">Edit</button>
+                                                            <button type="submit" class="btn btn-info"><i class="fa fa-wrench"></i></button>
                                                         </form>
-                                                        <a href="" class="btn btn-danger">Hapus</a>
                                                     </td>
                                                 </tr>
                                             <?php } ?>

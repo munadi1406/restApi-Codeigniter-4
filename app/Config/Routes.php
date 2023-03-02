@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use App\Controllers\FilmsDb;
+
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
 
@@ -42,6 +44,7 @@ $routes->get('log-out','Logout::index');
 // users
 $routes->get('users','Users::getUsers');
 $routes->post('users','Users::editUsers');
+$routes->put('update-users','Users::updateUsers');
 
 
 // log
@@ -67,6 +70,14 @@ $routes->group('admin',['filter'=>'authCheck'],static function ($routes){
     // link
     $routes->post('link','FilmsDb::link');
     $routes->post('link-edit','FilmsDb::linkEdit');
+
+    //movie
+    $routes->get('post-movie','FilmsDB::FilmsByMovie');
+    $routes->get('post-series','FilmsDB::FilmsBySeries');
+
+    // edit status
+    $routes->post('update-status','FilmsDb::updateStatus');
+
 });
 
 

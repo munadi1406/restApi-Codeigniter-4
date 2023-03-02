@@ -54,26 +54,27 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content ">
-                        <form class="" action="<?= base_url('admin/episode-add') ?>" method="POST" >
-                            <input type="hidden" name="film_id" value="">
+                        <form class="" action="<?= base_url('update-users') ?>" method="POST">
+                            <input type="hidden" name="_method" value="PUT">
+                            <input type="hidden" name="id_users" value="<?= $data['id_users'] ?>">
                             <span class="section">Users Detail</span>
                             <div class="field item form-group">
                                 <label class="col-form-label  label-align mr-2 col-1">Username<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control" name="username"  value="<?= $data['username']?>" />
+                                    <input class="form-control" name="username" value="<?= $data['username'] ?>" />
                                 </div>
                             </div>
                             <div class="field item form-group">
                                 <label class="col-form-label  label-align mr-2 col-1">Email<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control disable" name="email" value="<?= $data['email']?>"  />
+                                    <input class="form-control disable" name="email" value="<?= $data['email'] ?>" />
                                 </div>
                             </div>
                             <div class="field item form-group">
                                 <label class="col-form-label  label-align mr-2 col-1">Role<span class="required">*</span></label>
-                                <select name="" id="" class="form-control">
-                                    <option value="Admin" <?=  $data['role']==='admin'?'selected':'' ?>>Admin</option>
-                                    <option value="Users" <?=  $data['role']==='user'?'selected':'' ?>>User</option>
+                                <select name="role" id="" class="form-control">
+                                    <option value="admin" <?= $data['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
+                                    <option value="user" <?= $data['role'] === 'user' ? 'selected' : '' ?>>User</option>
                                 </select>
                             </div>
                             <div class="ln_solid">

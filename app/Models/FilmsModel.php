@@ -14,7 +14,7 @@ class FilmsModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['film_id', 'id_users', 'title', 'desc', 'date', 'image', 'created_at', 'status', 'tipe', 'subtitle', 'trailer'];
+    protected $allowedFields    = ['film_id', 'id_users', 'title', 'desc', 'date', 'image', 'created_at', 'updated_at', 'status', 'tipe', 'subtitle', 'trailer'];
 
     // Dates
     protected $useTimestamps = false;
@@ -141,26 +141,26 @@ class FilmsModel extends Model
         return $this->select(['films.*', 'g.name', 'u.*'])
             ->join('genre g', 'g.id_films = films.film_id')
             ->join('users u', 'films.id_users = u.id_users')
-            ->where('tipe',$tipe)
+            ->where('tipe', $tipe)
             ->orderBy('films.created_at', 'DESC')
             ->find();
     }
 
-    
+
     // search film data for edit
     public function filmsEdit($filmId)
     {
         return $this->select(['films.*', 'g.name'])
             ->join('genre g', 'g.id_films = films.film_id')
-            ->where('films.film_id',$filmId)
+            ->where('films.film_id', $filmId)
             ->first();
     }
-    
-    public function filmEdit($filmId,$filmData)
+
+    public function filmEdit($filmId, $filmData)
     {
-        return $this->update($filmId,$filmData);
+        return $this->update($filmId, $filmData);
     }
-    
+
 
 
 
@@ -189,7 +189,7 @@ class FilmsModel extends Model
             if (file_exists($path)) {
                 unlink($path);
             }
-        }else{
+        } else {
             return false;
         }
         $result = $this->delete($filmsId);
@@ -197,7 +197,13 @@ class FilmsModel extends Model
     }
 
 
-    public function updateStatus($filmId,$data){
-        return $this->update($filmId,$data);
+    public function updateStatus($filmId, $data)
+    {
+        $updatedAt = $this->select(['updated_at'])->where('film_id',$filmId)->first();
+
+        return $this->where('film_id', $filmId)
+            ->set('status', $data)
+            ->set('updated_at',$updatedAt['updated_at'])
+            ->update();
     }
 }

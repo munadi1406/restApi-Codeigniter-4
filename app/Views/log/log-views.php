@@ -43,9 +43,56 @@
                     </div>
                     <div class="x_content">
                         <div class="row">
+                            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                                <div class="tile-stats bg-primary text-light">
+                                    <div class="icon"><i class="fa fa-signal" style="color:white;"></i></div>
+                                    <div class="count"><?= $dataCount['totalPengunjung'] ?></div>
+                                    <h3>Total Pengunjung</h3>
+                                    <p>Total Seluruh Pengunjung</p>
+                                </div>
+                            </div>
+                            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                                 <div class="tile-stats bg-secondary text-light">
+                                <div class="icon"><i class="fa fa-signal" style="color:white;"></i></div>
+                                    <div class="count"><?= $dataCount['pengunjungPerTahun'] ?></div>
+
+                                    <h3>Tahun</h3>
+                                    <p>Total Pengunjung Tahun Ini</p>
+                                </div>
+                            </div>
+                            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                                 <div class="tile-stats bg-success text-light">
+                                <div class="icon"><i class="fa fa-signal" style="color:white;"></i></div>
+                                    <div class="count"><?= $dataCount['pengunjungPerBulan'] ?></div>
+
+                                    <h3>Bulan</h3>
+                                    <p>Total Pengunjung Bulan Ini</p>
+                                </div>
+                            </div>
+                            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                                 <div class="tile-stats bg-info text-light">
+                                <div class="icon"><i class="fa fa-signal" style="color:white;"></i></div>
+                                    <div class="count"><?= $dataCount['pengunjungPerMinggu'] ?></div>
+
+                                    <h3>Minggu</h3>
+                                    <p>Total Pengunjung 7 Hari Terakhir</p>
+                                </div>
+                            </div>
+                            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                                 <div class="tile-stats bg-dark text-light">
+                                <div class="icon"><i class="fa fa-signal" style="color:white;"></i></div>
+                                    <div class="count"><?= $dataCount['pengunjungPerHari'] ?></div>
+
+                                    <h3>Hari</h3>
+                                    <p>Total Pengunjung Hari Ini</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
                             <div class="col-sm-12">
                                 <div class="card-box table-responsive">
-                                    <table id="table_id" class="display border hover dt-responsive nowrap" >
+                                    <table id="table_id" class="display border hover dt-responsive nowrap">
                                         <thead>
                                             <tr>
                                                 <th>No</th>

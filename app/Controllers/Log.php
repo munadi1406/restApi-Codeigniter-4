@@ -12,12 +12,31 @@ class Log extends BaseController
     private $logModel;
     private $logviews;
     use ResponseTrait;
+
+
+    private $log;
+    private $os;
+    private $browser;
+    private $viewsPeryears;
+    private $viewsPerMonth;
+    private $viewsPerWeek;
+    private $viewsPerDay;
     public function __construct()
     {
         $this->logModel = new LogModel();
         $this->logviews = new ViewsModel();
 
+
+        $this->log = $this->logModel->allLogViews();
+        $this->os = $this->logModel->operatingSystem();
+        $this->browser = $this->logModel->browser();
+        $this->viewsPeryears = $this->logModel->viewsPerYears();
+        $this->viewsPerMonth = $this->logModel->viewsPerMonth();
+        $this->viewsPerWeek = $this->logModel->viewsPerWeek();
+        $this->viewsPerDay = $this->logModel->viewsPerDay();
     }
+
+
     public function logInsert()
     {
 
@@ -81,19 +100,31 @@ class Log extends BaseController
 
 
     // bukan untuk api
-    public function getAllLog(){
-        $title ="Log Activity";
+    public function getAllLog()
+    {
+        $title = "Log Activity";
+
         $datas = $this->logModel->getLog();
 
-        return view('log/log',['data'=>$datas,'title'=>$title]);
+        return view('log/log', ['data' => $datas, 'title' => $title]);
     }
 
 
-    public function getAllLogView(){
+    public function getAllLogView()
+    {
         $title = "Log-View";
 
         $data = $this->logviews->getAllViews();
 
-        return view('log/log-views',['data'=>$data,'title'=>$title]);
+        // data count views
+        $dataCount = [
+            'totalPengunjung' => $this->log,
+            'pengunjungPerTahun' => $this->viewsPeryears,
+            'pengunjungPerBulan' => $this->viewsPerMonth,
+            'pengunjungPerMinggu' => $this->viewsPerWeek,
+            'pengunjungPerHari' => $this->viewsPerDay,
+        ];
+
+        return view('log/log-views', ['data' => $data, 'title' => $title,'dataCount' => $dataCount]);
     }
 }

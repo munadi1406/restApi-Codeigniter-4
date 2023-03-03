@@ -14,7 +14,7 @@ class LogModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['visit_time','ip_address','browser','operating_system','visited_page','arrival_time','referrer','screen_resolution','device'];
+    protected $allowedFields    = ['visit_time', 'ip_address', 'browser', 'operating_system', 'visited_page', 'arrival_time', 'referrer', 'screen_resolution', 'device'];
 
     // Dates
     protected $useTimestamps = false;
@@ -40,14 +40,69 @@ class LogModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function logInsert($logData){
+    public function logInsert($logData)
+    {
         return $this->insert($logData);
     }
 
-    public function getLog(){
-        return $this->orderBy("id","DESC")->findAll();
+    public function getLog()
+    {
+        return $this->orderBy("id", "DESC")->findAll();
     }
 
 
+    public function allLogViews()
+    {
+        return $this->countAllResults();
+    }
 
+
+    public function operatingSystem()
+    {
+        return $this->select(['operating_system', 'count(operating_system)'])
+            ->groupBy('operating_system')
+            ->findAll();
+    }
+
+
+    public function browser()
+    {
+        return $this->select(['browser', 'count(browser)'])->groupBy('browser')
+            ->findAll();
+    }
+
+    public function viewsPerYears()
+    {
+        return $this->selectCount('*')
+            ->where('year(visit_time)', date('Y'))
+            ->countAllResults();
+    }
+
+    public function viewsPerMonth()
+    {
+        return $this->where('YEAR(visit_time)',date('Y'))
+        ->where('MONTH(visit_time)',date('m'))
+        ->countAllResults();
+    
+    }
+
+
+    public function viewsPerWeek()
+    {
+        return $this->where('YEAR(visit_time)', date('Y'))
+            ->where('MONTH(visit_time)', date('m'))
+            ->where('WEEK(visit_time)', date('W'))
+            ->countAllResults();
+    }
+    
+    
+    
+    public function viewsPerDay()
+    {
+        return $this->where('day(visit_time)', date('j'))
+            ->where('YEAR(visit_time)', date('Y'))
+            ->where('MONTH(visit_time)', date('m'))
+            ->countAllResults();
+    }
+    
 }

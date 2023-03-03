@@ -521,7 +521,7 @@ class FilmsDb extends BaseController
         }
 
         $data = [
-            'status'=>$statusChange,
+            'status'=>$statusChange
         ];
 
         $updateStatus = $this->filmsModel->updateStatus($filmId,$data);

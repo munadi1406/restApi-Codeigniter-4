@@ -141,12 +141,10 @@ class FilmsModel extends Model
         return $this->select(['films.*', 'g.name', 'u.*'])
             ->join('genre g', 'g.id_films = films.film_id')
             ->join('users u', 'films.id_users = u.id_users')
-            ->where('tipe', $tipe)
+            ->where('tipe',$tipe)
             ->orderBy('films.created_at', 'DESC')
             ->find();
     }
-
-
     // search film data for edit
     public function filmsEdit($filmId)
     {
@@ -195,6 +193,7 @@ class FilmsModel extends Model
         $result = $this->delete($filmsId);
         return $result;
     }
+
 
 
     public function updateStatus($filmId, $data)

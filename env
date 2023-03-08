@@ -17,16 +17,16 @@
 CI_ENVIRONMENT = development
 
 
-SALT = your salt key
+SALT = 24732bcmkfjfitr&^%1gv3g23g12ccmdnsdjd837243246MKNCh>:?":123-12_"
 
-KEY =your key bcrypt
-API_KEY = your api key
+KEY = 12981bhfvfm,lxsmkc.cnjs&**08127362192131290123812mdmwe237e23ecmdjcds0-12913029
+API_KEY = mkasdnkasdni67234562vcdvgct261356512020402923423744632vc5273462347
 
 #--------------------------------------------------------------------
 # APP
 #--------------------------------------------------------------------
 
-# app.baseURL = ''
+# app.baseURL = 'http://localhost:8080/'
 # If you have trouble with `.`, you could also use `_`.
 # app_baseURL = ''
 # app.forceGlobalSecureRequests = false

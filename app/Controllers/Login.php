@@ -43,14 +43,14 @@ class Login extends BaseController
 
         if ($auth) {
             if (password_verify($data['password'], $auth['password'])) {
-                $salt = getenv('SALT');
-                $key = getenv('KEY');
+                $salt = $_ENV['SALT'];
+                $key = $_ENV['KEY'];
                 $saltId = $salt . $auth['id_users'] . $salt;
                 $hashId =  $this->encrypter->encrypt($saltId, $key);
                 // $usernameHash = $this->encrypter->encrypt($auth['username'],$key);
-                $this->session->set('login', true);
-                $this->session->set('uid', $hashId);
-                $this->session->set('uuid', $auth['username']);
+                session()->set('login', true);
+                session()->set('uid', $hashId);
+                session()->set('uuid', $auth['username']);
                 return redirect()->route('admin');
             } else {
                 return  redirect()->back()->with('error', 'Password Yang Anda Masukkan Salah');

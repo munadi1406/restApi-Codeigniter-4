@@ -1,30 +1,31 @@
 <?= $this->extend('layout/main'); ?>
 <?= $this->section('content'); ?>
 
-<?php if (session()->has('success_message')) : ?>
-    <div class="alert alert-success d-flex justify-content-end">
-        <h1>
-            <?php echo session('success_message'); ?>
-        </h1>
-    </div>
-<?php elseif (session()->has('error')) : ?>
-    <div class="alert alert-danger d-flex justify-content-end">
-        <?php if (is_array(session('error'))) : ?>
-            <?php foreach (session('error') as $error) : ?>
-                <h5>
-                    <?= esc($error) ?>
-                    </h3>
-                <?php endforeach ?>
-            <?php else : ?>
-                <h5>
-                    <?= esc(session('error')) ?>
-                </h5>
-            <?php endif ?>
-    </div>
-<?php endif; ?>
 
 <div class="right_col" role="main">
+
     <div class="">
+        <?php if (session()->has('success')) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <h1><?php echo session('success'); ?></h1>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php elseif (session()->has('error')) : ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <?php if (is_array(session('error'))) : ?>
+                    <?php foreach (session('error') as $error) : ?>
+                        <h1> <?= esc($error) ?></h1>
+                    <?php endforeach ?>
+                <?php else : ?>
+                    <h1><?= esc(session('error')) ?></h1>
+                <?php endif ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
         <div class="page-title">
             <div class="title_left">
                 <h3>Data <small>Films</small></h3>
@@ -138,9 +139,9 @@
                                                     <td>
                                                         <form action="<?= base_url('admin/update-status') ?>" method="post">
                                                             <input type="hidden" name="film_id" value="<?= $datas['film_id'] ?>">
-                                                            <input type="hidden" name="status" value="<?= $datas['status']?>">
-                                                            <div class="w-100 badge badge-<?= $datas['status']==='show'?'primary':'danger' ?>">
-                                                                <i class="fa fa-<?= $datas['status']==='show'?'eye':'eye-slash' ?>"></i> <?= $datas['status'] ?>
+                                                            <input type="hidden" name="status" value="<?= $datas['status'] ?>">
+                                                            <div class="w-100 badge badge-<?= $datas['status'] === 'show' ? 'primary' : 'danger' ?>">
+                                                                <i class="fa fa-<?= $datas['status'] === 'show' ? 'eye' : 'eye-slash' ?>"></i> <?= $datas['status'] ?>
                                                             </div>
                                                             <button type="submit" class="btn btn-primary w-100 mt-1"><i class="fa fa-refresh"></i></button>
                                                         </form>

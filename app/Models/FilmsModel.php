@@ -141,7 +141,7 @@ class FilmsModel extends Model
         return $this->select(['films.*', 'g.name', 'u.*'])
             ->join('genre g', 'g.id_films = films.film_id')
             ->join('users u', 'films.id_users = u.id_users')
-            ->where('tipe',$tipe)
+            ->where('tipe', $tipe)
             ->orderBy('films.created_at', 'DESC')
             ->find();
     }
@@ -158,8 +158,6 @@ class FilmsModel extends Model
     {
         return $this->update($filmId, $filmData);
     }
-
-
 
 
     public function filmsLink()
@@ -198,11 +196,20 @@ class FilmsModel extends Model
 
     public function updateStatus($filmId, $data)
     {
-        $updatedAt = $this->select(['updated_at'])->where('film_id',$filmId)->first();
+        $updatedAt = $this->select(['updated_at'])->where('film_id', $filmId)->first();
 
         return $this->where('film_id', $filmId)
             ->set('status', $data)
-            ->set('updated_at',$updatedAt['updated_at'])
+            ->set('updated_at', $updatedAt['updated_at'])
             ->update();
+    }
+
+
+    public function searchFilms($search)
+    {
+        return $this->select(['film_id', 'title', 'image','date'])
+            ->where('title LIKE', '%' . $search . '%')
+            ->where('status', 'show')
+            ->findAll();
     }
 }

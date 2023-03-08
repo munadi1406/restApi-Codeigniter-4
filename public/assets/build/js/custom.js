@@ -682,7 +682,7 @@ function init_chart_doughnut() {
     if (typeof (Chart) === 'undefined') { return; }
 
     console.log('init_chart_doughnut');
-
+    console.log('munadi')
     if ($('.canvasDoughnut').length) {
 
         var chart_doughnut_settings = {
@@ -690,14 +690,14 @@ function init_chart_doughnut() {
             tooltipFillColor: "rgba(51, 51, 51, 0.55)",
             data: {
                 labels: [
-                    "Symbian",
+                    "OKE",
                     "Blackberry",
                     "Other",
                     "Android",
                     "IOS"
                 ],
                 datasets: [{
-                    data: [15, 20, 30, 10, 30],
+                    data: [100, 20, 30, 10, 30],
                     backgroundColor: [
                         "#BDC3C7",
                         "#9B59B6",

@@ -15,8 +15,7 @@ class Log extends BaseController
 
 
     private $log;
-    private $os;
-    private $browser;
+    
     private $viewsPeryears;
     private $viewsPerMonth;
     private $viewsPerWeek;
@@ -28,8 +27,7 @@ class Log extends BaseController
 
 
         $this->log = $this->logModel->allLogViews();
-        $this->os = $this->logModel->operatingSystem();
-        $this->browser = $this->logModel->browser();
+       
         $this->viewsPeryears = $this->logModel->viewsPerYears();
         $this->viewsPerMonth = $this->logModel->viewsPerMonth();
         $this->viewsPerWeek = $this->logModel->viewsPerWeek();

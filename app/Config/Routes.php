@@ -33,53 +33,54 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 
 // login
-$routes->get('login','Login::index',['filter'=>'loginStatus']);
-$routes->post('login-auth','Login::auth');
+$routes->get('/', 'Login::index', ['filter' => 'loginStatus']);
+$routes->post('login-auth', 'Login::auth');
 // $routes->get('register','Register::index',['filter'=>'loginStatus']);
-$routes->post('register','Register::register');
-$routes->get('log-out','Logout::index');
+$routes->post('register', 'Register::register');
+$routes->get('log-out', 'Logout::index');
 
 
-
-// users
-$routes->get('users','Users::getUsers');
-$routes->post('users','Users::editUsers');
-$routes->put('update-users','Users::updateUsers');
+$routes->group('', ['filter' => 'authCheck'], static function ($routes) {
 
 
-// log
-$routes->get('log','Log::getAllLog');
-$routes->get('log-view','Log::getAllLogView');
+    // users
+    $routes->get('users', 'Users::getUsers');
+    $routes->post('users', 'Users::editUsers');
+    $routes->put('update-users', 'Users::updateUsers');
 
 
-$routes->group('admin',['filter'=>'authCheck'],static function ($routes){
-    $routes->get('','FilmsDb::films');
-    $routes->get('post-add','FilmsDb::postAdd');
-    $routes->get('post-data','FilmsDb::postView');
-    $routes->post('post-add','FilmsDb::filmsInsert');
-    $routes->delete('post-delete/(:num)','FilmsDb::filmsDelete/$1');
-    
-    // post edit
-    $routes->post('edit','FilmsDb::filmsEdit');
-    $routes->put('post-edit','FilmsDb::edit');
+    // log
+    $routes->get('log', 'Log::getAllLog');
+    $routes->get('log-view', 'Log::getAllLogView');
 
-    // episode
-    $routes->post('episode','FilmsDb::episode');
-    $routes->post('episode-add','FilmsDb::addEpisode');
 
-    // link
-    $routes->post('link','FilmsDb::link');
-    $routes->post('link-edit','FilmsDb::linkEdit');
+    $routes->group('admin', static function ($routes) {
+        $routes->get('', 'FilmsDb::films');
+        $routes->get('post-add', 'FilmsDb::postAdd');
+        $routes->get('post-data', 'FilmsDb::postView');
+        $routes->post('post-add', 'FilmsDb::filmsInsert');
+        $routes->delete('post-delete/(:num)', 'FilmsDb::filmsDelete/$1');
 
-    //movie
-    $routes->get('post-movie','FilmsDB::FilmsByMovie');
-    $routes->get('post-series','FilmsDB::FilmsBySeries');
+        // post edit
+        $routes->post('edit', 'FilmsDb::filmsEdit');
+        $routes->put('post-edit', 'FilmsDb::edit');
 
-    // edit status
-    $routes->post('update-status','FilmsDb::updateStatus');
+        // episode
+        $routes->post('episode', 'FilmsDb::episode');
+        $routes->post('episode-add', 'FilmsDb::addEpisode');
 
+        // link
+        $routes->post('link', 'FilmsDb::link');
+        $routes->post('link-edit', 'FilmsDb::linkEdit');
+
+        //movie
+        $routes->get('post-movie', 'FilmsDB::FilmsByMovie');
+        $routes->get('post-series', 'FilmsDB::FilmsBySeries');
+
+        // edit status
+        $routes->post('update-status', 'FilmsDb::updateStatus');
+    });
 });
-
 
 $routes->group('api', ['filter' => 'apiKey'], static function ($routes) {
     $routes->get('filmsAll/(:num)/(:num)', 'Films::films/$1/$2');
@@ -89,20 +90,23 @@ $routes->group('api', ['filter' => 'apiKey'], static function ($routes) {
     $routes->get('filmsrandom', 'Films::filmsRandom');
     $routes->get('link/(:segment)', 'Films::filmsLink/$1');
     $routes->get('films/(:alpha)/(:num)/(:num)', 'Films::filmsByGenre/$1/$2/$3');
-    $routes->get('films/type/(:alpha)/(:num)/(:num)','Films::filmsByType/$1/$2/$3');
-    $routes->get('counttipe/(:alpha)','Films::countType/$1');
+    $routes->get('films/type/(:alpha)/(:num)/(:num)', 'Films::filmsByType/$1/$2/$3');
+    $routes->get('counttipe/(:alpha)', 'Films::countType/$1');
     $routes->post('films', 'Films::filmsInsert');
-    $routes->delete('films/delete/(:segment)','Films::deleteFilms/$1');
-    
+    $routes->delete('films/delete/(:segment)', 'Films::deleteFilms/$1');
+
     // image for cache
-    $routes->get('image-cache/','Films::getImageCache');
+    $routes->get('image-cache/', 'Films::getImageCache');
     $routes->get('views/(:num)', 'Films::getViews/$1');
     $routes->get('views-update/(:num)', 'Films::updateViews/$1');
     $routes->get('views-all/', 'Films::getAllViews');
-    
+
     // insert log
     $routes->post('log', 'Log::logInsert');
     $routes->get('getlog', 'Log::getlog');
+
+    // search
+    $routes->get('search', 'Films::filmsSearch');
 });
 
 $routes->get('images/(:segment)', 'Films::showImage/$1');

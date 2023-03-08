@@ -1,24 +1,26 @@
 <?= $this->extend('layout/main') ?>
 <?= $this->section('content') ?>
+
 <?php if (session()->has('success_message')) : ?>
-    <div class="alert alert-success d-flex justify-content-end">
-        <h1>
-            <?php echo session('success_message'); ?>
-        </h1>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <h1><?php echo session('success'); ?></h1>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 <?php elseif (session()->has('error')) : ?>
-    <div class="alert alert-danger d-flex justify-content-end">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <?php if (is_array(session('error'))) : ?>
             <?php foreach (session('error') as $error) : ?>
-                <h5>
-                    <?= esc($error) ?>
-                    </h3>
-                <?php endforeach ?>
-            <?php else : ?>
-                <h5>
-                    <?= esc(session('error')) ?>
-                </h5>
-            <?php endif ?>
+                <h1> <?= esc($error) ?></h1>
+            <?php endforeach ?>
+        <?php else : ?>
+            <h1><?= esc(session('error')) ?></h1>
+        <?php endif ?>
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 <?php endif; ?>
 

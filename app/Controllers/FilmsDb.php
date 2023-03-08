@@ -8,6 +8,8 @@ use App\Models\FilmsModel;
 use App\Models\LinkModel;
 use App\Models\ViewsModel;
 use App\Models\GenreModel;
+use App\Models\LogModel;
+
 use CodeIgniter\API\ResponseTrait;
 use Config\Services;
 
@@ -20,7 +22,11 @@ class FilmsDb extends BaseController
     private $linkModel;
     private $viewsModel;
     private $genreModel;
+    private $logModel;
+
     private $session;
+    private $os;
+    private $browser;
 
     private $encrypter;
     use ResponseTrait;
@@ -34,6 +40,11 @@ class FilmsDb extends BaseController
         $this->genreModel = new GenreModel();
         $this->session = \Config\Services::session();
         $this->encrypter = Services::encrypter();
+        $this->logModel = new LogModel();
+
+
+        $this->os = $this->logModel->operatingSystem();
+        $this->browser = $this->logModel->browser();
     }
 
     public function films()
@@ -52,6 +63,8 @@ class FilmsDb extends BaseController
             'countpostshow' => $countPostShow,
             'countpostseries' => $countPostSeries,
             'countpostmovie' => $countPostMovie,
+            'browser'=>$this->browser,
+            'os'=>$this->os
         ];
         return view('home/home', ['data' => $data,'title'=>$title]);
     }
@@ -89,8 +102,8 @@ class FilmsDb extends BaseController
 
         // deskirpsi id
         $idEnkripsi = session('uid');
-        $key = getenv('KEY');
-        $salt = getenv('SALT');
+        $key = $_ENV['KEY'];
+        $salt = $_ENV['SALT'];
         $idDeskripsi = $this->encrypter->decrypt($idEnkripsi,$key);
         $idUsers = substr($idDeskripsi, strlen($salt), 2);
 
@@ -104,8 +117,8 @@ class FilmsDb extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            session()->setFlashdata('error', $this->validator->getErrors());
-            return redirect()->back()->withInput();
+            $error = $this->validator->getErrors();
+            return redirect()->back()->withInput()->with('error',$error);
         }
 
 
@@ -154,18 +167,15 @@ class FilmsDb extends BaseController
 
 
         if ($titleCheck) {
-            session()->setFlashdata('error', 'Nama Sudah Tidak Tersedia');
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->with('error','Nama Sudah Tidak Tersedia');
         }
 
         if (!$quality1080 && !$quality720 && !$quality540) {
-            session()->setFlashdata('error', 'Silahkan Pilih Quality Minimal 1');
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->with('error','Silahkan Pilih Quality Minimal 1');
         }
 
         if (!$gd1080 && !$utb1080 && !$mg1080 && !$gd720 && !$utb720 && !$mg720 && !$gd540 && !$utb540 && !$mg540) {
-            session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->with('error','isi link minimal 1 berdasarkan quality');
         }
 
 
@@ -184,8 +194,7 @@ class FilmsDb extends BaseController
         $linkData = [];
         if ($quality1080 === '1080') {
             if (!$gd1080 && !$utb1080 && !$mg1080) {
-                session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
-                return redirect()->back()->withInput();
+                return redirect()->back()->withInput()->with('error','isi link minimal 1 berdasarkan quality');
             }
             $linkData[] = [
                 'film_id' => $film,
@@ -198,8 +207,7 @@ class FilmsDb extends BaseController
         }
         if ($quality720 === '720') {
             if (!$gd720 && !$utb720 && !$mg720) {
-                session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
-                return redirect()->back()->withInput();
+                return redirect()->back()->withInput()->with('error','isi link minimal 1 berdasarkan quality');
             }
             $linkData[] = [
                 'film_id' => $film,
@@ -212,8 +220,7 @@ class FilmsDb extends BaseController
         }
         if ($quality540 === '540') {
             if (!$gd540 && !$utb540 && !$mg540) {
-                session()->setFlashdata('error', 'isi link minimal 1 berdasarkan quality');
-                return redirect()->back()->withInput();
+                return redirect()->back()->withInput()->with('error','isi link minimal 1 berdasarkan quality');
             }
             $linkData[] = [
                 'film_id' => $film,
@@ -241,12 +248,7 @@ class FilmsDb extends BaseController
             'views' => 0
         ];
         $this->viewsModel->viewsInsert($dataViews);
-
-        // Set flash message
-        $this->session->setFlashdata('success_message', 'Postingan berhasil disimpan.');
-
-        // Redirect to page
-        return redirect()->route('admin/post-data');
+        return redirect()->route('admin/post-data')->with('success','Film Berhasil Di Posting');
     }
 
     //menadpatkan data films
@@ -338,12 +340,11 @@ class FilmsDb extends BaseController
         $data = $this->filmsModel->deleteFilmsPost($filmId);
 
         if ($data) {
-            $this->session->setFlashdata('success_message', 'Postingan berhasil di Hapus.');
+            return redirect()->route('admin/post-data')->with('success','Postingan Berhasil Di Hapus');
         } else {
-            $this->session->setFlashdata('error', 'Postingan Gagal Di Hapus');
+            return redirect()->route('admin/post-data')->with('success','Postingan Gagal Di Hapus');
         }
         // Redirect to page
-        return redirect()->route('admin/post-data');
     }
 
 

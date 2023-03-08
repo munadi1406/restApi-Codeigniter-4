@@ -42,7 +42,7 @@ class Middleware implements FilterInterface
     {
         
         
-        $apiKey = getenv('API_KEY');
+        $apiKey = $_ENV['API_KEY'];
 
         $allowedUrls = ['http://localhost', 'http://127.0.0.1:5500'];
         if (!in_array($request->uri->getScheme() . '://' . $request->uri->getHost(), $allowedUrls)) {

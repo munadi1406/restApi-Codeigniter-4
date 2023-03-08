@@ -332,14 +332,14 @@ class Films extends BaseController
     }
 
 
-    public function updateViews($filmId){
+    public function updateViews($filmId)
+    {
         $datas = $this->viewsModel->updateViews($filmId);
         if ($datas) {
             return $this->respond([
                 'status' => 200,
                 'message' => 'success',
             ])->setStatusCode(200);
-
         } else {
             // return $this->respondUpdated($datas);
             return $this->respond([
@@ -351,8 +351,9 @@ class Films extends BaseController
 
 
 
-    
-    public function getViews($filmId){
+
+    public function getViews($filmId)
+    {
         $datas = $this->viewsModel->getViews($filmId);
         if ($datas) {
             return $this->respond([
@@ -369,7 +370,8 @@ class Films extends BaseController
     }
 
 
-    public function getAllViews(){
+    public function getAllViews()
+    {
         $datas = $this->viewsModel->getAllViews();
         if ($datas) {
             return $this->respond([
@@ -385,5 +387,25 @@ class Films extends BaseController
         }
     }
 
+    public function filmsSearch()
+    {
+        $search = $this->request->getVar('search');
 
+
+        $data = $this->filmsModel->searchFilms($search);
+
+        if ($data) {
+            return $this->respond([
+                'status' => 200,
+                'message' => 'success',
+                'data' => $data
+            ])->setStatusCode(200);
+        } else {
+            return $this->respond([
+                'status' => 404,
+                'message' => 'not found',
+                'data'=>$search
+            ])->setStatusCode(404);
+        }
+    }
 }

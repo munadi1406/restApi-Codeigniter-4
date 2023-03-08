@@ -3,20 +3,20 @@
 
 
 <?php if (session()->has('error')) : ?>
-    <div class="alert alert-danger d-flex justify-content-end">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <?php if (is_array(session('error'))) : ?>
             <?php foreach (session('error') as $error) : ?>
-                <h5><?= esc($error) ?></h3>
+                <h1> <?= esc($error) ?></h1>
             <?php endforeach ?>
         <?php else : ?>
-            <h5><?= esc(session('error')) ?></h5>
+            <h1><?= esc(session('error')) ?></h1>
         <?php endif ?>
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-<?php endif ?>
-
-
-
-
+<?php endif; ?>
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
@@ -63,7 +63,7 @@
                             <div class="field item form-group">
                                 <label class="col-form-label  label-align mr-2 col-1">Name<span class="required">*</span></label>
                                 <div class="w-100">
-                                <input class="form-control"  name="title" placeholder="Game Of Thrones" required />
+                                    <input class="form-control" name="title" placeholder="Game Of Thrones" required />
                                 </div>
                             </div>
                             <div class="field item form-group">
@@ -157,7 +157,7 @@
                             </div>
                             <div class="field item form-group ">
                                 <label class="col-form-label  label-align mr-2 col-1">Tipe<span class="required">*</span></label>
-                                <select class="form-control w-100" name="tipe" >
+                                <select class="form-control w-100" name="tipe">
                                     <option value="Movie">Movie</option>
                                     <option value="Series">Series</option>
                                 </select>
@@ -165,13 +165,13 @@
                             <div class="field item form-group">
                                 <label class="col-form-label  label-align mr-2 col-1">Trailer<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control"  name="trailer" placeholder="https://example.com" />
+                                    <input class="form-control" name="trailer" placeholder="https://example.com" />
                                 </div>
                             </div>
                             <div class="field item form-group">
                                 <label class="col-form-label  label-align mr-2 col-1">Subtitle<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control"  name="subtitle" placeholder="https://example.com" />
+                                    <input class="form-control" name="subtitle" placeholder="https://example.com" />
                                 </div>
                             </div>
                             <div class="field item form-group ">
@@ -217,7 +217,7 @@
                                 <div class="w-100 m-auto">
                                     <div class="dropzone" id="dropzone">
                                         <span>Drag and drop files here, or click to select files</span>
-                                        <input type="file" id="file-input" multiple style="display: none" name="image" >
+                                        <input type="file" id="file-input" multiple style="display: none" name="image">
                                         <div class="preview" id="preview"></div>
                                     </div>
                                 </div>

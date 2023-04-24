@@ -12,7 +12,7 @@
                 <img src="<?= base_url('assets/images/avatar.png') ?>" alt="Avatar" class="img-circle profile_img">
             </div>
             <div class="profile_info">
-                <span>Welcome,</span>
+                <div class="badge badge-primary"><?= session('ruid') ?></div>
                 <h2><?= session('uuid') ?></h2>
             </div>
         </div>

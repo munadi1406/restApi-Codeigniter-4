@@ -51,6 +51,7 @@ class Login extends BaseController
                 session()->set('login', true);
                 session()->set('uid', $hashId);
                 session()->set('uuid', $auth['username']);
+                session()->set('ruid',$auth['role']);
                 return redirect()->route('admin');
             } else {
                 return  redirect()->back()->with('error', 'Password Yang Anda Masukkan Salah');

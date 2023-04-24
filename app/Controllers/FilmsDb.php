@@ -41,15 +41,10 @@ class FilmsDb extends BaseController
         $this->session = \Config\Services::session();
         $this->encrypter = Services::encrypter();
         $this->logModel = new LogModel();
-
-
-        $this->os = $this->logModel->operatingSystem();
-        $this->browser = $this->logModel->browser();
     }
 
     public function films()
     {
-
         // title page
         $title = 'Home';
 
@@ -57,16 +52,30 @@ class FilmsDb extends BaseController
         $countPostShow = $this->filmsModel->countFilmsShow();
         $countPostMovie = $this->filmsModel->countFilmsMovie();
         $countPostSeries = $this->filmsModel->countFilmsSeries();
-        
+        $log = $this->logModel->allLogViews();
+        $viewsPerYears = $this->logModel->viewsPerYears();
+        $viewsPerMonth = $this->logModel->viewsPerMonth();
+        $viewsPerWeek = $this->logModel->viewsPerWeek();
+        $viewsPerDay = $this->logModel->viewsPerDay();
+        $browser = $this->logModel->browser();
+        $os = $this->logModel->operatingSystem();
+
+
+
         $data = [
             'countpost' => $countPost,
             'countpostshow' => $countPostShow,
             'countpostseries' => $countPostSeries,
             'countpostmovie' => $countPostMovie,
-            'browser'=>$this->browser,
-            'os'=>$this->os
+            'browser' => $browser,
+            'os' => $os,
+            'totalPengunjung' => $log,
+            'pengunjungPerTahun' => $viewsPerYears,
+            'pengunjungPerBulan' => $viewsPerMonth,
+            'pengunjungPerMinggu' => $viewsPerWeek,
+            'pengunjungPerHari' => $viewsPerDay,
         ];
-        return view('home/home', ['data' => $data,'title'=>$title]);
+        return view('home/home', ['data' => $data, 'title' => $title]);
     }
 
 
@@ -77,7 +86,7 @@ class FilmsDb extends BaseController
         $title = "Films Add";
 
 
-        return view('post/add-post', ['title'=>$title]);
+        return view('post/add-post', ['title' => $title]);
     }
 
 
@@ -94,7 +103,7 @@ class FilmsDb extends BaseController
         $filmsLink = $this->filmsModel->filmsLink();
         $LinkSeries = $this->filmsModel->filmsLinkSeries();
 
-        return view('post/data-post', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries,'title'=>$title]);
+        return view('post/data-post', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries, 'title' => $title]);
     }
 
     public function filmsInsert()
@@ -104,7 +113,7 @@ class FilmsDb extends BaseController
         $idEnkripsi = session('uid');
         $key = $_ENV['KEY'];
         $salt = $_ENV['SALT'];
-        $idDeskripsi = $this->encrypter->decrypt($idEnkripsi,$key);
+        $idDeskripsi = $this->encrypter->decrypt($idEnkripsi, $key);
         $idUsers = substr($idDeskripsi, strlen($salt), 2);
 
 
@@ -118,7 +127,7 @@ class FilmsDb extends BaseController
 
         if (!$this->validate($rules)) {
             $error = $this->validator->getErrors();
-            return redirect()->back()->withInput()->with('error',$error);
+            return redirect()->back()->withInput()->with('error', $error);
         }
 
 
@@ -167,15 +176,15 @@ class FilmsDb extends BaseController
 
 
         if ($titleCheck) {
-            return redirect()->back()->withInput()->with('error','Nama Sudah Tidak Tersedia');
+            return redirect()->back()->withInput()->with('error', 'Nama Sudah Tidak Tersedia');
         }
 
         if (!$quality1080 && !$quality720 && !$quality540) {
-            return redirect()->back()->withInput()->with('error','Silahkan Pilih Quality Minimal 1');
+            return redirect()->back()->withInput()->with('error', 'Silahkan Pilih Quality Minimal 1');
         }
 
         if (!$gd1080 && !$utb1080 && !$mg1080 && !$gd720 && !$utb720 && !$mg720 && !$gd540 && !$utb540 && !$mg540) {
-            return redirect()->back()->withInput()->with('error','isi link minimal 1 berdasarkan quality');
+            return redirect()->back()->withInput()->with('error', 'isi link minimal 1 berdasarkan quality');
         }
 
 
@@ -194,7 +203,7 @@ class FilmsDb extends BaseController
         $linkData = [];
         if ($quality1080 === '1080') {
             if (!$gd1080 && !$utb1080 && !$mg1080) {
-                return redirect()->back()->withInput()->with('error','isi link minimal 1 berdasarkan quality');
+                return redirect()->back()->withInput()->with('error', 'isi link minimal 1 berdasarkan quality');
             }
             $linkData[] = [
                 'film_id' => $film,
@@ -207,7 +216,7 @@ class FilmsDb extends BaseController
         }
         if ($quality720 === '720') {
             if (!$gd720 && !$utb720 && !$mg720) {
-                return redirect()->back()->withInput()->with('error','isi link minimal 1 berdasarkan quality');
+                return redirect()->back()->withInput()->with('error', 'isi link minimal 1 berdasarkan quality');
             }
             $linkData[] = [
                 'film_id' => $film,
@@ -220,7 +229,7 @@ class FilmsDb extends BaseController
         }
         if ($quality540 === '540') {
             if (!$gd540 && !$utb540 && !$mg540) {
-                return redirect()->back()->withInput()->with('error','isi link minimal 1 berdasarkan quality');
+                return redirect()->back()->withInput()->with('error', 'isi link minimal 1 berdasarkan quality');
             }
             $linkData[] = [
                 'film_id' => $film,
@@ -248,7 +257,7 @@ class FilmsDb extends BaseController
             'views' => 0
         ];
         $this->viewsModel->viewsInsert($dataViews);
-        return redirect()->route('admin/post-data')->with('success','Film Berhasil Di Posting');
+        return redirect()->route('admin/post-data')->with('success', 'Film Berhasil Di Posting');
     }
 
     //menadpatkan data films
@@ -259,11 +268,11 @@ class FilmsDb extends BaseController
 
         $data = $this->filmsModel->filmsEdit($filmId);
 
-        $title = "Edit-".$data['title'];
+        $title = "Edit-" . $data['title'];
 
         $link = $this->linkModel->linkEdit($filmId);
 
-        return view('post/edit-post', ['data' => $data, 'link' => $link,'title'=>$title]);
+        return view('post/edit-post', ['data' => $data, 'link' => $link, 'title' => $title]);
     }
 
     // eksekusi edit film
@@ -323,14 +332,14 @@ class FilmsDb extends BaseController
         $data = $this->filmsModel->filmEdit($film_id, $dataFilm);
 
         $dataGenre = [
-            'name'=>$genre,
+            'name' => $genre,
         ];
-        $dataGenre = $this->genreModel->genreUpdate($film_id,$dataGenre);
+        $dataGenre = $this->genreModel->genreUpdate($film_id, $dataGenre);
 
         if (!$data && $dataGenre) {
             session()->setFlashdata('error', 'Data Gagal Di Upadate');
             return redirect()->route('admin/post-data');
-        } 
+        }
         session()->setFlashdata('success_message', 'Data Berhasil Di Upadate');
         return redirect()->route('admin/post-data');
     }
@@ -340,9 +349,9 @@ class FilmsDb extends BaseController
         $data = $this->filmsModel->deleteFilmsPost($filmId);
 
         if ($data) {
-            return redirect()->route('admin/post-data')->with('success','Postingan Berhasil Di Hapus');
+            return redirect()->route('admin/post-data')->with('success', 'Postingan Berhasil Di Hapus');
         } else {
-            return redirect()->route('admin/post-data')->with('success','Postingan Gagal Di Hapus');
+            return redirect()->route('admin/post-data')->with('success', 'Postingan Gagal Di Hapus');
         }
         // Redirect to page
     }
@@ -356,9 +365,9 @@ class FilmsDb extends BaseController
         $filmId = $this->request->getPost('film_id');
         $data = $this->episodeModel->episodeByFilmid($filmId);
 
-        $title = "Add-Eps-". $data['title'];
+        $title = "Add-Eps-" . $data['title'];
 
-        return view('post/add-episode', ['data' => $data,'title'=>$title]);
+        return view('post/add-episode', ['data' => $data, 'title' => $title]);
     }
 
 
@@ -447,16 +456,16 @@ class FilmsDb extends BaseController
     // untuk menampilkan data link
     public function link()
     {
-        
+
         $filmId = $this->request->getPost('film_id');
 
 
         $data = $this->filmsModel->filmsEdit($filmId);
         $link = $this->linkModel->linkEdit($filmId);
 
-        $title = "Edit-".$data['title'];
+        $title = "Edit-" . $data['title'];
 
-        return view('link/edit-link', ['data' => $data, 'link' => $link,'title'=>$title]);
+        return view('link/edit-link', ['data' => $data, 'link' => $link, 'title' => $title]);
     }
 
 
@@ -484,53 +493,56 @@ class FilmsDb extends BaseController
         }
     }
 
-    public function filmsByMovie(){
+    public function filmsByMovie()
+    {
         // title
         $title = "Movie Data";
         // all films
         $filmsAll = $this->filmsModel->filmsByTipe('Movie');
-    
+
         $filmsLink = $this->filmsModel->filmsLink();
         $LinkSeries = $this->filmsModel->filmsLinkSeries();
-    
-        return view('post/data-movie', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries,'title'=>$title]);
+
+        return view('post/data-movie', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries, 'title' => $title]);
     }
 
 
-    public function filmsBySeries(){
+    public function filmsBySeries()
+    {
         // title
         $title = "Series Data";
         // all films
         $filmsAll = $this->filmsModel->filmsByTipe('Series');
-    
+
         $filmsLink = $this->filmsModel->filmsLink();
         $LinkSeries = $this->filmsModel->filmsLinkSeries();
-    
-        return view('post/data-series', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries,'title'=>$title]);
+
+        return view('post/data-series', ['data' => $filmsAll, 'link' => $filmsLink, 'linkseries' => $LinkSeries, 'title' => $title]);
     }
 
 
-    public function updateStatus(){
+    public function updateStatus()
+    {
         $filmId = $this->request->getVar('film_id');
         $status = $this->request->getVar('status');
 
 
-        if($status ==='show'){
+        if ($status === 'show') {
             $statusChange = "deleted";
-        }elseif($status==='deleted'){
+        } elseif ($status === 'deleted') {
             $statusChange = 'show';
         }
 
         $data = [
-            'status'=>$statusChange
+            'status' => $statusChange
         ];
 
-        $updateStatus = $this->filmsModel->updateStatus($filmId,$data);
+        $updateStatus = $this->filmsModel->updateStatus($filmId, $data);
 
-        if($updateStatus){
-            return redirect()->back()->with('success_message','Status Berhasil Di Ubah Ke '.$statusChange);
-        }else{
-            return redirect()->back()->with('error','Status Gagal Di Ubah ke'.$statusChange);
+        if ($updateStatus) {
+            return redirect()->back()->with('success_message', 'Status Berhasil Di Ubah Ke ' . $statusChange);
+        } else {
+            return redirect()->back()->with('error', 'Status Gagal Di Ubah ke' . $statusChange);
         }
     }
 }

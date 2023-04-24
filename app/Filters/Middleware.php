@@ -44,19 +44,16 @@ class Middleware implements FilterInterface
         
         $apiKey = $_ENV['API_KEY'];
 
-        $allowedUrls = ['http://localhost', 'http://127.0.0.1:5500'];
-        if (!in_array($request->uri->getScheme() . '://' . $request->uri->getHost(), $allowedUrls)) {
-            return $this->respond([
-                'message' => 'Access Denied',
+        $authHeader = $request->getServer('HTTP_AUTHORIZATION');
 
-            ])->setStatusCode(401); 
-        }
-
-        if (empty($apiKey) || $request->getHeaderLine('API-KEY') !== $apiKey) {
-            return $this->respond([
-                'message' => 'Access Denied',
-
-            ])->setStatusCode(401);
+        if ($authHeader) {
+            $apiKey = explode(' ', $authHeader)[1];
+            // lakukan validasi apakah API key yang diberikan valid
+            if ($apiKey !== $apiKey) {
+                return Services::response()->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
+            }
+        } else {
+            return Services::response()->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
         }
     }
 

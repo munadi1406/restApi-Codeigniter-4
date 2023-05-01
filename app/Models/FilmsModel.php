@@ -40,15 +40,14 @@ class FilmsModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function films($startFrom, $records)
+    public function getFilms($limit, $offset)
     {
-        return $this->select(['films.film_id', 'films.title', 'films.date', 'films.image'])
-            ->where('status', 'show')
-            ->orderBy('updated_at', 'DESC')
-            ->limit($records, $startFrom)
-            ->find();
+        return $this->select('film_id, title, date, image')
+                    ->limit($limit, $offset)
+                    ->where('status','show')
+                    ->orderBy('created_at','DESC')
+                    ->find();
     }
-
 
 
     public function getImageCache()

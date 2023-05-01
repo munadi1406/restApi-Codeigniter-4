@@ -97,6 +97,7 @@ $routes->group('api', ['filter' => 'apiKey'], static function ($routes) {
 
     // image for cache
     $routes->get('image-cache/', 'Films::getImageCache');
+    
     $routes->get('views/(:num)', 'Films::getViews/$1');
     $routes->get('views-update/(:num)', 'Films::updateViews/$1');
     $routes->get('views-all/', 'Films::getAllViews');

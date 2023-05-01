@@ -166,7 +166,7 @@
                                                             ?>
                                                         </div>
                                                     </td>
-                                                    <td><img src="<?php echo $datas['image'] ?>" alt="" width="50" class="image" loading="lazy"></td>
+                                                    <td><img src="<?php echo base_url($datas['image']) ?>" alt="" width="50" class="image" loading="lazy"></td>
                                                     <td>
                                                         <div style=" display: flex; ">
                                                             <form action="<?= base_url('admin/edit') ?>" method="POST">

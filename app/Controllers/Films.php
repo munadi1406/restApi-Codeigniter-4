@@ -30,14 +30,16 @@ class Films extends BaseController
         $this->viewsModel = new ViewsModel();
     }
 
-    public function films($startFrom, $record)
+    public function films($limit = 10, $offset = 0)
     {
-        $datas = $this->filmsModel->films($startFrom, $record);
+        $datas = $this->filmsModel->getFilms($limit, $offset);
+        $totalPost = $this->filmsModel->countAllResults();
         if ($datas) {
             return $this->respond([
                 'status' => 200,
                 'message' => 'success',
-                'data' => $datas
+                'data' => $datas,
+                'total' => $totalPost
             ])->setStatusCode(200);
         } else {
             return $this->respond([
@@ -284,14 +286,16 @@ class Films extends BaseController
     }
 
     public function showImage($imageName)
-    {
-        $path = WRITEPATH . 'uploads/' . $imageName;
-        if (file_exists($path)) {
-            $info = getimagesize($path);
-            header('Content-type: ' . $info['mime']);
-            readfile($path);
-        }
+{
+    $path = WRITEPATH . 'uploads/' . $imageName;
+    if (file_exists($path)) {
+        $info = getimagesize($path);
+        header('Content-Type: ' . $info['mime']);
+        header('Content-Length: ' . filesize($path));
+        readfile($path);
+        exit;
     }
+}
     public function deleteFilms($filmsId)
     {
         $film = $this->filmsModel->find($filmsId);
@@ -404,7 +408,7 @@ class Films extends BaseController
             return $this->respond([
                 'status' => 404,
                 'message' => 'not found',
-                'data'=>$search
+                'data' => $search
             ])->setStatusCode(404);
         }
     }

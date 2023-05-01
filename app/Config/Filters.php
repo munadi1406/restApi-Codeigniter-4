@@ -12,6 +12,7 @@ use App\Filters\Middleware;
 use App\Filters\CookieCheck;
 use App\Filters\LoginRegisterStatus;
 use App\Filters\Throttle;
+use App\Filters\Cors;
 
 class Filters extends BaseConfig
 {
@@ -29,6 +30,7 @@ class Filters extends BaseConfig
         'authCheck'=>CookieCheck::class,
         'loginStatus'=>LoginRegisterStatus::class,
         'rateLimiter'=>Throttle::class,
+        'cors'=>Cors::class,
     ];
 
     /**
@@ -42,7 +44,8 @@ class Filters extends BaseConfig
             // 'invalidchars',
             // 'secureheaders',
             // 'apiKey',
-            'rateLimiter'
+            'rateLimiter',
+            'cors'
         ],
         'after' => [
             'toolbar',

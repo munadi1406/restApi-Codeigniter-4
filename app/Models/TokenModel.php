@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UsersModel extends Model
+class TokenModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'users';
-    protected $primaryKey       = 'id_users';
+    protected $table            = 'token';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_users','username','email','password','role','refresh_token','expire'];
+    protected $allowedFields    = ['id','refresh_token','expire'];
 
     // Dates
     protected $useTimestamps = false;
@@ -40,39 +40,8 @@ class UsersModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function register($data){
-        return $this->insert($data);
+
+    public function addToken($refreshToken){
+        return $this->insert($refreshToken);
     }
-
-
-
-    public function auth($username){
-        return $this->where('username',$username)->first();
-    }
-
-    public function emailCheck($email){
-        return $this->where('email',$email)->first();
-    }
-
-    public function getRefrestoken($idUsers,$data){
-        return $this->update($idUsers,$data);
-    }
-
-    public function requestAccessTokenNew($refreshToken){
-        return $this->where('refresh_token',$refreshToken)->first();
-    }
-
-    public function getAllUsers(){
-        return $this->findAll();
-    }
-
-
-    public function getUsersById($idusers){
-        return $this->where('id_users',$idusers)->first();
-    }
-
-    public function updateUsers($idUsers,$dataUsers){
-        return $this->update($idUsers,$dataUsers);
-    }
-
 }

@@ -54,7 +54,7 @@ $routes->group('', ['filter' => 'authCheck'], static function ($routes) {
     $routes->get('log-view', 'Log::getAllLogView');
 
 
-    $routes->group('admin', static function ($routes) {
+$routes->group('admin', static function ($routes) {
         $routes->get('', 'FilmsDb::films');
         $routes->get('post-add', 'FilmsDb::postAdd');
         $routes->get('post-data', 'FilmsDb::postView');
@@ -82,7 +82,7 @@ $routes->group('', ['filter' => 'authCheck'], static function ($routes) {
     });
 });
 
-$routes->group('api', ['filter' => 'apiKey'], static function ($routes) {
+$routes->group('api', ['filter' => 'jwtCheck'], static function ($routes) {
     $routes->get('filmsAll/(:num)/(:num)', 'Films::films/$1/$2');
     $routes->get('filmscount', 'Films::countFilms');
     $routes->get('genrecount/(:alpha)', 'Films::countgenre/$1');
@@ -108,9 +108,19 @@ $routes->group('api', ['filter' => 'apiKey'], static function ($routes) {
 
     // search
     $routes->get('search', 'Films::filmsSearch');
+
+    // jwt
+    $routes->post('jwttoken','JwtAuth::index');
 });
 
+// $routes->group('apii',['filter'=>'jwtCheck'],static function($routes){
+//     $routes->get('filmsAll/(:num)/(:num)', 'Films::films/$1/$2');
+// });
+
+$routes->post('new-access-token/', 'JwtAuth::getNewAccessToken');
+
 $routes->get('images/(:segment)', 'Films::showImage/$1');
+
 
 
 

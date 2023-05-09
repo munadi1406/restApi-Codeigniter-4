@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Controllers\JwtAuth;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -13,6 +14,7 @@ use App\Filters\CookieCheck;
 use App\Filters\LoginRegisterStatus;
 use App\Filters\Throttle;
 use App\Filters\Cors;
+use App\Filters\AccessTokenCheck;
 
 class Filters extends BaseConfig
 {
@@ -31,6 +33,7 @@ class Filters extends BaseConfig
         'loginStatus'=>LoginRegisterStatus::class,
         'rateLimiter'=>Throttle::class,
         'cors'=>Cors::class,
+        'jwtCheck'=>AccessTokenCheck::class,
     ];
 
     /**
@@ -45,7 +48,8 @@ class Filters extends BaseConfig
             // 'secureheaders',
             // 'apiKey',
             'rateLimiter',
-            'cors'
+            'cors',
+           
         ],
         'after' => [
             'toolbar',

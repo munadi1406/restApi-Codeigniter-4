@@ -39,7 +39,7 @@ class JwtAuth extends BaseController
         $issueAt = time();
 
         // Access token berlaku selama 15 menit
-        $accessTokenExpire = date('Y-m-d H:i:s', strtotime('+60 seconds'));
+        $accessTokenExpire = date('Y-m-d H:i:s', strtotime('+20 seconds'));
 
         $payload = [
             'username' => $data['username'],
@@ -63,25 +63,26 @@ class JwtAuth extends BaseController
         if (!$this->validate($rules)) {
 
             return  $this->respond([
-                'unauthorize'
+                $rules
             ])->setStatusCode(401);
         };
 
         $data = [
-            'username' => $this->request->getPost('username'),
+            'username' => $this->request->getVar('username'),
             'password' => $this->request->getVar('password'),
         ];
 
+
         $auth = $this->usersModel->auth($data['username']);
 
-        if (!$auth) return $this->respond(401);
+        if (!$auth) return $this->respond(['unauthorize'])->setStatusCode(401);
 
         if (!password_verify($data['password'], $auth['password']))  return $this->respond(404);
 
 
         $refreshTokenCheck = $auth['refresh_token'];
         $decodedRefreshTokenCheck = JWT::decode($refreshTokenCheck, new Key($key, 'HS256'));
-        var_dump($decodedRefreshTokenCheck->exp);
+     
 
         if (strtotime($decodedRefreshTokenCheck->exp)  <= time()) {
 
@@ -121,7 +122,7 @@ class JwtAuth extends BaseController
 
     public function getNewAccessToken()
     {
-        $refresh_token = $this->request->getPost('refresh_token');
+        $refresh_token = $this->request->getVar('refresh_token');
         if (!$refresh_token) return $this->respond(['refresh token required'])->setStatusCode(401);
 
         $data = $this->usersModel->requestAccessTokenNew($refresh_token);
@@ -136,7 +137,7 @@ class JwtAuth extends BaseController
         ];
         $accessToken = $this->generateAccessToken($payload);
         return $this->respond([
-            'access-token' => $accessToken,
+            'access_token' => $accessToken,
         ])->setStatusCode(200);
     }
 }

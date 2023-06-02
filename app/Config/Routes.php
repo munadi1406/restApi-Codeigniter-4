@@ -53,8 +53,9 @@ $routes->group('', ['filter' => 'authCheck'], static function ($routes) {
     $routes->get('log', 'Log::getAllLog');
     $routes->get('log-view', 'Log::getAllLogView');
 
-
-$routes->group('admin', static function ($routes) {
+    
+    
+    $routes->group('admin', static function ($routes) {
         $routes->get('', 'FilmsDb::films');
         $routes->get('post-add', 'FilmsDb::postAdd');
         $routes->get('post-data', 'FilmsDb::postView');
@@ -79,6 +80,12 @@ $routes->group('admin', static function ($routes) {
 
         // edit status
         $routes->post('update-status', 'FilmsDb::updateStatus');
+
+        //genre
+        $routes->get('genre-add','Genre::index');
+        $routes->post('genre-add','Genre::addGenre');
+        $routes->get('genre-data','Genre::genreView');
+
     });
 });
 
@@ -97,7 +104,7 @@ $routes->group('api', ['filter' => 'jwtCheck'], static function ($routes) {
 
     // image for cache
     $routes->get('image-cache/', 'Films::getImageCache');
-    
+
     $routes->get('views/(:num)', 'Films::getViews/$1');
     $routes->get('views-update/(:num)', 'Films::updateViews/$1');
     $routes->get('views-all/', 'Films::getAllViews');
@@ -110,8 +117,8 @@ $routes->group('api', ['filter' => 'jwtCheck'], static function ($routes) {
     $routes->get('search', 'Films::filmsSearch');
 
     // jwt
-    $routes->post('jwttoken','JwtAuth::index');
 });
+$routes->post('jwttoken', 'JwtAuth::index');
 
 // $routes->group('apii',['filter'=>'jwtCheck'],static function($routes){
 //     $routes->get('filmsAll/(:num)/(:num)', 'Films::films/$1/$2');

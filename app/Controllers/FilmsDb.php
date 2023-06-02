@@ -38,7 +38,7 @@ class FilmsDb extends BaseController
         $this->linkModel = new LinkModel();
         $this->viewsModel = new ViewsModel();
         $this->genreModel = new GenreModel();
-        $this->session = \Config\Services::session();
+        $this->session = Services::session();
         $this->encrypter = Services::encrypter();
         $this->logModel = new LogModel();
     }

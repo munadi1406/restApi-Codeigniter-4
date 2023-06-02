@@ -70,7 +70,6 @@ class AccessTokenCheck implements FilterInterface
 
         // Ambil data waktu kadaluarsa dari access token
         $expire = $decodedToken->exp;
-        var_dump($expire);
 
         // Lakukan pengecekan apakah token telah kadaluarsa
         if (time() >= strtotime($expire)) return $this->respond(['access token has expired'])->setStatusCode(401);

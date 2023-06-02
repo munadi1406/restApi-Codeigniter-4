@@ -350,7 +350,7 @@ class App extends BaseConfig
      *
      * @deprecated Use `Config\Security` $tokenName property instead of using this property.
      */
-    public string $CSRFTokenName = 'csrf_test_name';
+    public string $CSRFTokenName = 'mkasmodiossabuay1625617126:;;;121)()()*&^%$$#@!!@#%^';
 
     /**
      * --------------------------------------------------------------------------
@@ -361,7 +361,7 @@ class App extends BaseConfig
      *
      * @deprecated Use `Config\Security` $Access-ControlName property instead of using this property.
      */
-    public string $CSRFHeaderName = 'X-CSRF-TOKEN';
+    public string $CSRFHeaderName = '12803412128uuyqwheasdmkcd9*&^%%^#%^$^%$@#!^';
 
     /**
      * --------------------------------------------------------------------------
@@ -372,7 +372,7 @@ class App extends BaseConfig
      *
      * @deprecated Use `Config\Security` $cookieName property instead of using this property.
      */
-    public string $CSRFCookieName = 'csrf_cookie_name';
+    public string $CSRFCookieName = ')(871237mkasdjasd9821731238127367)912832171266123';
 
     /**
      * --------------------------------------------------------------------------

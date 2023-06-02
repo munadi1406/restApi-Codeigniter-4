@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="<?= base_url('assets/images/icon.png') ?>" type="image/ico" />
 
-<title><?= 'MKDIR | '.$title ?? "MKDIR DATA CENTER" ?></title>
+<title><?= 'MKDIR | ' . ($title ?? "MKDIR DATA CENTER") ?></title>
+
 
 
 <!-- Bootstrap -->

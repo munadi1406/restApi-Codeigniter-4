@@ -37,6 +37,12 @@
                             <li><a href="<?= base_url('admin/post-series')?>">Series</a></li>
                         </ul>
                     </li>
+                    <li><a><i class="fa fa-youtube-play"></i> Genre <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="<?= base_url('admin/genre-add')?>">add genre</a></li>
+                            <li><a href="<?= base_url('admin/genre-data')?>">genre data</a></li>
+                        </ul>
+                    </li>
                     <li><a><i class="fa fa-history"></i> Log <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="<?= base_url('log') ?>">Log Data</a></li>

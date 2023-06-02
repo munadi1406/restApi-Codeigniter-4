@@ -3,25 +3,22 @@
 
 
 <?php if (session()->has('error')) : ?>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div class="alert alert-danger d-flex justify-content-end">
         <?php if (is_array(session('error'))) : ?>
             <?php foreach (session('error') as $error) : ?>
-                <h1> <?= esc($error) ?></h1>
-            <?php endforeach ?>
-        <?php else : ?>
-            <h1><?= esc(session('error')) ?></h1>
-        <?php endif ?>
-
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+                <h5><?= esc($error) ?></h3>
+                <?php endforeach ?>
+            <?php else : ?>
+                <h5><?= esc(session('error')) ?></h5>
+            <?php endif ?>
     </div>
-<?php endif; ?>
+<?php endif ?>
+
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Films Post</h3>
+                <h3>Films Edit</h3>
             </div>
 
             <div class="title_right">
@@ -41,7 +38,7 @@
             <div class="col-md-12 col-sm-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Add Post <small>Films</small></h2>
+                        <h2>Edit Post <small>Films</small></h2>
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
@@ -57,161 +54,128 @@
                         </ul>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="x_content">
-                        <form class="" action="<?php base_url('admin/post-add') ?>" method="post" enctype="multipart/form-data">
-                            <?= csrf_field() ?>
+                    <div class="x_content row flex-md-row-reverse flex-md-col">
+                        <div class="col-md-6 border h-50 d-flex justify-content-center ">
+                            <img src="<?php echo $data['image'] ?>" alt="<?= $data['title'] ?>" width="300px">
+                        </div>
+                        <form class="col-md-6" action="<?= base_url('admin/post-edit') ?>" method="post" enctype="multipart/form-data" >
+                            <input type="hidden" name="_method" value="PUT">
+                            <input type="hidden" name="film_id" value="<?= $data['film_id'] ?>">
+                            <input type="hidden" name="imageBefore" value="<?= $data['image'] ?>">
                             <span class="section">Films Info</span>
                             <div class="field item form-group">
-                                <label class="col-form-label  label-align mr-2 col-1">Name<span class="required">*</span></label>
+                                <label class="col-form-label  label-align  col-2">Title<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control" name="title" placeholder="Game Of Thrones" required />
+                                    <input class="form-control" name="title" placeholder="Game Of Thrones" required value="<?= $data['title'] ?>" />
                                 </div>
                             </div>
                             <div class="field item form-group">
-                                <label class="col-form-label  label-align mr-2 col-1">Desc<span class="required">*</span></label>
+                                <label class="col-form-label  label-align  col-2">Desc<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <textarea required="required" name='desc' class="w-100"></textarea>
+                                    <textarea required="required" name='desc' class="w-100"><?= $data['desc'] ?></textarea>
                                 </div>
                             </div>
                             <div class="field item form-group ">
-                                <label class="col-form-label  label-align mr-2 col-1">Date<span class="required">*</span></label>
+                                <label class="col-form-label  label-align  col-2">Date<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control" name="date" class='date' required="required" type="Date" />
+                                    <input class="form-control" name="date" class='date' required="required" type="Date" value="<?= $data['date'] ?>" />
                                 </div>
                             </div>
                             <div class="field item form-group ">
-                                <label for="genre" class="col-form-label  label-align mr-2 col-1 ">Genre:</label><br>
+                                <label for="genre" class="col-form-label  label-align  col-2 ">Genre:</label><br>
                                 <div class="d-flex flex-wrap">
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="action" value="action" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="action" value="action" name="genre[]" <?php echo in_array("action", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="action">Action</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="comedy" value="comedy" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="comedy" value="comedy" name="genre[]" <?php echo in_array("comedy", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="comedy">Comedy</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="drama" value="drama" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="drama" value="drama" name="genre[]" <?php echo in_array("drama", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="drama">Drama</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="horror" value="horror" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="horror" value="horror" name="genre[]" <?php echo in_array("horror", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="horror">Horror</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="sci-fi" value="sci-fi" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="sci-fi" value="sci-fi" name="genre[]" <?php echo in_array("sci-fi", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="sci-fi">Sci-Fi</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="romance" value="romance" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="romance" value="romance" name="genre[]" <?php echo in_array("romance", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="romance">Romance</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="adventure" value="adventure" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="adventure" value="adventure" name="genre[]" <?php echo in_array("adventure", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="adventure">Adventure</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="fantasy" value="fantasy" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="fantasy" value="fantasy" name="genre[]" <?php echo in_array("fantasy", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="fantasy">Fantasy</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="thriller" value="thriller" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="thriller" value="thriller" name="genre[]" <?php echo in_array("thriller", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="thriller">Thriller</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="mystery" value="mystery" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="mystery" value="mystery" name="genre[]" <?php echo in_array("mystery", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="mystery">Mystery</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Crime" value="Crime" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="Crime" value="Crime" name="genre[]" <?php echo in_array("Crime", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="Crime">Crime</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Documentary" value="Documentary" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="Documentary" value="Documentary" name="genre[]" <?php echo in_array("Documentary", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="Documentary">Documentary</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Family" value="Family" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="Family" value="Family" name="genre[]" <?php echo in_array("Family", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="Family">Family</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Drama" value="Drama" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="Drama" value="Drama" name="genre[]" <?php echo in_array("Drama", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="Drama">Drama</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Music" value="Music" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="Music" value="Music" name="genre[]" <?php echo in_array("Music", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="Music">Music</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Sport" value="Sport" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="Sport" value="Sport" name="genre[]" <?php echo in_array("Sport", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="Sport">Sport</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="War" value="War" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="War" value="War" name="genre[]" <?php echo in_array("War", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="War">War</label>
                                     </div>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Western" value="Western" name="genre[]">
+                                        <input class="form-check-input" type="checkbox" id="Western" value="Western" name="genre[]" <?php echo in_array("Western", explode(",", $data['name'])) ? "checked" : ""; ?>>
                                         <label class="form-check-label" for="Western">Western</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="field item form-group ">
-                                <label class="col-form-label  label-align mr-2 col-1">Tipe<span class="required">*</span></label>
-                                <select class="form-control w-100" name="tipe">
-                                    <option value="Movie">Movie</option>
-                                    <option value="Series">Series</option>
+                                <label class="col-form-label  label-align  col-2">Tipe<span class="required">*</span></label>
+                                <select class="form-control w-100 disabled" name="tipe" disabled>
+                                    <option value="Movie" <?php echo $data['tipe'] == 'Movie' ? 'selected' : '' ?>>Movie</option>
+                                    <option value="Series" <?php echo $data['tipe'] == 'Series' ? 'selected' : '' ?>>Series</option>
                                 </select>
                             </div>
+
                             <div class="field item form-group">
-                                <label class="col-form-label  label-align mr-2 col-1">Trailer<span class="required">*</span></label>
+                                <label class="col-form-label  label-align  col-2">Trailer<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control" name="trailer" placeholder="https://example.com" />
+                                    <input class="form-control" name="trailer" placeholder="https://example.com" value="<?= $data['trailer'] ?>" />
                                 </div>
                             </div>
                             <div class="field item form-group">
-                                <label class="col-form-label  label-align mr-2 col-1">Subtitle<span class="required">*</span></label>
+                                <label class="col-form-label  label-align  col-2">Subtitle<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control" name="subtitle" placeholder="https://example.com" />
-                                </div>
-                            </div>
-                            <div class="field item form-group ">
-                                <label class="col-form-label  label-align mr-2 col-1">1080<span class="required">*</span></label>
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <input type="checkbox" aria-label="Checkbox for following text input" value="1080" name="quality1080">
-                                    </div>
-                                </div>
-                                <div class="w-100 m-auto">
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link GD" name="gd1080">
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link UTB" name="utb1080">
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link MG" name="mg1080">
-                                </div>
-                            </div>
-                            <div class="field item form-group ">
-                                <label class="col-form-label  label-align mr-2 col-1">720<span class="required">*</span></label>
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <input type="checkbox" aria-label="Checkbox for following text input" value="720" name="quality720">
-                                    </div>
-                                </div>
-                                <div class="w-100 m-auto">
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link GD" name="gd720">
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link UTB" name="utb720">
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link MG" name="mg720">
-                                </div>
-                            </div>
-                            <div class="field item form-group ">
-                                <label class="col-form-label  label-align mr-2 col-1">540<span class="required">*</span></label>
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <input type="checkbox" aria-label="Checkbox for following text input" value="540" name="quality540">
-                                    </div>
-                                </div>
-                                <div class="w-100 m-auto">
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link GD" name="gd540">
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link UTB" name="utb540">
-                                    <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link MG" name="mg540">
+                                    <input class="form-control" name="subtitle" placeholder="https://example.com" value="<?= $data['subtitle'] ?>" />
                                 </div>
                             </div>
                             <div class="field item form-group">

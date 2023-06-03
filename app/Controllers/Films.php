@@ -391,12 +391,16 @@ class Films extends BaseController
         }
     }
 
-    public function filmsSearch()
+    public function filmsSearch($search)
     {
-        $search = $this->request->getVar('search');
+       
 
 
-        $data = $this->filmsModel->searchFilms($search);
+        $dataByTitle = $this->filmsModel->searchFilms($search);
+        $dataByDesc = $this->filmsModel->searchFilmsByDesc($search);
+        
+        $data = array_merge($dataByTitle, $dataByDesc);
+        $data = array_unique($data, SORT_REGULAR);
 
         if ($data) {
             return $this->respond([
@@ -408,7 +412,6 @@ class Films extends BaseController
             return $this->respond([
                 'status' => 404,
                 'message' => 'not found',
-                'data' => $search
             ])->setStatusCode(404);
         }
     }

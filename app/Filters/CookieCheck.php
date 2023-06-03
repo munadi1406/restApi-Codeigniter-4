@@ -26,7 +26,7 @@ class CookieCheck implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         if(!session('login')){
-            return redirect()->route('login');
+            return redirect()->route('/');
         }
     }
 

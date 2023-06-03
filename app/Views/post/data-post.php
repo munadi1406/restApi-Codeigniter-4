@@ -6,14 +6,14 @@
 
     <div class="">
         <?php if (session()->has('success')) : ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show text-right" role="alert">
                 <h1><?php echo session('success'); ?></h1>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         <?php elseif (session()->has('error')) : ?>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <div class="alert alert-warning alert-dismissible fade show text-right" role="alert">
                 <?php if (is_array(session('error'))) : ?>
                     <?php foreach (session('error') as $error) : ?>
                         <h1> <?= esc($error) ?></h1>

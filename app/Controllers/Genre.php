@@ -44,9 +44,9 @@ class Genre extends BaseController
         $addGenre = $this->genreModel->addGenre($data);
        
         if($addGenre){
-            return redirect()->to('genre/data-genre')->with('success','Genre Berhasil di tambahakan');
+            return redirect()->to('admin/genre-data')->with('success','Genre Berhasil di tambahakan');
         }else{
-            return redirect()->to('genre/data-genre')->with('error','Genre Gagal di tambahakan');
+            return redirect()->to('admin/genre-data')->with('error','Genre Gagal di tambahakan');
         }
     }
 
@@ -55,5 +55,56 @@ class Genre extends BaseController
         $data = $this->genreModel->getGenre();
 
         return view('genre/data-genre',['data'=>$data,'title'=>$title]);
+    }
+
+
+    public function deleteGenre($id)
+    {
+        $delete = $this->genreModel->deleteGenre($id);
+        if(!$delete){
+            return redirect()->to('admin/genre-data')->with('error','Data Genre Gagal Di Hapus');
+        }
+
+        // Redirect to page
+        return redirect()->to('admin/genre-data')->with('success', 'Data Genre Berhasil Di Hapus');
+    }
+
+    public function editGenre(){
+        $id = $this->request->getPost('id');
+        $data= $this->genreModel->editGenre($id);
+        return view('genre/edit-genre',['data'=>$data]);
+    }
+
+    public function updateGenre(){
+
+        $rules = [
+            'genre' => 'required|alpha|max_length[50]',
+        ];
+
+        $msg =[
+            'genre'=>[
+                'required'=>'Genre Tidak Boleh Kosong',
+                'alpha'=>'Genre Harus Berupa Huruf',
+                'max'=>'Genre Tidak Boleh Melebihi 50 Karakter'
+            ]
+        ];
+
+        if (!$this->validate($rules,$msg)) {
+            $error = $this->validator->getErrors();
+            return redirect()->to('admin/genre-data')->withInput()->with('error', $error);
+        }
+
+        $id= $this->request->getPost('id');
+        $data = [
+            'genre'=>$this->request->getPost('genre')
+        ];
+
+        $update = $this->genreModel->updateGenre($id,$data);
+        if(!$update){
+            return redirect()->to('admin/genre-data')->with('error','Data Genre Gagal Di Hapus');
+        }
+
+        // Redirect to page
+        return redirect()->to('admin/genre-data')->with('success', 'Data Genre Berhasil Di Hapus');
     }
 }

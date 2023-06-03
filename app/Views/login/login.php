@@ -35,7 +35,7 @@
 
       <div class="separator">
         <p class="change_link">New to site?
-          <a href="<?= base_url('register') ?>" class="to_register"> Create Account </a>
+          <a href="#" class="to_register"> Create Account </a>
         </p>
         <div class="clearfix"></div>
       </div>

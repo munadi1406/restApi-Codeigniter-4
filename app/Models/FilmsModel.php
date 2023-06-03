@@ -211,4 +211,11 @@ class FilmsModel extends Model
             ->where('status', 'show')
             ->findAll();
     }
+
+    public function searchFilmsByDesc($search){
+        return $this->select(['film_id', 'title', 'image','date'])
+            ->where('desc LIKE', '%' . $search . '%')
+            ->where('status', 'show')
+            ->findAll();
+    }
 }

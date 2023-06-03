@@ -26,15 +26,7 @@
             <div>
                 <button class="btn btn-default submit" type="submit">Submit</button>
             </div>
-
             <div class="clearfix"></div>
-
-            <div class="separator">
-                <p class="change_link">Already a member ?
-                    <a href="<?= base_url('login') ?>" class="to_register"> Log in </a>
-                </p>
-                <div class="clearfix"></div>
-            </div>
         </form>
     </section>
 </div>

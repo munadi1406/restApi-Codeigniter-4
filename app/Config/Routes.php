@@ -35,7 +35,7 @@ $routes->set404Override();
 // login
 $routes->get('/', 'Login::index', ['filter' => 'loginStatus']);
 $routes->post('login-auth', 'Login::auth');
-// $routes->get('register','Register::index',['filter'=>'loginStatus']);
+$routes->get('register','Register::index');
 $routes->post('register', 'Register::register');
 $routes->get('log-out', 'Logout::index');
 
@@ -46,7 +46,10 @@ $routes->group('', ['filter' => 'authCheck'], static function ($routes) {
     // users
     $routes->get('users', 'Users::getUsers');
     $routes->post('users', 'Users::editUsers');
+    $routes->get('add-users', 'Users::addUsersView');
+    $routes->post('add-users', 'Users::addUsers');
     $routes->put('update-users', 'Users::updateUsers');
+
 
 
     // log
@@ -85,7 +88,9 @@ $routes->group('', ['filter' => 'authCheck'], static function ($routes) {
         $routes->get('genre-add','Genre::index');
         $routes->post('genre-add','Genre::addGenre');
         $routes->get('genre-data','Genre::genreView');
-
+        $routes->delete('genre-delete/(:num)','Genre::deleteGenre/$1');
+        $routes->post('genre-edit','Genre::editGenre');
+        $routes->post('genre-update','Genre::updateGenre');
     });
 });
 
@@ -114,8 +119,8 @@ $routes->group('api', ['filter' => 'jwtCheck'], static function ($routes) {
     $routes->get('getlog', 'Log::getlog');
 
     // search
-    $routes->get('search', 'Films::filmsSearch');
-
+    $routes->get('search/(:segment)', 'Films::filmsSearch/$1');
+    
     // jwt
 });
 $routes->post('jwttoken', 'JwtAuth::index');

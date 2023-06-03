@@ -47,4 +47,16 @@ class GenresModel extends Model
     public function getGenre(){
         return $this->findAll();
     }
+
+    public function deleteGenre($id){
+        return $this->delete($id);
+    }
+
+    public function editGenre($id){
+        return $this->where('id',$id)->first();
+    }
+
+    public function updateGenre($id,$data){
+        return $this->update($id,$data);
+    }
 }

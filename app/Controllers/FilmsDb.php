@@ -8,6 +8,7 @@ use App\Models\FilmsModel;
 use App\Models\LinkModel;
 use App\Models\ViewsModel;
 use App\Models\GenreModel;
+use App\Models\GenresModel;
 use App\Models\LogModel;
 
 use CodeIgniter\API\ResponseTrait;
@@ -23,6 +24,7 @@ class FilmsDb extends BaseController
     private $viewsModel;
     private $genreModel;
     private $logModel;
+    private $genresModel;
 
     private $session;
     private $os;
@@ -41,6 +43,7 @@ class FilmsDb extends BaseController
         $this->session = Services::session();
         $this->encrypter = Services::encrypter();
         $this->logModel = new LogModel();
+        $this->genresModel = new GenresModel();
     }
 
     public function films()
@@ -83,10 +86,12 @@ class FilmsDb extends BaseController
     public function postAdd()
     {
         // title
-        $title = "Films Add";
+        $title = "Films Add"; 
+        $data = $this->genresModel->getGenre();
 
 
-        return view('post/add-post', ['title' => $title]);
+
+        return view('post/add-post', ['title' => $title,'data'=>$data]);
     }
 
 
@@ -528,8 +533,8 @@ class FilmsDb extends BaseController
 
 
         if ($status === 'show') {
-            $statusChange = "deleted";
-        } elseif ($status === 'deleted') {
+            $statusChange = "hide";
+        } elseif ($status === 'hide') {
             $statusChange = 'show';
         }
 
@@ -540,7 +545,7 @@ class FilmsDb extends BaseController
         $updateStatus = $this->filmsModel->updateStatus($filmId, $data);
 
         if ($updateStatus) {
-            return redirect()->back()->with('success_message', 'Status Berhasil Di Ubah Ke ' . $statusChange);
+            return redirect()->back()->with('success', 'Status Berhasil Di Ubah Ke ' . $statusChange);
         } else {
             return redirect()->back()->with('error', 'Status Gagal Di Ubah ke' . $statusChange);
         }

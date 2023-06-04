@@ -9,6 +9,7 @@ use App\Models\LinkModel;
 use App\Models\GenreModel;
 use App\Models\EpisodeModel;
 use App\Models\ViewsModel;
+use App\Models\GenresModel;
 
 
 class Films extends BaseController
@@ -16,6 +17,7 @@ class Films extends BaseController
     protected $filmsModel;
     protected $linkModel;
     protected $genreModel;
+    protected $genresModel;
     protected $episodeModel;
     protected $viewsModel;
 
@@ -26,6 +28,7 @@ class Films extends BaseController
         $this->filmsModel = new FilmsModel();
         $this->linkModel = new LinkModel();
         $this->genreModel = new GenreModel();
+        $this->genresModel = new GenresModel();
         $this->episodeModel = new EpisodeModel();
         $this->viewsModel = new ViewsModel();
     }
@@ -123,6 +126,7 @@ class Films extends BaseController
         }
     }
 
+    
     public function countGenre($genre)
     {
         return $this->respond($this->genreModel->countGenre($genre));
@@ -393,15 +397,28 @@ class Films extends BaseController
 
     public function filmsSearch($search)
     {
-       
-
-
         $dataByTitle = $this->filmsModel->searchFilms($search);
         $dataByDesc = $this->filmsModel->searchFilmsByDesc($search);
         
         $data = array_merge($dataByTitle, $dataByDesc);
         $data = array_unique($data, SORT_REGULAR);
 
+        if ($data) {
+            return $this->respond([
+                'status' => 200,
+                'message' => 'success',
+                'data' => $data
+            ])->setStatusCode(200);
+        } else {
+            return $this->respond([
+                'status' => 404,
+                'message' => 'not found',
+            ])->setStatusCode(404);
+        }
+    }
+
+    public function getGenre(){
+        $data = $this->genresModel->getGenre();
         if ($data) {
             return $this->respond([
                 'status' => 200,

@@ -121,8 +121,12 @@ $routes->group('api', ['filter' => 'jwtCheck'], static function ($routes) {
     // search
     $routes->get('search/(:segment)', 'Films::filmsSearch/$1');
     
+    // genre
+    
+    
     // jwt
 });
+$routes->get('genre/', 'Films::getGenre');
 $routes->post('jwttoken', 'JwtAuth::index');
 
 // $routes->group('apii',['filter'=>'jwtCheck'],static function($routes){

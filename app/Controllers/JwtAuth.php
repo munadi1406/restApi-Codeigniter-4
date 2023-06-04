@@ -34,7 +34,7 @@ class JwtAuth extends BaseController
         $this->usersModel = new UsersModel();
     }
 
-    function generateAccessToken($data)
+    private function generateAccessToken($data)
     {
         $issueAt = time();
 
@@ -49,6 +49,26 @@ class JwtAuth extends BaseController
         ];
 
         return JWT::encode($payload, $this->secretKey, 'HS256');
+    }
+
+    private function generateRefreshToken($id_users,$data){
+        $issueAt = time();
+            // Refresh token berlaku selama 7 hari
+            $refreshTokenExpire = date('Y-m-d H:i:s', strtotime('+7 days'));
+
+            $payloadRefreshToken = [
+                'password' => $data['password'],
+                'iat' => $issueAt,
+                'exp' => $refreshTokenExpire
+            ];
+            $refreshToken = JWT::encode($payloadRefreshToken, $this->secretKey, 'HS256');
+
+            $updateToken = [
+                'refresh_token' => $refreshToken,
+                'expire' => $refreshTokenExpire
+            ];
+            $this->usersModel->getRefrestoken($id_users, $updateToken);
+            return $refreshToken;
     }
 
     public function index()
@@ -81,29 +101,13 @@ class JwtAuth extends BaseController
 
 
         $refreshTokenCheck = $auth['refresh_token'];
-        $decodedRefreshTokenCheck = JWT::decode($refreshTokenCheck, new Key($key, 'HS256'));
-     
 
-        if (strtotime($decodedRefreshTokenCheck->exp)  <= time()) {
-
-            $issueAt = time();
-            // Refresh token berlaku selama 7 hari
-            $refreshTokenExpire = date('Y-m-d H:i:s', strtotime('+7 days'));
+        if (empty($refreshTokenCheck)) {
+            // Refresh token sebelumnya kosong
+            // Buat dan simpan refresh token baru
 
             $accessToken = $this->generateAccessToken($data);
-
-            $payloadRefreshToken = [
-                'password' => $data['password'],
-                'iat' => $issueAt,
-                'exp' => $refreshTokenExpire
-            ];
-            $refreshToken = JWT::encode($payloadRefreshToken, $key, 'HS256');
-
-            $updateToken = [
-                'refresh_token' => $refreshToken,
-                'expire' => $refreshTokenExpire
-            ];
-            $this->usersModel->getRefrestoken($auth['id_users'], $updateToken);
+            $refreshToken = $this->generateRefreshToken($auth['id_users'],$data);
 
             return $this->respond([
                 'access_token' => $accessToken,
@@ -111,13 +115,30 @@ class JwtAuth extends BaseController
                 'token_type' => 'Bearer',
             ])->setStatusCode(200);
         } else {
-            $accessToken = $this->generateAccessToken($data);
-            return $this->respond([
-                'access_token' => $accessToken,
-                'refresh_token' => $auth['refresh_token'],
-                'token_type' => 'Bearer',
-            ])->setStatusCode(200);
-        };
+            $decodedRefreshTokenCheck = JWT::decode($refreshTokenCheck, new Key($key, 'HS256'));
+
+            if (strtotime($decodedRefreshTokenCheck->exp)  <= time()) {
+                // Refresh token sebelumnya kadaluarsa
+                // Buat dan simpan refresh token baru
+
+                $accessToken = $this->generateAccessToken($data);
+                $refreshToken = $this->generateRefreshToken($auth['id_users'],$data);
+               
+
+                return $this->respond([
+                    'access_token' => $accessToken,
+                    'refresh_token' => $refreshToken,
+                    'token_type' => 'Bearer',
+                ])->setStatusCode(200);
+            } else {
+                $accessToken = $this->generateAccessToken($data);
+                return $this->respond([
+                    'access_token' => $accessToken,
+                    'refresh_token' => $auth['refresh_token'],
+                    'token_type' => 'Bearer',
+                ])->setStatusCode(200);
+            }
+        }
     }
 
     public function getNewAccessToken()

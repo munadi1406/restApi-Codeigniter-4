@@ -206,14 +206,14 @@ class FilmsModel extends Model
 
     public function searchFilms($search)
     {
-        return $this->select(['film_id', 'title', 'image','date'])
+        return $this->select(['film_id', 'title', 'image','date','desc'])
             ->where('title LIKE', '%' . $search . '%')
             ->where('status', 'show')
             ->findAll();
     }
 
     public function searchFilmsByDesc($search){
-        return $this->select(['film_id', 'title', 'image','date'])
+        return $this->select(['film_id', 'title', 'image','date','desc'])
             ->where('desc LIKE', '%' . $search . '%')
             ->where('status', 'show')
             ->findAll();

@@ -83,78 +83,12 @@
                             <div class="field item form-group ">
                                 <label for="genre" class="col-form-label  label-align mr-2 col-1 ">Genre:</label><br>
                                 <div class="d-flex flex-wrap">
+                                    <?php foreach($data as $datas):?>
                                     <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="action" value="action" name="genre[]">
-                                        <label class="form-check-label" for="action">Action</label>
+                                        <input class="form-check-input" type="checkbox" id="action" value="<?= $datas['genre']?>" name="genre[]">
+                                        <label class="form-check-label" for="action"><?= $datas['genre'] ?></label>
                                     </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="comedy" value="comedy" name="genre[]">
-                                        <label class="form-check-label" for="comedy">Comedy</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="drama" value="drama" name="genre[]">
-                                        <label class="form-check-label" for="drama">Drama</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="horror" value="horror" name="genre[]">
-                                        <label class="form-check-label" for="horror">Horror</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="sci-fi" value="sci-fi" name="genre[]">
-                                        <label class="form-check-label" for="sci-fi">Sci-Fi</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="romance" value="romance" name="genre[]">
-                                        <label class="form-check-label" for="romance">Romance</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="adventure" value="adventure" name="genre[]">
-                                        <label class="form-check-label" for="adventure">Adventure</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="fantasy" value="fantasy" name="genre[]">
-                                        <label class="form-check-label" for="fantasy">Fantasy</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="thriller" value="thriller" name="genre[]">
-                                        <label class="form-check-label" for="thriller">Thriller</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="mystery" value="mystery" name="genre[]">
-                                        <label class="form-check-label" for="mystery">Mystery</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Crime" value="Crime" name="genre[]">
-                                        <label class="form-check-label" for="Crime">Crime</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Documentary" value="Documentary" name="genre[]">
-                                        <label class="form-check-label" for="Documentary">Documentary</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Family" value="Family" name="genre[]">
-                                        <label class="form-check-label" for="Family">Family</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Drama" value="Drama" name="genre[]">
-                                        <label class="form-check-label" for="Drama">Drama</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Music" value="Music" name="genre[]">
-                                        <label class="form-check-label" for="Music">Music</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Sport" value="Sport" name="genre[]">
-                                        <label class="form-check-label" for="Sport">Sport</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="War" value="War" name="genre[]">
-                                        <label class="form-check-label" for="War">War</label>
-                                    </div>
-                                    <div class="form-check form-check-inline border col-3">
-                                        <input class="form-check-input" type="checkbox" id="Western" value="Western" name="genre[]">
-                                        <label class="form-check-label" for="Western">Western</label>
-                                    </div>
+                                    <?php endforeach;?>
                                 </div>
                             </div>
                             <div class="field item form-group ">

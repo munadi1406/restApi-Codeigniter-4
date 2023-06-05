@@ -51,6 +51,7 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>Genre</th>
+                                                <th>Cols</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -60,6 +61,7 @@
                                                 <tr>
                                                     <td><?= $no++ ?></td>
                                                     <td><?= $datas['genre'] ?></td>
+                                                    <td><?= $datas['cols'] ?></td>
                                                     <td>
                                                         <div style=" display: flex; ">
                                                             <form action="<?= base_url('admin/genre-edit') ?>" method="POST">

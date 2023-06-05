@@ -14,7 +14,7 @@ class GenresModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id','genre'];
+    protected $allowedFields    = ['id','genre','cols'];
 
     // Dates
     protected $useTimestamps = false;

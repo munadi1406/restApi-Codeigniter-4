@@ -19,6 +19,11 @@ class Genre extends Migration
                 'type' => 'varchar',
                 'constraint' => 50,
                 'null' => false,
+            ],
+            'cols'=>[
+                'type'=>'int',
+                'constraint'=>2,
+                'null'=>false
             ]
         ]);
         

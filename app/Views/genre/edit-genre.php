@@ -47,7 +47,15 @@
                                 <label class="col-form-label  label-align mr-2 col-1">Genre<span class="required">*</span></label>
                                 <div class="w-100">
                                     <?php var_dump($data)?>
-                                    <input class="form-control" name="genre" placeholder="Action..." value="<?= $data['genre']?>"/>
+                                    <input class="form-control" name="genre" placeholder="Action..." value="<?= $data['genre']?>" type="text"/>
+                                </div>
+                            </div>
+                            <div class="field item form-group">
+                                <input type="hidden" name="id" value="<?= $data['id'] ?>">
+                                <label class="col-form-label  label-align mr-2 col-1">Cols<span class="required">*</span></label>
+                                <div class="w-100">
+                                    <?php var_dump($data)?>
+                                    <input class="form-control" name="cols" placeholder="Action..." value="<?= $data['cols']?>" type="number"/>
                                 </div>
                             </div>
                             <div class="ln_solid">

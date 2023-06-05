@@ -45,7 +45,13 @@
                             <div class="field item form-group">
                                 <label class="col-form-label  label-align mr-2 col-1">Genre<span class="required">*</span></label>
                                 <div class="w-100">
-                                    <input class="form-control" name="genre" placeholder="Action..." />
+                                    <input class="form-control" name="genre" placeholder="Action..." type="text"/>
+                                </div>
+                            </div>
+                            <div class="field item form-group">
+                                <label class="col-form-label  label-align mr-2 col-1">Cols<span class="required">*</span></label>
+                                <div class="w-100">
+                                    <input class="form-control" name="cols" placeholder="Action..." type="number"/>
                                 </div>
                             </div>
                             <div class="ln_solid">

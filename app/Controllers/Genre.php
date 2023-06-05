@@ -22,6 +22,7 @@ class Genre extends BaseController
     {
         $rules = [
             'genre' => 'required|alpha|max_length[50]',
+            'cols'=>'required|numeric|max_length[2]'
         ];
 
         $msg =[
@@ -29,6 +30,11 @@ class Genre extends BaseController
                 'required'=>'Genre Tidak Boleh Kosong',
                 'alpha'=>'Genre Harus Berupa Huruf',
                 'max'=>'Genre Tidak Boleh Melebihi 50 Karakter'
+            ],
+            'cols'=>[
+                'required'=>'Cols Tidak Boleh Kosong',
+                'numeric'=>'Cols Harus Berupa Angka',
+                'max'=>'Cols Tidak Boleh Melebihi 2 Karakter'
             ]
         ];
 
@@ -38,7 +44,8 @@ class Genre extends BaseController
         }
 
         $data = [
-            'genre' => $this->request->getVar('genre')
+            'genre'=>$this->request->getPost('genre'),
+            'cols'=>$this->request->getPost('cols')
         ];
 
         $addGenre = $this->genreModel->addGenre($data);
@@ -79,6 +86,7 @@ class Genre extends BaseController
 
         $rules = [
             'genre' => 'required|alpha|max_length[50]',
+            'cols'=>'required|numeric|max_length[2]'
         ];
 
         $msg =[
@@ -86,6 +94,11 @@ class Genre extends BaseController
                 'required'=>'Genre Tidak Boleh Kosong',
                 'alpha'=>'Genre Harus Berupa Huruf',
                 'max'=>'Genre Tidak Boleh Melebihi 50 Karakter'
+            ],
+            'cols'=>[
+                'required'=>'Cols Tidak Boleh Kosong',
+                'numeric'=>'Cols Harus Berupa Angka',
+                'max'=>'Cols Tidak Boleh Melebihi 2 Karakter'
             ]
         ];
 
@@ -96,7 +109,8 @@ class Genre extends BaseController
 
         $id= $this->request->getPost('id');
         $data = [
-            'genre'=>$this->request->getPost('genre')
+            'genre'=>$this->request->getPost('genre'),
+            'cols'=>$this->request->getPost('cols')
         ];
 
         $update = $this->genreModel->updateGenre($id,$data);

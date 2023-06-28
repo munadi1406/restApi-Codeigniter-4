@@ -1,8 +1,7 @@
- <!-- footer content -->
- <footer class="">
-     <div class="pull-right">
-         Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-     </div>
-     <div class="clearfix"></div>
- </footer>
- <!-- /footer content -->
+<footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2021</span>
+        </div>
+    </div>
+</footer>

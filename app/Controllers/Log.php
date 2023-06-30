@@ -15,7 +15,7 @@ class Log extends BaseController
 
 
     private $log;
-    
+
     private $viewsPeryears;
     private $viewsPerMonth;
     private $viewsPerWeek;
@@ -27,7 +27,7 @@ class Log extends BaseController
 
 
         $this->log = $this->logModel->allLogViews();
-       
+
         $this->viewsPeryears = $this->logModel->viewsPerYears();
         $this->viewsPerMonth = $this->logModel->viewsPerMonth();
         $this->viewsPerWeek = $this->logModel->viewsPerWeek();
@@ -49,7 +49,10 @@ class Log extends BaseController
             'arrival_time' => 'required|valid_date', // Required and must be a valid date format
             'referrer' => 'valid_url', // Optional but must be a valid URL if provided
             'screen_resolution' => 'required', // Required
-            'device' => 'required' // Required
+            'device' => 'required',
+            'city' => 'required',
+            'region' => 'required',
+            'country' => 'required',
         ]);
 
         $logData = [
@@ -60,7 +63,10 @@ class Log extends BaseController
             'arrival_time' => $this->request->getVar('arrival_time'),
             'referrer' => $this->request->getVar('referrer'),
             'screen_resolution' => $this->request->getVar('screen_resolution'),
-            'device' => $this->request->getVar('device')
+            'device' => $this->request->getVar('device'),
+            'city' => $this->request->getVar('city'),
+            'region' => $this->request->getVar('region'),
+            'country' => $this->request->getVar('country')
         ];
 
 
@@ -103,8 +109,13 @@ class Log extends BaseController
         $title = "Log Activity";
 
         $datas = $this->logModel->getLog();
+        $logCity = $this->logModel->city();
+        $logCountry = $this->logModel->country();
+        $logDevice = $this->logModel->operatingSystem();
 
-        return view('log/log', ['data' => $datas, 'title' => $title]);
+        
+        
+        return view('log/log', ['data' => $datas, 'title' => $title,'city'=>$logCity,'country'=>$logCountry,'device'=>$logDevice]);
     }
 
 
@@ -123,6 +134,6 @@ class Log extends BaseController
             'pengunjungPerHari' => $this->viewsPerDay,
         ];
 
-        return view('log/log-views', ['data' => $data, 'title' => $title,'dataCount' => $dataCount]);
+        return view('log/log-views', ['data' => $data, 'title' => $title, 'dataCount' => $dataCount]);
     }
 }

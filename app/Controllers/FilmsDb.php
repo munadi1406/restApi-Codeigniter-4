@@ -268,16 +268,14 @@ class FilmsDb extends BaseController
     //menadpatkan data films
     public function filmsEdit()
     {
-
+ 
         $filmId = $this->request->getPost('film_id');
-
         $data = $this->filmsModel->filmsEdit($filmId);
-
+        $dataGenre = $this->genresModel->getGenre();
         $title = "Edit-" . $data['title'];
-
         $link = $this->linkModel->linkEdit($filmId);
 
-        return view('post/edit-post', ['data' => $data, 'link' => $link, 'title' => $title]);
+        return view('post/edit-post', ['data' => $data, 'link' => $link, 'title' => $title,'dataGenre'=>$dataGenre]);
     }
 
     // eksekusi edit film

@@ -1,20 +1,7 @@
 <?= $this->extend('layout/main'); ?>
 <?= $this->section('content'); ?>
 
-<?php
 
-$osArray = array();
-$osCountArray = array();
-foreach ($data['os'] as $os) {
-  $osArray[] = $os['operating_system'];
-  $osCountArray[] = $os['count(operating_system)'];
-}
-
-// var_dump($osCountArray);
-$osString = "'" . implode("', '", $osArray) . "'";
-$osCountString = implode(',', $osCountArray);
-
-?>
 <div class="container-fluid">
   <!-- Page Heading -->
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -134,49 +121,16 @@ $osCountString = implode(',', $osCountArray);
       </div>
     </div>
     <div class="col-lg-12 mb-4">
-      <div class="card bg-secondary text-white shadow">
+      <div class="card bg-white text-primary shadow">
         <div class="card-body">
           <?= $data['pengunjungPerHari'] ?>
-          <div class="text-white-50 small">Total Pengunjung Hari Ini</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-xl-4 col-lg-5">
-      <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Statistik Device</h6>
-        </div>
-        <div class="card-body">
-          <div class="chart-pie pt-4 pb-2">
-            <canvas id="myChart" class="w-100 h-100"></canvas>
-          </div>
+          <div class="text-primary-50 small">Total Pengunjung Hari Ini</div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  const ctx = document.getElementById('myChart');
-  new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: [<?= $osString ?>],
-      datasets: [{
-        label: 'Jumlah',
-        data: [<?= $osCountString ?>],
-        borderWidth: 1
-      }]
-    },
-    options: {
 
-
-    }
-  });
-</script>
 
 <?= $this->endSection(); ?>

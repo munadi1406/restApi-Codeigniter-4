@@ -94,7 +94,7 @@ $routes->group('', ['filter' => 'authCheck'], static function ($routes) {
     });
 });
 
-$routes->group('api', ['filter' => 'jwtCheck'], static function ($routes) {
+$routes->group('api', static function ($routes) {
     $routes->get('filmsAll/(:num)/(:num)', 'Films::films/$1/$2');
     $routes->get('filmscount', 'Films::countFilms');
     $routes->get('genrecount/(:alpha)', 'Films::countgenre/$1');

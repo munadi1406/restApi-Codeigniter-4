@@ -14,7 +14,7 @@ class LogModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['visit_time', 'ip_address', 'browser', 'operating_system', 'visited_page', 'arrival_time', 'referrer', 'screen_resolution', 'device'];
+    protected $allowedFields    = ['visit_time', 'ip_address', 'browser', 'operating_system', 'visited_page', 'arrival_time', 'referrer', 'screen_resolution', 'device','city','region','country'];
 
     // Dates
     protected $useTimestamps = false;
@@ -47,7 +47,7 @@ class LogModel extends Model
 
     public function getLog()
     {
-        return $this->orderBy("id", "DESC")->findAll();
+        return $this->orderBy("id", "DESC")->limit(50)->find();
     }
 
 
@@ -59,15 +59,29 @@ class LogModel extends Model
 
     public function operatingSystem()
     {
-        return $this->select(['operating_system', 'count(operating_system)'])
-            ->groupBy('operating_system')
+        return $this->select(['device', 'count(device)'])
+            ->groupBy('device')
             ->findAll();
     }
 
 
     public function browser()
     {
-        return $this->select(['browser', 'count(browser)'])->groupBy('browser')
+        return $this->select(['device', 'count(device)'])->groupBy('device')
+            ->findAll();
+    }
+
+
+
+    public function country()
+    {
+        return $this->select(['country', 'count(country)'])->groupBy('country')
+            ->findAll();
+    }
+
+    public function city()
+    {
+        return $this->select(['city', 'count(city)'])->groupBy('city')
             ->findAll();
     }
 

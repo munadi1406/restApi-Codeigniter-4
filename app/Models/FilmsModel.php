@@ -55,6 +55,7 @@ class FilmsModel extends Model
         return $this->select(['films.image'])->findAll();
     }
 
+    
     public function filmsById($id)
     {
         return $this->select(['films.film_id', 'films.title', 'films.desc', 'films.date', 'films.image', 'films.tipe', 'films.subtitle', 'films.trailer', 'g.name'])
@@ -121,8 +122,6 @@ class FilmsModel extends Model
     {
         return $this->where('tipe', 'Series')->countAllResults();
     }
-
-
 
 
     // bukan untuk api

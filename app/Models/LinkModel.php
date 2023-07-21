@@ -50,12 +50,22 @@ class LinkModel extends Model
         if ($data === null || $data['tipe'] === null) {
             return $data; // jika tipe null, kembalikan false
         } else if ($data['tipe'] === 'Series') {
-            return $this->select(['f.film_id', 'link.*', 'e.episode'])
+            $dataLink =  $this->select(['link.quality','link.GD', 'link.UTB', 'link.MG', 'e.episode'])
                 ->join('films f', 'f.film_id = link.film_id')
                 ->join('episode e', 'link.episode_id = e.id_episode')
                 ->where('f.status', 'show')
                 ->where('link.film_id', $id)
+                ->orderBy('e.episode','desc')
                 ->find();
+            $episodeKelompok = array();
+            foreach ($dataLink as $link) {
+                $episode = $link['episode'];
+                if (!isset($episodeKelompok[$episode])) {
+                    $episodeKelompok[$episode] = array();
+                }
+                $episodeKelompok[$episode][] = $link;
+            }
+            return $episodeKelompok;
         } else if ($data['tipe'] === 'Movie') {
             return $this->select(['f.film_id', 'link.*'])
                 ->join('films f', 'f.film_id = link.film_id')
@@ -80,7 +90,7 @@ class LinkModel extends Model
         if ($data === null || $data['tipe'] === null) {
             return $data; // jika tipe null, kembalikan false
         } else if ($data['tipe'] === 'Series') {
-            return $this->select(['f.film_id','f.title', 'f.tipe','link.*', 'e.episode'])
+            return $this->select(['f.film_id', 'f.title', 'f.tipe', 'link.*', 'e.episode','e.id_episode'])
                 ->join('films f', 'f.film_id = link.film_id')
                 ->join('episode e', 'link.episode_id = e.id_episode')
                 ->where('f.status', 'show')
@@ -88,7 +98,7 @@ class LinkModel extends Model
                 ->groupBy('link.id_link')
                 ->find();
         } else if ($data['tipe'] === 'Movie') {
-            return $this->select(['f.film_id', 'f.tipe','f.title','link.*'])
+            return $this->select(['f.film_id', 'f.tipe', 'f.title', 'link.*'])
                 ->join('films f', 'f.film_id = link.film_id')
                 ->where('f.status', 'show')
                 ->where('link.film_id', $id)
@@ -98,10 +108,8 @@ class LinkModel extends Model
 
 
     // eksekusi edit link
-    public function editLink($linkId,$dataLink)
+    public function editLink($linkId, $dataLink)
     {
-        return $this->update($linkId,$dataLink);
+        return $this->update($linkId, $dataLink);
     }
-
-
 }

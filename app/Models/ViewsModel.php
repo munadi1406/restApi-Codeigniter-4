@@ -48,7 +48,7 @@ class ViewsModel extends Model
 
     public function getViews($filmId)
     {
-        return $this->where('film_id', $filmId)->findAll();
+        return $this->select(['views'])->where('film_id', $filmId)->first();
     }
 
     public function getAllViews()

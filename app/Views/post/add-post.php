@@ -27,25 +27,25 @@
             <form class="col-lg-12" action="<?php base_url('admin/post-add') ?>" method="post" enctype="multipart/form-data">
                 <?= csrf_field() ?>
                 <div class="field item form-group">
-                    <label class="col-form-label  label-align mr-2 col-1">Name<span class="required">*</span></label>
+                    <label class="col-form-label  label-align mr-2 ">Name<span class="required">*</span></label>
                     <div class="w-100">
                         <input class="form-control" name="title" placeholder="Game Of Thrones" required />
                     </div>
                 </div>
                 <div class="field item form-group">
-                    <label class="col-form-label  label-align mr-2 col-1">Desc<span class="required">*</span></label>
+                    <label class="col-form-label  label-align mr-2 ">Desc<span class="required">*</span></label>
                     <div class="w-100">
                         <textarea required="required" name='desc' class="w-100"></textarea>
                     </div>
                 </div>
                 <div class="field item form-group ">
-                    <label class="col-form-label  label-align mr-2 col-1">Date<span class="required">*</span></label>
+                    <label class="col-form-label  label-align mr-2 ">Date<span class="required">*</span></label>
                     <div class="w-100">
                         <input class="form-control" name="date" class='date' required="required" type="Date" />
                     </div>
                 </div>
                 <div class="field item form-group ">
-                    <label for="genre" class="col-form-label  label-align mr-2 col-1 ">Genre:</label><br>
+                    <label for="genre" class="col-form-label  label-align mr-2  ">Genre:</label><br>
                     <div class="d-flex flex-wrap">
                         <?php foreach ($data as $datas) : ?>
                             <div class="form-check form-check-inline border col-3">
@@ -56,26 +56,26 @@
                     </div>
                 </div>
                 <div class="field item form-group ">
-                    <label class="col-form-label  label-align mr-2 col-1">Tipe<span class="required">*</span></label>
+                    <label class="col-form-label  label-align mr-2 ">Tipe<span class="required">*</span></label>
                     <select class="form-control w-100" name="tipe">
                         <option value="Movie">Movie</option>
                         <option value="Series">Series</option>
                     </select>
                 </div>
                 <div class="field item form-group">
-                    <label class="col-form-label  label-align mr-2 col-1">Trailer<span class="required">*</span></label>
+                    <label class="col-form-label  label-align mr-2 ">Trailer<span class="required">*</span></label>
                     <div class="w-100">
                         <input class="form-control" name="trailer" placeholder="https://example.com" />
                     </div>
                 </div>
                 <div class="field item form-group">
-                    <label class="col-form-label  label-align mr-2 col-1">Subtitle<span class="required">*</span></label>
+                    <label class="col-form-label  label-align mr-2 ">Subtitle<span class="required">*</span></label>
                     <div class="w-100">
                         <input class="form-control" name="subtitle" placeholder="https://example.com" />
                     </div>
                 </div>
                 <div class="field item form-group ">
-                    <label class="col-form-label  label-align mr-2 col-1">1080<span class="required">*</span></label>
+                    <label class="col-form-label  label-align mr-2 ">1080<span class="required">*</span></label>
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <input type="checkbox" aria-label="Checkbox for following text input" value="1080" name="quality1080">
@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 <div class="field item form-group ">
-                    <label class="col-form-label  label-align mr-2 col-1">720<span class="required">*</span></label>
+                    <label class="col-form-label  label-align mr-2 ">720<span class="required">*</span></label>
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <input type="checkbox" aria-label="Checkbox for following text input" value="720" name="quality720">
@@ -101,7 +101,7 @@
                     </div>
                 </div>
                 <div class="field item form-group ">
-                    <label class="col-form-label  label-align mr-2 col-1">540<span class="required">*</span></label>
+                    <label class="col-form-label  label-align mr-2 ">540<span class="required">*</span></label>
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <input type="checkbox" aria-label="Checkbox for following text input" value="540" name="quality540">

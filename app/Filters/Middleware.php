@@ -34,23 +34,27 @@ class Middleware implements FilterInterface
     {
         $this->response = service('Response');
         $this->request = service('request');
-        
     }
 
-    
+
     public function before(RequestInterface $request, $arguments = null)
     {
-        
-        
+
+
         $apiKey = $_ENV['API_KEY'];
 
         $authHeader = $request->getServer('HTTP_AUTHORIZATION');
 
         if ($authHeader) {
-            $apiKey = explode(' ', $authHeader)[1];
-            // lakukan validasi apakah API key yang diberikan valid
-            if ($apiKey !== $apiKey) {
+            try {
+                $apiKey = explode('Bearer ', $authHeader)[1];
+                // lakukan validasi apakah API key yang diberikan valid
+                if ($apiKey !== $apiKey) {
+                    return Services::response()->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
+                }
+            } catch (\Throwable $th) {
                 return Services::response()->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);
+                //throw $th;
             }
         } else {
             return Services::response()->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED);

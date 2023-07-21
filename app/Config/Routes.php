@@ -91,12 +91,16 @@ $routes->group('', ['filter' => 'authCheck'], static function ($routes) {
         $routes->delete('genre-delete/(:num)','Genre::deleteGenre/$1');
         $routes->post('genre-edit','Genre::editGenre');
         $routes->post('genre-update','Genre::updateGenre');
+
+        $routes->get('delete-episode/(:num)','FilmsDb::deleteEpisode/$1');
+
+        // like
+        $routes->get('like/','Likes::index');
     });
 });
 
-$routes->group('api', static function ($routes) {
+$routes->group('api' ,static function ($routes) {
     $routes->get('filmsAll/(:num)/(:num)', 'Films::films/$1/$2');
-    $routes->get('filmscount', 'Films::countFilms');
     $routes->get('genrecount/(:alpha)', 'Films::countgenre/$1');
     $routes->get('films/(:num)', 'Films::filmsById/$1');
     $routes->get('filmsrandom', 'Films::filmsRandom');
@@ -110,7 +114,6 @@ $routes->group('api', static function ($routes) {
     // image for cache
     $routes->get('image-cache/', 'Films::getImageCache');
 
-    $routes->get('views/(:num)', 'Films::getViews/$1');
     $routes->get('views-update/(:num)', 'Films::updateViews/$1');
     $routes->get('views-all/', 'Films::getAllViews');
 
@@ -121,7 +124,10 @@ $routes->group('api', static function ($routes) {
     // search
     $routes->get('search/(:segment)', 'Films::filmsSearch/$1');
     
-    // genre
+    // like
+    $routes->post('like/','Likes::like');
+    $routes->post('like-check/','Likes::checkLike');
+    $routes->get('getLike/(:num)','Likes::getLikeById/$1');
     
     
     // jwt

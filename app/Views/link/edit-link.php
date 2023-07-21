@@ -48,6 +48,9 @@ session()->remove('error'); ?>
                                 <input type="text" class="form-control" aria-label="Text input with checkbox" placeholder="Link MG" name="mg" value="<?= $dataLink['MG'] ?>">
                             </div>
                             <button type="submit" class="btn btn-primary">Edit</button>
+                            <?php if ($dataLink['tipe'] === "Series") : ?>
+                                <a href="<?= base_url('admin/delete-episode/' . $dataLink['id_episode']) ?>" class="btn btn-danger">Hapus Episode</a>
+                            <?php endif; ?>
                         </div>
                     </form>
                 <?php endforeach; ?>

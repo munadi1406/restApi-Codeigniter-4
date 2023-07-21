@@ -4,17 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class EpisodeModel extends Model
+class LikesModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'episode';
-    protected $primaryKey       = 'id_episode';
+    protected $table            = 'likes';
+    protected $primaryKey       = 'id_like';
     protected $useAutoIncrement = true;
-    protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['film_id','episode'];
+    protected $allowedFields    = ['id_likes','film_id','user_id','created_at'];
 
     // Dates
     protected $useTimestamps = false;
@@ -41,23 +40,29 @@ class EpisodeModel extends Model
     protected $afterDelete    = [];
 
 
-    public function episodeInsert($episodeData){
-        $data  = $this->insert($episodeData);
-        return $data;
+    public function getDataLike(){
+        return $this->select(['f.title','count(likes.film_id) as likes'])
+        ->join('films f','likes.film_id = f.film_id')
+        ->groupBy('likes.film_id')
+        ->orderBy('likes','desc')
+        ->findAll();
     }
 
-    public function getEpisode($filmId){
-        return $this->select('episode')->where($filmId)->find();
-
+    // untuk api
+    public function like($data){
+        return $this->insert($data);
     }
 
-    public function episodeByFilmid($filmId){
-        $data  = $this->select(['f.film_id','f.title','episode'])->join('films f','f.film_id = episode.film_id')->where('f.film_id',$filmId)->orderBy('id_episode','desc')->first();
-        return $data;
+    public function checkLike($film_id,$user_id){
+        return $this->where('film_id',$film_id)->where('user_id',$user_id)->first();
     }
-    
-    public function deleteEpisode($id){
-        return $this->delete($id);
+
+    public function deleteLike($film_id){
+        return $this->delete($film_id);
+    }
+
+    public function getLikeByFilmId($film_id){
+        return $this->selectCount('film_id')->where('film_id',$film_id)->first();
     }
 
 }

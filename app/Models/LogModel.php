@@ -14,7 +14,7 @@ class LogModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['visit_time', 'ip_address', 'browser', 'operating_system', 'visited_page', 'arrival_time', 'referrer', 'screen_resolution', 'device','city','region','country'];
+    protected $allowedFields    = ['visit_time', 'ip_address', 'browser', 'operating_system', 'visited_page', 'arrival_time', 'referrer', 'screen_resolution', 'device', 'city', 'region', 'country'];
 
     // Dates
     protected $useTimestamps = false;
@@ -75,14 +75,14 @@ class LogModel extends Model
 
     public function country()
     {
-        return $this->select(['country', 'count(country)'])->groupBy('country')
-            ->findAll();
+        return $this->select(['country', 'count(country)'])->groupBy('country')->orderBy('count(country)', 'desc')->limit(7)
+            ->find();
     }
 
     public function city()
     {
-        return $this->select(['city', 'count(city)'])->groupBy('city')
-            ->findAll();
+        return $this->select(['city', 'count(city)'])->groupBy('city')->orderBy('count(city)', 'desc')->limit(7)
+            ->find();
     }
 
     public function viewsPerYears()
@@ -94,10 +94,9 @@ class LogModel extends Model
 
     public function viewsPerMonth()
     {
-        return $this->where('YEAR(visit_time)',date('Y'))
-        ->where('MONTH(visit_time)',date('m'))
-        ->countAllResults();
-    
+        return $this->where('YEAR(visit_time)', date('Y'))
+            ->where('MONTH(visit_time)', date('m'))
+            ->countAllResults();
     }
 
 
@@ -108,9 +107,9 @@ class LogModel extends Model
             ->where('WEEK(visit_time)', date('W'))
             ->countAllResults();
     }
-    
-    
-    
+
+
+
     public function viewsPerDay()
     {
         return $this->where('day(visit_time)', date('j'))
@@ -118,5 +117,4 @@ class LogModel extends Model
             ->where('MONTH(visit_time)', date('m'))
             ->countAllResults();
     }
-    
 }

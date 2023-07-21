@@ -343,7 +343,7 @@ class FilmsDb extends BaseController
             session()->setFlashdata('error', 'Data Gagal Di Upadate');
             return redirect()->route('admin/post-data');
         }
-        session()->setFlashdata('success_message', 'Data Berhasil Di Upadate');
+        session()->setFlashdata('success', 'Data Berhasil Di Upadate');
         return redirect()->route('admin/post-data');
     }
 
@@ -446,7 +446,7 @@ class FilmsDb extends BaseController
 
 
         if ($data && $episode) {
-            $this->session->setFlashdata('success_message', 'Episode Berhasil Di Post.');
+            $this->session->setFlashdata('success', 'Episode Berhasil Di Post.');
             return redirect()->route('admin/post-data');
         } else {
             $this->session->setFlashdata('error', 'Episode Gagal Di Add');
@@ -461,7 +461,6 @@ class FilmsDb extends BaseController
     {
 
         $filmId = $this->request->getPost('film_id');
-
 
         $data = $this->filmsModel->filmsEdit($filmId);
         $link = $this->linkModel->linkEdit($filmId);
@@ -548,4 +547,11 @@ class FilmsDb extends BaseController
             return redirect()->back()->with('error', 'Status Gagal Di Ubah ke' . $statusChange);
         }
     }
+
+    public function deleteEpisode($episodeId){
+        $this->episodeModel->deleteEpisode($episodeId);
+        $this->session->setFlashdata('success', 'Episode Berhasil Di Hapus.');
+        return redirect()->route('admin/post-data');
+    }
+
 }

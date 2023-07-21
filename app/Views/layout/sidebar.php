@@ -95,6 +95,11 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('admin/like')?>">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Likes</span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('log-view')?>">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Statistik</span></a>

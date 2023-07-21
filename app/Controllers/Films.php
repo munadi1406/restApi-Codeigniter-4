@@ -52,19 +52,19 @@ class Films extends BaseController
         }
     }
 
-    public function countFilms()
-    {
-        return $this->respond($this->filmsModel->countFilms());
-    }
-
     public function filmsById($id)
     {
         $datas = $this->filmsModel->filmsById($id);
+        $views = $this->viewsModel->getViews($id);
+        $dataLink = $this->linkModel->link($id);
+
         if ($datas) {
             return $this->respond([
                 'status' => 200,
                 'message' => 'success',
-                'data' => $datas
+                'data' => $datas,
+                'views' => $views,
+                'link' => $dataLink
             ])->setStatusCode(200);
         } else {
             return $this->respond([
@@ -92,23 +92,7 @@ class Films extends BaseController
         }
     }
 
-    public function filmsLink($id)
-    {
-        $datas = $this->linkModel->link($id);
-        if ($datas) {
-            return $this->respond([
-                'status' => 200,
-                'message' => 'success',
-                'data' => $datas
-            ])->setStatusCode(200);
-        } else {
-            return $this->respond([
-                'status' => 404,
-                'message' => 'Failed'
-            ])->setStatusCode(404);
-        }
-    }
-
+    
     public function filmsByGenre($genre, $startFrom, $record)
     {
         $datas = $this->genreModel->genreFilter($genre, $startFrom, $record);
@@ -126,7 +110,7 @@ class Films extends BaseController
         }
     }
 
-    
+
     public function countGenre($genre)
     {
         return $this->respond($this->genreModel->countGenre($genre));
@@ -290,16 +274,18 @@ class Films extends BaseController
     }
 
     public function showImage($imageName)
-{
-    $path = WRITEPATH . 'uploads/' . $imageName;
-    if (file_exists($path)) {
-        $info = getimagesize($path);
-        header('Content-Type: ' . $info['mime']);
-        header('Content-Length: ' . filesize($path));
-        readfile($path);
-        exit;
+    {
+        $path = WRITEPATH . 'uploads/' . $imageName;
+        if (file_exists($path)) {
+            $info = getimagesize($path);
+            header('Content-Type: ' . $info['mime']);
+            header('Content-Length: ' . filesize($path));
+            readfile($path);
+            exit;
+        }
     }
-}
+
+
     public function deleteFilms($filmsId)
     {
         $film = $this->filmsModel->find($filmsId);
@@ -357,27 +343,6 @@ class Films extends BaseController
         }
     }
 
-
-
-
-    public function getViews($filmId)
-    {
-        $datas = $this->viewsModel->getViews($filmId);
-        if ($datas) {
-            return $this->respond([
-                'status' => 200,
-                'message' => 'success',
-                'data' => $datas
-            ])->setStatusCode(200);
-        } else {
-            return $this->respond([
-                'status' => 404,
-                'message' => 'Failed'
-            ])->setStatusCode(404);
-        }
-    }
-
-
     public function getAllViews()
     {
         $datas = $this->viewsModel->getAllViews();
@@ -399,7 +364,7 @@ class Films extends BaseController
     {
         $dataByTitle = $this->filmsModel->searchFilms($search);
         $dataByDesc = $this->filmsModel->searchFilmsByDesc($search);
-        
+
         $data = array_merge($dataByTitle, $dataByDesc);
         $data = array_unique($data, SORT_REGULAR);
 
@@ -417,7 +382,8 @@ class Films extends BaseController
         }
     }
 
-    public function getGenre(){
+    public function getGenre()
+    {
         $data = $this->genresModel->getGenre();
         if ($data) {
             return $this->respond([

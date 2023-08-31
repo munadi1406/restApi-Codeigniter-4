@@ -15,7 +15,6 @@ Options -Indexes
 	# change the following line to match the subfolder you need.
 	# http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase
 	# RewriteBase /
-	
 
 	# Redirect Trailing Slashes...
 	RewriteCond %{REQUEST_FILENAME} !-d
@@ -48,4 +47,3 @@ Options -Indexes
 # Disable server signature start
 	ServerSignature Off
 # Disable server signature end
-

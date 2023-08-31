@@ -45,7 +45,7 @@ class Cookie extends BaseConfig
      *
      * Set to `.your-domain.com` for site-wide cookies.
      */
-    public string $domain = 'localhost';
+    public string $domain = '';
 
     /**
      * --------------------------------------------------------------------------
@@ -63,7 +63,7 @@ class Cookie extends BaseConfig
      *
      * Cookie will only be accessible via HTTP(S) (no JavaScript).
      */
-    public bool $httponly = false;
+    public bool $httponly = true;
 
     /**
      * --------------------------------------------------------------------------

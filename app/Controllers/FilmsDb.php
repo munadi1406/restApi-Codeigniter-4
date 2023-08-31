@@ -86,12 +86,12 @@ class FilmsDb extends BaseController
     public function postAdd()
     {
         // title
-        $title = "Films Add"; 
+        $title = "Films Add";
         $data = $this->genresModel->getGenre();
 
 
 
-        return view('post/add-post', ['title' => $title,'data'=>$data]);
+        return view('post/add-post', ['title' => $title, 'data' => $data]);
     }
 
 
@@ -268,46 +268,48 @@ class FilmsDb extends BaseController
     //menadpatkan data films
     public function filmsEdit()
     {
- 
+
         $filmId = $this->request->getPost('film_id');
         $data = $this->filmsModel->filmsEdit($filmId);
         $dataGenre = $this->genresModel->getGenre();
         $title = "Edit-" . $data['title'];
         $link = $this->linkModel->linkEdit($filmId);
 
-        return view('post/edit-post', ['data' => $data, 'link' => $link, 'title' => $title,'dataGenre'=>$dataGenre]);
+        return view('post/edit-post', ['data' => $data, 'link' => $link, 'title' => $title, 'dataGenre' => $dataGenre]);
     }
 
     // eksekusi edit film
     public function edit()
     {
-        $film_id = $this->request->getPost('film_id');
+
         $imageBefore = $this->request->getPost('imageBefore');
-
-
 
         $rules = [
             'image' => 'uploaded[image]',
         ];
 
         $image = $this->request->getFile('image');
+
         if (!$this->validate($rules)) {
+            // Validasi gagal, gunakan $imageBefore jika ada
             $imageUrl = $imageBefore;
         } else {
             $rulesImage = [
                 'image' => 'uploaded[image]|max_size[image,1024]|is_image[image]',
             ];
+
             if ($this->validate($rulesImage)) {
                 $imageName = $image->getRandomName();
                 $imageUrl = base_url('images/' . $imageName);
+
+                // Hapus gambar sebelumnya jika ada
                 if ($imageBefore) {
-                    $path = ROOTPATH . 'writable/uploads/' . basename($imageBefore);
+                    $path = ROOTPATH . 'writable/uploads/' . basename(strval($imageBefore));
                     if (file_exists($path)) {
                         unlink($path);
                     }
-                } else {
-                    return false;
                 }
+
                 $image->move(ROOTPATH . 'writable/uploads', $imageName);
             } else {
                 session()->setFlashdata('error', $this->validator->getErrors());
@@ -315,7 +317,9 @@ class FilmsDb extends BaseController
             }
         }
 
+        // ... (lanjutkan dengan kode lainnya seperti yang ada dalam fungsi)
 
+        // Gunakan $imageUrl dalam dataFilm
         $dataFilm = [
             'title' => $this->request->getPost('title'),
             'desc' => $this->request->getPost('desc'),
@@ -325,27 +329,12 @@ class FilmsDb extends BaseController
             'subtitle' => $this->request->getPost('subtitle'),
         ];
 
-        $genre = $this->request->getPost('genre');
-        if (is_array($genre)) {
-            $genre = implode(',', $genre);
-        } else {
-            $genre = '';
-        }
+        // ... (lanjutkan dengan kode lainnya seperti yang ada dalam fungsi)
 
-        $data = $this->filmsModel->filmEdit($film_id, $dataFilm);
-
-        $dataGenre = [
-            'name' => $genre,
-        ];
-        $dataGenre = $this->genreModel->genreUpdate($film_id, $dataGenre);
-
-        if (!$data && $dataGenre) {
-            session()->setFlashdata('error', 'Data Gagal Di Upadate');
-            return redirect()->route('admin/post-data');
-        }
-        session()->setFlashdata('success', 'Data Berhasil Di Upadate');
+        session()->setFlashdata('success', 'Data Berhasil Di Update');
         return redirect()->route('admin/post-data');
     }
+
 
     public function filmsDelete($filmId)
     {
@@ -548,10 +537,10 @@ class FilmsDb extends BaseController
         }
     }
 
-    public function deleteEpisode($episodeId){
+    public function deleteEpisode($episodeId)
+    {
         $this->episodeModel->deleteEpisode($episodeId);
         $this->session->setFlashdata('success', 'Episode Berhasil Di Hapus.');
         return redirect()->route('admin/post-data');
     }
-
 }

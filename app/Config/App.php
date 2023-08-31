@@ -94,6 +94,8 @@ class App extends BaseConfig
      * by the application in descending order of priority. If no match is
      * found, the first locale will be used.
      *
+     * IncomingRequest::setLocale() also uses this list.
+     *
      * @var string[]
      */
     public array $supportedLocales = ['en'];
@@ -105,9 +107,10 @@ class App extends BaseConfig
      *
      * The default timezone that will be used in your application to display
      * dates with the date helper, and can be retrieved through app_timezone()
+     *
+     * @see https://www.php.net/manual/en/timezones.php for list of timezones supported by PHP.
      */
-    public string $appTimezone = 'Asia/Jakarta';
-
+    public string $appTimezone = 'UTC';
 
     /**
      * --------------------------------------------------------------------------
@@ -350,7 +353,7 @@ class App extends BaseConfig
      *
      * @deprecated Use `Config\Security` $tokenName property instead of using this property.
      */
-    public string $CSRFTokenName = 'mkasmodiossabuay1625617126:;;;121)()()*&^%$$#@!!@#%^';
+    public string $CSRFTokenName = 'csrf_test_name';
 
     /**
      * --------------------------------------------------------------------------
@@ -359,9 +362,9 @@ class App extends BaseConfig
      *
      * The header name.
      *
-     * @deprecated Use `Config\Security` $Access-ControlName property instead of using this property.
+     * @deprecated Use `Config\Security` $headerName property instead of using this property.
      */
-    public string $CSRFHeaderName = '12803412128uuyqwheasdmkcd9*&^%%^#%^$^%$@#!^';
+    public string $CSRFHeaderName = 'X-CSRF-TOKEN';
 
     /**
      * --------------------------------------------------------------------------
@@ -372,7 +375,7 @@ class App extends BaseConfig
      *
      * @deprecated Use `Config\Security` $cookieName property instead of using this property.
      */
-    public string $CSRFCookieName = ')(871237mkasdjasd9821731238127367)912832171266123';
+    public string $CSRFCookieName = 'csrf_cookie_name';
 
     /**
      * --------------------------------------------------------------------------

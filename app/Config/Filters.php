@@ -49,6 +49,7 @@ class Filters extends BaseConfig
             // 'apiKey',
             'rateLimiter',
             'cors',
+           
         ],
         'after' => [
             'toolbar',

@@ -33,7 +33,10 @@ foreach ($country as $countryLog) {
 // var_dump($osCountArray);
 $osString = "'" . implode("', '", $osArray) . "'";
 $osCountString = implode(',', $osCountArray);
-$cityString = "'" . implode("', '", $cityArray) . "'";
+$cityString = "'" . implode("', '", array_map(function($city) {
+    return str_replace("'", '', $city);
+}, $cityArray)) . "'";
+
 $cityCountString = implode(',', $cityCountArray);
 $countryString = "'" . implode("', '", $countryArray) . "'";
 $countryCountString = implode(',', $countryCountArray);

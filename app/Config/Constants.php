@@ -15,7 +15,6 @@
  */
 defined('APP_NAMESPACE') || define('APP_NAMESPACE', 'App');
 
-
 /*
  | --------------------------------------------------------------------------
  | Composer Path

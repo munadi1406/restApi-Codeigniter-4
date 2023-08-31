@@ -42,10 +42,10 @@ class FilmsModel extends Model
 
     public function getFilms($limit, $offset)
     {
-        return $this->select('film_id, title, date, image')
+        return $this->select('film_id, title, date, image ,trailer',)
                     ->limit($limit, $offset)
                     ->where('status','show')
-                    ->orderBy('created_at','DESC')
+                    ->orderBy('updated_at', 'DESC')
                     ->find();
     }
 

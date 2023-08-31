@@ -8,12 +8,10 @@ class Logout extends BaseController
 {
     public function index()
     {
-        $title = "Login";
         session()->remove('uid');
         session()->remove('uuid');
         session()->remove('login');
-
-        
-        return view('login/login',['title'=>$title]);
+   
+        return redirect()->to(base_url());
     }
 }
